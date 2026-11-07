@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electromagnetics Notes</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1 id="title">Electromagnetics Notes</h1>
+      <p id="subtitle" class="muted"></p>
+    </div>
+
+    <nav class="views" role="tablist" aria-label="Map views">
+      <a href="#flow"    data-view="flow"    role="tab">Flow</a>
+      <a href="#duality" data-view="duality" role="tab">Duality</a>
+      <a href="#units"   data-view="units"   role="tab">Units</a>
+    </nav>
+
+    <div class="tools">
+      <input id="search" type="search" placeholder="Find a topic…" aria-label="Find a topic" autocomplete="off">
+      <button id="fit" class="btn" title="Fit map to window">Fit</button>
+      <button id="help-btn" class="btn" title="How to read this map">?</button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <div id="legend" class="legend" aria-label="Units (click to dim)"></div>
+
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Topic map">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+        <marker id="arrow-hi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" />
+        </marker>
+      </defs>
+      <g id="viewport">
+        <g id="clusters"></g>
+        <g id="edges"></g>
+        <g id="edge-labels"></g>
+        <g id="nodes"></g>
+      </g>
+    </svg>
+
+    <p id="view-hint" class="view-hint"></p>
+
+    <aside id="panel" class="panel" aria-live="polite" hidden>
+      <button id="panel-close" class="close" aria-label="Close">×</button>
+      <div class="panel-head">
+        <span id="p-group" class="pill"></span>
+        <span id="p-kind" class="pill ghost"></span>
+      </div>
+      <h2 id="p-name"></h2>
+      <p id="p-summary" class="summary"></p>
+
+      <section id="p-eq-wrap">
+        <h3>Key equation</h3>
+        <code id="p-eq" class="eq"></code>
+      </section>
+
+      <section id="p-read-wrap">
+        <h3>Suggested reading</h3>
+        <p id="p-read"></p>
+      </section>
+
+      <section id="p-try-wrap" hidden>
+        <h3>Try it</h3>
+        <p id="p-try"></p>
+      </section>
+
+      <section id="p-res-wrap">
+        <h3>Resources</h3>
+        <ul id="p-res"></ul>
+      </section>
+
+      <section id="p-rel">
+        <h3>Connections</h3>
+        <div id="p-builds" class="rel"></div>
+        <div id="p-unlocks" class="rel"></div>
+        <div id="p-mirror" class="rel"></div>
+        <div id="p-trans" class="rel"></div>
+      </section>
+
+      <section id="p-notes-wrap" hidden>
+        <h3>Notes</h3>
+        <div id="p-notes"></div>
+      </section>
+    </aside>
+
+    <div id="help" class="help" hidden>
+      <div class="help-card">
+        <button id="help-close" class="close" aria-label="Close">×</button>
+        <h2>How to read this map</h2>
+        <p>Each box is a topic. <strong>Click</strong> one to open its card; <strong>hover</strong> to light up what it connects to. Drag to pan, scroll to zoom.</p>
+        <dl>
+          <dt>Flow</dt>
+          <dd>Left to right is "what you need first." An arrow from A to B means B builds on A. If a later topic isn't clicking, follow its arrows back.</dd>
+          <dt>Duality</dt>
+          <dd>Electrostatics on the left, magnetostatics on the right, with each topic lined up against its twin. The vector-calculus tools and the one law that uses both fields sit in the middle.</dd>
+          <dt>Units</dt>
+          <dd>The same topics grouped the way the course is organized.</dd>
+        </dl>
+        <p class="muted">Dashed boxes are exits: where the material leads after this course. Dashed lines join the integral and differential forms of the same law.</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

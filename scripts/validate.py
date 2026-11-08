@@ -215,6 +215,28 @@ def check_builder():
         for k in (c.get("collapseWrong") or {}):
             if k not in collapses:
                 err(f"{tag}: config '{cid}' collapseWrong refers to unknown option '{k}'")
+    P = b.get("potential")
+    if P:
+        pids = [c["id"] for c in P.get("configs", [])]
+        for c in P.get("configs", []):
+            cid = c.get("id", "?")
+            if c.get("route") is None:
+                if not c.get("dead"):
+                    err(f"{tag}: potential config '{cid}' has no route and no 'dead' text")
+                continue
+            if c["route"] not in P["routes"]:
+                err(f"{tag}: potential config '{cid}' unknown route '{c['route']}'")
+            if c.get("reference") not in P["references"]:
+                err(f"{tag}: potential config '{cid}' unknown reference '{c.get('reference')}'")
+            need = {"integrate": ("path", "paths"), "superpose": ("sum", "sums"), "gradient": ("grad", "grads")}.get(c["route"])
+            if need and c.get(need[0]) not in P[need[1]]:
+                err(f"{tag}: potential config '{cid}' needs a valid '{need[0]}'")
+            if not c.get("regions"):
+                err(f"{tag}: potential config '{cid}' has no regions")
+            for r in c.get("regions", []):
+                for k in ("label", "work", "result"):
+                    if k not in r:
+                        err(f"{tag}: potential config '{cid}' region missing '{k}'")
 
 
 def main():

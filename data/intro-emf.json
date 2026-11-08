@@ -606,7 +606,13 @@
       "pitfalls": [
         "Confusing 'the integral around a closed loop is zero' with 'the integral along any path is zero.' Only the closed-loop integral vanishes; an open path gives the potential difference."
       ],
-      "notes": "notes/conservative-int.md"
+      "notes": "notes/conservative-int.md",
+      "tryIt": [
+        {
+          "label": "Equation builder: route, reference point and path for V, step by step",
+          "url": "builder.html#potential"
+        }
+      ]
     },
     {
       "id": "conservative-diff",
@@ -657,7 +663,13 @@
         "q": "The potential in a region is V = 3x² (volts, x in meters). What is E at x = 1 m?",
         "a": "E = −∇V = −6x â_x, so at x = 1 m, E = −6 â_x V/m. It points toward decreasing x, i.e. downhill in V."
       },
-      "notes": "notes/V.md"
+      "notes": "notes/V.md",
+      "tryIt": [
+        {
+          "label": "Equation builder: route, reference point and path for V, step by step",
+          "url": "builder.html#potential"
+        }
+      ]
     },
     {
       "id": "energy-E",

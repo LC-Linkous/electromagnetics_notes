@@ -1,6 +1,6 @@
 {
   "title": "Equation builder",
-  "intro": "Gauss's and Ampère's laws are always true, but they only hand you the field when the symmetry is right. This walks through the choices — symmetry, coordinate system, surface or loop, what the integral collapses to, what is enclosed — one decision at a time. Wrong turns are allowed; each one says why it doesn't work.",
+  "intro": "Gauss's and Ampère's laws are always true, but they only hand you the field when the symmetry is right; the potential is always defined, but only once you have chosen a reference and a route. This walks through those choices one decision at a time. Wrong turns are allowed; each one says why it doesn't work.",
   "laws": {
     "gauss": {
       "name": "Gauss's law",
@@ -32,6 +32,18 @@
         "shape": "Which coordinate system and Amperian loop?",
         "collapse": "What does ∮B·dl collapse to?",
         "enclosed": "What current is enclosed?"
+      }
+    },
+    "potential": {
+      "name": "Electric potential",
+      "field": "V",
+      "fieldName": "electric potential",
+      "sourceWord": "charge",
+      "shapeWord": "reference and path",
+      "law": "V_{AB} = -\\int_A^B \\mathbf{E}\\cdot d\\mathbf{l},\\qquad \\mathbf{E} = -\\nabla V,\\qquad V = \\sum_i \\frac{Q_i}{4\\pi\\varepsilon_0 R_i}",
+      "mapTopic": "V",
+      "stepWords": {
+        "pick": "What are you finding, and from what?"
       }
     }
   },
@@ -897,5 +909,244 @@
   "altHeading": {
     "gauss": "Why not just integrate Coulomb's law?",
     "ampere": "Why not just integrate Biot–Savart?"
+  },
+  "potential": {
+    "routes": {
+      "integrate": {
+        "name": "Integrate the field: V = −∫E·dl from a reference point",
+        "when": "You know E (from Gauss's law or Coulomb) and want V."
+      },
+      "superpose": {
+        "name": "Add the potentials of the charges: V = Σ Q/(4πε₀R)",
+        "when": "You know where the charges are. No field needed — and it is a scalar sum."
+      },
+      "gradient": {
+        "name": "Differentiate: E = −∇V",
+        "when": "You are given V as a function and want E."
+      },
+      "laplace": {
+        "name": "Solve Laplace's or Poisson's equation with boundary conditions",
+        "when": "You know V on the boundaries but neither E nor the charges."
+      }
+    },
+    "routeWrong": {
+      "integrate": "You could — but only if you already have E. Here the shorter route is the one that uses what you were given.",
+      "superpose": "Superposition of potentials needs known, localized charges and uses V = 0 at infinity. That is not what you have here (or the charges extend to infinity, so the sum diverges).",
+      "gradient": "E = −∇V goes from V to E. You are after V, so this is backwards.",
+      "laplace": "Laplace's equation is the general method when all you have is boundary values. Here there is a more direct route."
+    },
+    "references": {
+      "infinity": {
+        "name": "V = 0 at infinity",
+        "why": "The usual choice for localized charges: the field falls off fast enough that the integral from infinity converges, and the Coulomb formula Q/(4πε₀r) already assumes it."
+      },
+      "ground": {
+        "name": "V = 0 at one conductor (ground)",
+        "why": "For plates, circuits and anything with a convenient conductor, call one of them zero. Only differences are physical."
+      },
+      "finite": {
+        "name": "V = 0 at some finite point ρ₀ of your choosing",
+        "why": "Needed when the charge extends to infinity: the integral from infinity diverges, so you must pick a finite reference."
+      },
+      "fixed": {
+        "name": "Already fixed by the given expression",
+        "why": "An explicit V(x, y, z) has its zero built in; changing the reference adds a constant and does not change E."
+      },
+      "none": {
+        "name": "It doesn't matter",
+        "why": ""
+      }
+    },
+    "referenceWrong": {
+      "infinity": "Not here. For a charge distribution that extends to infinity (an infinite line or plane), ∫E·dl from infinity diverges — V would be infinite everywhere. Pick a finite reference point.",
+      "ground": "There is no conductor to call ground here, and for a localized charge the natural zero is at infinity.",
+      "finite": "You can, but for localized charges it is unnecessary — the integral from infinity converges, and choosing infinity makes the result match the Coulomb formula.",
+      "fixed": "Nothing is given as an explicit V here; you are constructing it, so you must choose where it is zero.",
+      "none": "It matters for the *value* of V — every choice shifts V by a constant. It does not matter for differences or for E. Since you are asked for V itself, you must say where zero is."
+    },
+    "paths": {
+      "along": {
+        "name": "Straight in along the field direction (radial, or perpendicular to the plates)",
+        "why": "Any path gives the same answer (E is conservative), so take the one where E ∥ dl and the dot product is just E dl. The integral becomes one-dimensional."
+      },
+      "any": {
+        "name": "Any path — it doesn't matter",
+        "why": ""
+      },
+      "fieldline": {
+        "name": "It must follow a field line",
+        "why": ""
+      },
+      "closed": {
+        "name": "Around a closed loop back to the start",
+        "why": ""
+      }
+    },
+    "pathWrong": {
+      "any": "True — and that is exactly why potential exists. But you still have to *compute* one path. Pick the easy one: along E, so the dot product is trivial.",
+      "fieldline": "Not required. Because ∮E·dl = 0, every path between the same two points gives the same V. Following a field line is merely convenient.",
+      "closed": "A closed loop gives zero — you end where you started. That is the statement that E is conservative, not a way to find V at a point."
+    },
+    "sums": {
+      "scalar": {
+        "name": "Add the potentials as plain numbers, with their signs",
+        "why": "V is a scalar. Each charge contributes Q_i/(4πε₀R_i), positive or negative; add them. No components, no directions."
+      },
+      "vector": {
+        "name": "Add them as vectors, component by component",
+        "why": ""
+      },
+      "magnitude": {
+        "name": "Add the magnitudes, ignoring signs",
+        "why": ""
+      }
+    },
+    "sumWrong": {
+      "vector": "That is how you add *fields*. Potential is a scalar — the whole point of using it is that there are no components to track.",
+      "magnitude": "The sign of each charge matters: a negative charge lowers V. Add the signed contributions."
+    },
+    "grads": {
+      "minus": {
+        "name": "E = −∇V: minus the partial derivatives, assembled as a vector",
+        "why": "The field points downhill in potential. Take ∂V/∂x, ∂V/∂y, ∂V/∂z, put a minus sign in front, and assemble the vector."
+      },
+      "plus": {
+        "name": "E = ∇V",
+        "why": ""
+      },
+      "onecomp": {
+        "name": "E = −dV/dx â_x only",
+        "why": ""
+      }
+    },
+    "gradWrong": {
+      "plus": "Sign. E points from high potential to low — downhill — so E = −∇V. With the plus sign a positive charge would roll uphill.",
+      "onecomp": "Only if V depends on x alone. In general all three partial derivatives contribute."
+    },
+    "configs": [
+      {
+        "id": "p-point",
+        "name": "Point charge Q: find V(r)",
+        "sketch": "radial-point",
+        "route": "integrate",
+        "reference": "infinity",
+        "path": "along",
+        "regions": [
+          {
+            "label": "any r",
+            "work": "V(r) = -\\int_\\infty^{r} \\frac{Q}{4\\pi\\varepsilon_0 r'^2}\\,dr'",
+            "result": "V = \\frac{Q}{4\\pi\\varepsilon_0 r}",
+            "note": "Integrating inward from infinity along a radius: E ∥ dl, so the dot product is just E dr. The sign works out positive for positive Q — check it by hand once; it is the most common slip."
+          }
+        ],
+        "sanity": "Positive charge, positive V everywhere, falling as 1/r and going to zero at infinity. E = −dV/dr = Q/(4πε₀r²) gives Coulomb back.",
+        "altNote": "The same answer drops straight out of V = Q/(4πε₀R) with one term — that formula *is* this integral, done once and for all."
+      },
+      {
+        "id": "p-two",
+        "name": "Two point charges, +Q at x = −a and −Q at x = +a: find V at a point P",
+        "sketch": "dipole",
+        "route": "superpose",
+        "reference": "infinity",
+        "sum": "scalar",
+        "regions": [
+          {
+            "label": "any point P",
+            "work": "V_P = \\frac{Q}{4\\pi\\varepsilon_0 R_+} - \\frac{Q}{4\\pi\\varepsilon_0 R_-}",
+            "result": "V_P = \\frac{Q}{4\\pi\\varepsilon_0}\\left(\\frac{1}{R_+} - \\frac{1}{R_-}\\right)",
+            "note": "R₊ and R₋ are the distances from P to the two charges. Two numbers, subtracted. Compare finding E at P: two vectors to resolve into components first."
+          }
+        ],
+        "sanity": "V = 0 on the whole midplane (R₊ = R₋), positive on the +Q side, negative on the −Q side. Far away it falls as 1/r² — the dipole potential — because the two terms nearly cancel.",
+        "altNote": "Integrating E from infinity would mean first finding the dipole's vector field and then integrating it along a path — far more work than two scalar terms."
+      },
+      {
+        "id": "p-plates",
+        "name": "Uniform field E₀ between parallel plates a distance d apart: find V(x)",
+        "sketch": "normal-plane",
+        "route": "integrate",
+        "reference": "ground",
+        "path": "along",
+        "regions": [
+          {
+            "label": "between the plates, 0 < x < d, E₀ along +x, V = 0 at x = 0",
+            "work": "V(x) = -\\int_0^{x} E_0\\,dx'",
+            "result": "V(x) = -E_0\\,x",
+            "note": "V drops linearly along the field. The plate at x = d sits at V = −E₀d; the potential *difference* across the gap is E₀d regardless of where you put zero."
+          }
+        ],
+        "sanity": "V decreases in the direction E points — always. If your answer has V increasing along E, the sign of the integral is wrong. Capacitor formulas use |ΔV| = E₀ d.",
+        "altNote": "Laplace's equation in one dimension gives V = Ax + B; the two plate voltages fix A and B. Same answer, and the method that generalizes when the geometry is not uniform."
+      },
+      {
+        "id": "p-line",
+        "name": "Infinite line charge ρ_L: find V(ρ)",
+        "sketch": "radial-axis",
+        "route": "integrate",
+        "reference": "finite",
+        "path": "along",
+        "regions": [
+          {
+            "label": "any ρ, with V = 0 at ρ = ρ₀",
+            "work": "V(\\rho) = -\\int_{\\rho_0}^{\\rho} \\frac{\\rho_L}{2\\pi\\varepsilon_0\\rho'}\\,d\\rho'",
+            "result": "V(\\rho) = \\frac{\\rho_L}{2\\pi\\varepsilon_0}\\ln\\frac{\\rho_0}{\\rho}",
+            "note": "Try putting the reference at infinity and the logarithm blows up — that is the trap. With ρ₀ finite, V is positive inside ρ₀ and negative outside; only the differences mean anything."
+          }
+        ],
+        "sanity": "E = −dV/dρ = ρ_L/(2πε₀ρ) recovers the Gauss's-law field. The potential difference between two radii, (ρ_L/2πε₀) ln(ρ₂/ρ₁), is independent of ρ₀ — as it must be.",
+        "altNote": "Summing Q/(4πε₀R) along an infinite line diverges for the same reason: that formula assumes V = 0 at infinity, which this charge distribution does not allow."
+      },
+      {
+        "id": "p-sphere",
+        "name": "Conducting sphere, radius a, charge Q: find V inside and outside",
+        "sketch": "radial-point",
+        "route": "integrate",
+        "reference": "infinity",
+        "path": "along",
+        "regions": [
+          {
+            "label": "outside, r > a",
+            "work": "V(r) = -\\int_\\infty^{r} \\frac{Q}{4\\pi\\varepsilon_0 r'^2}\\,dr'",
+            "result": "V = \\frac{Q}{4\\pi\\varepsilon_0 r}",
+            "note": "Same as a point charge — Gauss's law says the field outside is identical."
+          },
+          {
+            "label": "inside, r < a",
+            "work": "V(r) = V(a) - \\int_a^{r} 0\\,dr'",
+            "result": "V = \\frac{Q}{4\\pi\\varepsilon_0 a}\\ \\text{(constant)}",
+            "note": "E = 0 inside a conductor, so integrating inward from the surface adds nothing: the whole interior sits at the surface potential. Not zero — constant."
+          }
+        ],
+        "sanity": "V is continuous at r = a (it always is, for finite E), falls as 1/r outside, and is flat inside. A common error is V = 0 inside because E = 0 there; E = 0 means V is *constant*, not zero.",
+        "altNote": "Summing Q/(4πε₀R) over the shell's surface charge gives the same two results after a surface integral — Newton's shell theorem again. Gauss plus one integral is shorter."
+      },
+      {
+        "id": "p-given",
+        "name": "Given V(x, y) = 3x² − 2xy (volts): find E",
+        "sketch": null,
+        "route": "gradient",
+        "reference": "fixed",
+        "grad": "minus",
+        "regions": [
+          {
+            "label": "everywhere",
+            "work": "\\frac{\\partial V}{\\partial x} = 6x - 2y,\\qquad \\frac{\\partial V}{\\partial y} = -2x",
+            "result": "\\mathbf{E} = -(6x - 2y)\\,\\hat{\\mathbf{a}}_x + 2x\\,\\hat{\\mathbf{a}}_y\\ \\text{V/m}",
+            "note": "At (1, 0): E = −6 â_x. V increases with x there, so E points toward −x — downhill. Adding any constant to V would change nothing here."
+          }
+        ],
+        "sanity": "Check one point by hand for the sign. Then check ∇×E = 0 (it must be, for any E that came from a potential): ∂E_y/∂x − ∂E_x/∂y = 2 − 2 = 0.",
+        "altNote": "Going the other way — integrating this E back to V — recovers V up to a constant. That constant is the reference you never had to choose."
+      },
+      {
+        "id": "p-faraday",
+        "name": "E produced by a changing magnetic field: find V",
+        "sketch": "circling",
+        "route": null,
+        "dead": "There is no scalar potential for this field. A changing B makes E circulate — ∮E·dl ≠ 0 — so the work from A to B depends on the path and no single-valued V can be assigned. E = −∇V fails; the full description is E = −∇V − ∂A/∂t with the vector potential A. That is the start of the next course (Faraday's law).",
+        "regions": [],
+        "sanity": ""
+      }
+    ]
   }
 }

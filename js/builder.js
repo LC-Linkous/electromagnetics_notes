@@ -40,20 +40,24 @@ function writeHash() {
 }
 
 // ------------------------------------------------------------------ law
+const configsFor = law => (law === 'potential' ? state.data.potential.configs : state.data.configs.filter(c => c.law === law));
+
 function setLaw(law, preselect = null) {
   state.law = law;
   state.config = null;
   const L = state.data.laws[law];
   document.querySelectorAll('.views a').forEach(a => a.classList.toggle('active', a.dataset.law === law));
   $('#b-law-eq').innerHTML = tex(L.law, true);
-  $('#b-law-note').textContent = `${L.name}: always true for any closed ${L.shapeWord.split(' ')[1] || 'surface'}. The question is whether it hands you ${L.field === '\\mathbf{E}' ? 'E' : 'B'}.`;
+  $('#b-law-note').textContent = law === 'potential'
+    ? 'Three ways to get between V and E. Picking the route, the reference point and the path is where the signs go wrong.'
+    : `${L.name}: always true for any closed ${L.shapeWord.split(' ')[1] || 'surface'}. The question is whether it hands you ${L.field === '\\mathbf{E}' ? 'E' : 'B'}.`;
   $('#b-map-link').href = `index.html#flow/${L.mapTopic}`;
   $('#b-steps').innerHTML = '';
   state.steps = [];
   writeHash();
   stepPick();
   if (preselect) {
-    const c = state.data.configs.find(x => x.id === preselect && x.law === law);
+    const c = configsFor(law).find(x => x.id === preselect);
     if (c) choose(0, c.id);
   }
 }
@@ -102,9 +106,9 @@ function choose(stepIndex, id) {
 // ------------------------------------------------------------------ step 1: source
 function stepPick() {
   const L = state.data.laws[state.law];
-  const configs = state.data.configs.filter(c => c.law === state.law);
+  const configs = configsFor(state.law);
   addStep(L.stepWords.pick, 'Pick the source. Some of these will turn out not to work — that is part of the point.',
-    configs.map(c => ({ id: c.id, html: `<span class="opt-row small">${sketch(c.sketch, { law: state.law })}<span>${c.name}</span></span>` })), {
+    configs.map(c => ({ id: c.id, html: `<span class="opt-row small">${c.sketch ? sketch(c.sketch, { law: state.law === 'potential' ? 'gauss' : state.law }) : '<span class="sketch blank"></span>'}<span>${c.name}</span></span>` })), {
       onChoose: (id, btn) => {
         const li = state.steps[0];
         truncateAfter(li);
@@ -113,7 +117,7 @@ function stepPick() {
         li.querySelectorAll('.b-opt').forEach(b => b.classList.toggle('right', b === btn));
         li.classList.add('done');
         li.querySelector('.fb').innerHTML = '';
-        stepSymmetry();
+        if (state.law === 'potential') stepRoute(); else stepSymmetry();
       },
     });
 }
@@ -252,6 +256,111 @@ function stepEnclosed() {
   stepFinish(false);
 }
 
+// ================================================================== potential builder
+function optsFrom(map, extra = {}) {
+  return Object.entries(map).map(([id, o]) => ({ id, html: `${o.name}${o.when ? `<small>${o.when}</small>` : ''}` }));
+}
+
+function stepRoute() {
+  const P = state.data.potential, c = state.config;
+  const li = addStep('Which route?', 'Start from what you were given. Each route needs a different input.', optsFrom(P.routes), {
+    onChoose: (id, btn) => {
+      truncateAfter(li);
+      if (c.route === null) {
+        // dead end: no scalar potential exists; any route choice leads here
+        mark(li, btn, true, `<strong>Stop — none of these work.</strong>${md(c.dead)}`);
+        li.querySelector('.b-feedback').classList.add('dead'); li.classList.add('dead');
+        stepFinish(true);
+        return;
+      }
+      const ok = id === c.route;
+      if (ok) { mark(li, btn, true, `<strong>Yes.</strong>${md(P.routes[id].when)}`); stepReference(); }
+      else mark(li, btn, false, `<strong>Not the best route.</strong>${md(P.routeWrong[id])}`);
+    },
+  });
+}
+
+function stepReference() {
+  const P = state.data.potential, c = state.config;
+  const li = addStep('Where is V = 0?', 'Potential is only defined up to a constant. You have to say where zero is — and some choices are not available.', optsFrom(P.references), {
+    onChoose: (id, btn) => {
+      truncateAfter(li);
+      const ok = id === c.reference;
+      if (ok) {
+        mark(li, btn, true, `<strong>Right.</strong>${md(P.references[id].why)}`);
+        if (c.route === 'integrate') stepPath();
+        else if (c.route === 'superpose') stepSum();
+        else stepGrad();
+      } else mark(li, btn, false, `<strong>Not that.</strong>${md(P.referenceWrong[id])}`);
+    },
+  });
+}
+
+function stepPath() {
+  const P = state.data.potential, c = state.config;
+  const li = addStep('Along which path?', 'V = −∫E·dl from the reference to the point. The integral needs a path.', optsFrom(P.paths), {
+    onChoose: (id, btn) => {
+      truncateAfter(li);
+      const ok = id === c.path;
+      if (ok) { mark(li, btn, true, `<strong>Yes.</strong>${md(P.paths[id].why)}`); stepPotentialResult(); }
+      else mark(li, btn, false, `<strong>${id === 'any' ? 'True, but…' : 'No.'}</strong>${md(P.pathWrong[id])}`);
+    },
+  });
+}
+
+function stepSum() {
+  const P = state.data.potential, c = state.config;
+  const li = addStep('How do the contributions combine?', '', optsFrom(P.sums), {
+    onChoose: (id, btn) => {
+      truncateAfter(li);
+      const ok = id === c.sum;
+      if (ok) { mark(li, btn, true, `<strong>Yes.</strong>${md(P.sums[id].why)}`); stepPotentialResult(); }
+      else mark(li, btn, false, `<strong>No.</strong>${md(P.sumWrong[id])}`);
+    },
+  });
+}
+
+function stepGrad() {
+  const P = state.data.potential, c = state.config;
+  const li = addStep('Which derivative?', '', optsFrom(P.grads), {
+    onChoose: (id, btn) => {
+      truncateAfter(li);
+      const ok = id === c.grad;
+      if (ok) { mark(li, btn, true, `<strong>Yes.</strong>${md(P.grads[id].why)}`); stepPotentialResult(); }
+      else mark(li, btn, false, `<strong>No.</strong>${md(P.gradWrong[id])}`);
+    },
+  });
+}
+
+function stepPotentialResult() {
+  const c = state.config;
+  const li = document.createElement('li');
+  li.className = 'b-step done';
+  li.innerHTML = `<h2>Work it through</h2>
+    ${c.regions.length > 1 ? '<p class="lead">Pick the region.</p>' : ''}
+    <div class="b-regions"></div>
+    <div class="b-result"></div>`;
+  const regions = li.querySelector('.b-regions'), result = li.querySelector('.b-result');
+  const show = i => {
+    const r = c.regions[i];
+    regions.querySelectorAll('.b-region').forEach((b, j) => b.classList.toggle('on', i === j));
+    result.innerHTML = `
+      <div class="row"><span class="k">Set up</span><span>${tex(r.work, true)}</span></div>
+      <div class="row"><span class="k">Result</span><span class="final">${tex(r.result, true)}</span></div>
+      ${r.note ? `<p class="note">${md(r.note)}</p>` : ''}`;
+  };
+  c.regions.forEach((r, i) => {
+    const b = document.createElement('button');
+    b.className = 'b-region'; b.textContent = r.label;
+    b.addEventListener('click', () => show(i));
+    regions.appendChild(b);
+  });
+  $('#b-steps').appendChild(li); state.steps.push(li);
+  show(0);
+  li.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  stepFinish(false);
+}
+
 // ------------------------------------------------------------------ step 6: sanity checks, twin, links
 function stepFinish(dead) {
   const L = state.data.laws[state.law];
@@ -260,13 +369,15 @@ function stepFinish(dead) {
   li.className = 'b-step done';
   const twin = c.twin ? state.data.configs.find(x => x.id === c.twin) : null;
   const otherLaw = state.law === 'gauss' ? 'ampere' : 'gauss';
+  const isPot = state.law === 'potential';
+  const altHeading = isPot ? 'Another route' : state.data.altHeading[state.law];
   li.innerHTML = `<h2>${dead ? 'What to do instead' : 'Does it make sense?'}</h2>
     ${dead ? '' : `<div class="b-sanity">${md(c.sanity)}</div>`}
-    ${!dead && c.alternative ? `<div class="b-alt"><h3>${state.data.altHeading[state.law]}</h3><p>${md(c.alternative)}</p></div>` : ''}
-    <div class="b-twin"><h3>The ${otherLaw === 'ampere' ? 'magnetic' : 'electric'} twin</h3>
-      <p>${md(c.twinNote || '')} ${twin ? `<a href="#${otherLaw}/${twin.id}">Run the same steps for ${twin.name.split(',')[0].split(':')[0]} →</a>` : ''}</p></div>
+    ${!dead && (c.alternative || c.altNote) ? `<div class="b-alt"><h3>${altHeading}</h3><p>${md(c.alternative || c.altNote)}</p></div>` : ''}
+    ${isPot ? '' : `<div class="b-twin"><h3>The ${otherLaw === 'ampere' ? 'magnetic' : 'electric'} twin</h3>
+      <p>${md(c.twinNote || '')} ${twin ? `<a href="#${otherLaw}/${twin.id}">Run the same steps for ${twin.name.split(',')[0].split(':')[0]} →</a>` : ''}</p></div>`}
     <div class="b-links">
-      <a class="btn small" href="index.html#flow/${L.mapTopic}">Open “${L.mapTopic === 'gauss-apps' ? 'Applying Gauss' : 'Applying Ampère'}” in the map</a>
+      <a class="btn small" href="index.html#flow/${L.mapTopic}">Open “${{ 'gauss-apps': 'Applying Gauss', 'ampere-apps': 'Applying Ampère', 'V': 'Electric potential' }[L.mapTopic] || L.mapTopic}” in the map</a>
       <button class="btn small" id="b-again">Try another source</button>
     </div>`;
   $('#b-steps').appendChild(li);

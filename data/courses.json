@@ -21,7 +21,7 @@
   "tools": [
     {
       "id": "builder",
-      "name": "Equation builder (Gauss / Ampère)",
+      "name": "Equation builder (Gauss / Ampère / potential)",
       "url": "builder.html"
     },
     {

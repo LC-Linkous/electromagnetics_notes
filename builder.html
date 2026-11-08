@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equation builder · Electromagnetics Notes</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/builder.css">
+</head>
+<body class="builder-page">
+  <header class="topbar">
+    <div class="brand">
+      <h1><a href="index.html" class="home">Electromagnetics Notes</a> <span class="muted">/</span> Equation builder</h1>
+      <p class="muted" id="b-intro"></p>
+    </div>
+    <nav class="views" role="tablist" aria-label="Law">
+      <a href="#gauss"  data-law="gauss"  role="tab">Gauss's law</a>
+      <a href="#ampere" data-law="ampere" role="tab">Ampère's law</a>
+    </nav>
+    <div class="tools">
+      <a class="btn" href="index.html" id="b-map-link">Back to the map</a>
+      <button id="b-restart" class="btn">Start over</button>
+    </div>
+  </header>
+
+  <main class="b-main">
+    <div class="b-law">
+      <div id="b-law-eq" class="b-law-eq"></div>
+      <p id="b-law-note" class="muted"></p>
+    </div>
+
+    <ol id="b-steps" class="b-steps"></ol>
+  </main>
+
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="vendor/marked.umd.js"></script>
+  <script type="module" src="js/builder.js"></script>
+</body>
+</html>

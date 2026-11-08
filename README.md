@@ -23,6 +23,12 @@ Every view and topic is linkable: `#flow/gauss-int`, `#duality/lorentz`, `#units
 
 The center of the map is Maxwell's equations for statics as a 2×2 grid (E / B × divergence / curl), with the divergence and Stokes' theorems as the translators between integral and differential forms.
 
+## Equation builder
+
+`builder.html` is a guided walk through applying Gauss's or Ampère's law: pick the source, name its symmetry, choose the coordinate system and Gaussian surface / Amperian loop, say what the integral collapses to, then read off the enclosed charge or current region by region. Every step offers wrong answers too — a cube around a point charge, a sphere around a line, counting the end caps — and each one explains why it fails. Sources with too little symmetry (a dipole, a finite segment) are included on purpose and end in "what to do instead." Every result ends with sanity checks and a link to its electric/magnetic twin.
+
+It is reached from the **Tools** entry in the course switcher, from the *Try it* slot on the Gauss and Ampère cards, and directly at `builder.html#gauss/coax` or `builder.html#ampere/solenoid`. All of its text lives in `data/builder.json` (configurations, symmetry explanations, wrong-answer feedback), so tuning it after seeing what students actually pick is a data edit.
+
 ## Repo layout
 
 ```
@@ -33,6 +39,8 @@ js/layout.js          the three layouts (pure functions of the data)
 data/courses.json     the catalog: site title and the list of courses
 data/intro-emf.json   ← the content for Introduction to EMF. This is the file that normally changes.
 data/emf-2.json       the draft skeleton for Electromagnetic Fields II
+data/builder.json     the equation builder's sources, symmetries and feedback
+builder.html, js/builder.js, css/builder.css   the equation builder page
 notes/<topic-id>.md   optional longer notes per topic, in Markdown with $…$ / $$…$$ math
 vendor/               KaTeX (equations) and marked (Markdown), vendored so the site has no runtime dependencies
 scripts/validate.py   checks the data files; run it after editing (also runs on push via GitHub Actions)

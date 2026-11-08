@@ -170,9 +170,23 @@ function buildCourseSwitcher() {
     o.disabled = !c.file;
     sel.appendChild(o);
   }
-  // With a single available course the switcher is just a label.
-  sel.disabled = state.catalog.courses.filter(c => c.file).length < 2;
-  sel.addEventListener('change', () => loadCourse(sel.value));
+  const tools = state.catalog.tools || [];
+  if (tools.length) {
+    const og = document.createElement('optgroup');
+    og.label = 'Tools';
+    for (const t of tools) {
+      const o = document.createElement('option');
+      o.value = 'tool:' + t.url;
+      o.textContent = t.name;
+      og.appendChild(o);
+    }
+    sel.appendChild(og);
+  }
+  sel.disabled = false;
+  sel.addEventListener('change', () => {
+    if (sel.value.startsWith('tool:')) { const url = sel.value.slice(5); sel.value = state.course.id; location.href = url; return; }
+    loadCourse(sel.value);
+  });
 }
 
 // localStorage is a convenience only; it may be missing or throw.
@@ -753,7 +767,8 @@ function showPanel(n) {
   const tryWrap = $('#p-try-wrap');
   if (n.tryIt && n.tryIt.url) {
     tryWrap.hidden = false;
-    $('#p-try').innerHTML = `<a href="${n.tryIt.url}" target="_blank" rel="noopener">${n.tryIt.label || 'Open the simulator'}</a>`;
+    const ext = /^https?:/.test(n.tryIt.url);
+    $('#p-try').innerHTML = `<a href="${n.tryIt.url}"${ext ? ' target="_blank" rel="noopener"' : ''}>${n.tryIt.label || 'Open'}</a>`;
   } else tryWrap.hidden = true;
 
   const pit = $('#p-pitfalls');

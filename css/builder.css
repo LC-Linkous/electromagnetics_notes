@@ -1,0 +1,80 @@
+/* Equation builder — shares tokens and the top bar with the map (style.css). */
+.builder-page { overflow: auto; }
+.builder-page .brand h1 a.home { text-decoration: none; color: var(--muted); font-weight: 500; }
+.builder-page .brand h1 a.home:hover { color: var(--ink); }
+.builder-page .brand p { max-width: 720px; }
+.tools a.btn { text-decoration: none; display: inline-block; }
+
+.b-main { max-width: 860px; margin: 0 auto; padding: 24px 20px 80px; }
+
+.b-law { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin-bottom: 22px; }
+.b-law-eq { font-size: 18px; }
+.b-law-eq .katex-display { margin: 4px 0; }
+.b-law p { margin: 6px 0 0; font-size: 13px; }
+
+.b-steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.b-step {
+  position: relative;
+  background: var(--paper); border: 1px solid var(--line); border-radius: 12px;
+  padding: 16px 20px 16px 58px; margin-bottom: 14px;
+  counter-increment: step;
+}
+.b-step::before {
+  content: counter(step);
+  position: absolute; left: 18px; top: 16px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--ink); color: #fff; font-size: 13px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+}
+.b-step.done::before { background: #0e9f6e; content: "✓"; }
+.b-step.dead::before { background: #b45309; content: "!"; }
+.b-step h2 { font-size: 15px; margin: 2px 0 10px; }
+.b-step .lead { font-size: 13.5px; color: var(--muted); margin: -4px 0 12px; }
+
+.b-options { display: flex; flex-direction: column; gap: 6px; }
+.b-opt {
+  text-align: left; font: inherit; font-size: 14px;
+  padding: 9px 12px; border-radius: 9px;
+  border: 1px solid var(--line); background: var(--bg); cursor: pointer;
+  transition: background .15s, border-color .15s;
+}
+.b-opt:hover { border-color: var(--ink); }
+.b-opt.right { background: #def7ec; border-color: #0e9f6e; }
+.b-opt.wrong { background: #fde8e8; border-color: #e02424; }
+.b-opt.locked { cursor: default; opacity: .55; }
+.b-opt.locked.right, .b-opt.locked.wrong { opacity: 1; }
+.b-opt .katex { font-size: 1.05em; }
+.b-opt small { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+.b-feedback { margin: 10px 0 0; padding: 10px 12px; border-radius: 9px; font-size: 13.5px; line-height: 1.5; }
+.b-feedback.ok { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.b-feedback.no { background: #fff5f5; border: 1px solid #fecaca; }
+.b-feedback.dead { background: #fff7ed; border: 1px solid #fed7aa; }
+.b-feedback strong { display: block; margin-bottom: 2px; }
+
+.b-chain { margin: 12px 0 0; padding: 12px 14px; background: var(--bg); border-radius: 9px; font-size: 16px; overflow-x: auto; }
+.b-chain .katex-display { margin: 4px 0; }
+.b-chain .why { font-size: 12.5px; color: var(--muted); margin: 2px 0 8px; }
+
+.b-regions { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
+.b-region { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--paper); cursor: pointer; }
+.b-region.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+.b-result { background: var(--bg); border-radius: 9px; padding: 14px 16px; }
+.b-result .row { display: grid; grid-template-columns: 110px 1fr; gap: 10px; align-items: baseline; margin-bottom: 8px; font-size: 14px; }
+.b-result .row .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.b-result .katex-display { margin: 0; text-align: left; }
+.b-result .katex-display > .katex { text-align: left; }
+.b-result .final { font-size: 19px; padding: 8px 0 4px; }
+.b-result .note { font-size: 13px; color: var(--muted); margin: 0; }
+
+.b-sanity { margin-top: 14px; font-size: 14px; line-height: 1.5; }
+.b-sanity h3, .b-twin h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 14px 0 4px; }
+.b-twin p { font-size: 14px; margin: 0; }
+.b-twin a { cursor: pointer; }
+.b-links { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+@media (max-width: 640px) {
+  .b-step { padding-left: 20px; padding-top: 50px; }
+  .b-step::before { left: 18px; top: 14px; }
+}

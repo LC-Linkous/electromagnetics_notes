@@ -17,5 +17,12 @@
       "file": "data/emf-2.json",
       "status": "draft"
     }
+  ],
+  "tools": [
+    {
+      "id": "builder",
+      "name": "Equation builder (Gauss / Ampère)",
+      "url": "builder.html"
+    }
   ]
 }

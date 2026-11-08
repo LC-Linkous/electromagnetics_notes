@@ -165,7 +165,52 @@ def check_course(path, course_ids, course_files):
         print(f"note: {tag}: group '{g}' has no nodes")
 
 
+def check_builder():
+    b = load("data/builder.json")
+    if b is None:
+        return
+    tag = "builder.json"
+    laws = set(b.get("laws", {}))
+    syms = set(b.get("symmetries", {}))
+    cids = [c["id"] for c in b.get("configs", [])]
+    for i in cids:
+        if cids.count(i) > 1:
+            err(f"{tag}: duplicate config id '{i}'")
+    for c in b.get("configs", []):
+        cid = c.get("id", "?")
+        if c.get("law") not in laws:
+            err(f"{tag}: config '{cid}' has unknown law '{c.get('law')}'")
+            continue
+        if c.get("symmetry") not in syms:
+            err(f"{tag}: config '{cid}' has unknown symmetry '{c.get('symmetry')}'")
+        shapes = b["shapes"].get(c["law"], {})
+        collapses = {o["id"] for o in b["collapseOptions"].get(c["law"], [])}
+        if c.get("symmetry") == "none":
+            if not c.get("dead"):
+                err(f"{tag}: config '{cid}' has no symmetry but no 'dead' explanation")
+        else:
+            if c.get("shape") not in shapes:
+                err(f"{tag}: config '{cid}' has unknown shape '{c.get('shape')}'")
+            if c.get("collapse") not in collapses:
+                err(f"{tag}: config '{cid}' has unknown collapse option '{c.get('collapse')}'")
+            if not c.get("regions"):
+                err(f"{tag}: config '{cid}' has no regions")
+            for r in c.get("regions", []):
+                for k in ("label", "enclosed", "result"):
+                    if k not in r:
+                        err(f"{tag}: config '{cid}' region missing '{k}'")
+        if c.get("twin") and c["twin"] not in cids:
+            err(f"{tag}: config '{cid}' twin '{c['twin']}' not found")
+        for k in (c.get("shapeWrong") or {}):
+            if k not in shapes:
+                err(f"{tag}: config '{cid}' shapeWrong refers to unknown shape '{k}'")
+        for k in (c.get("collapseWrong") or {}):
+            if k not in collapses:
+                err(f"{tag}: config '{cid}' collapseWrong refers to unknown option '{k}'")
+
+
 def main():
+    check_builder()
     catalog = load("data/courses.json")
     if catalog is None:
         return finish()

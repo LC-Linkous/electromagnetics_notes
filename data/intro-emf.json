@@ -153,7 +153,15 @@
           "label": "3Blue1Brown · Essence of Linear Algebra",
           "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Treating the cross product as commutative. **A** × **B** = −**B** × **A**; the order sets the sign, and the sign is a direction.",
+        "Forgetting that a unit vector in cylindrical or spherical coordinates (â_ρ, â_φ, â_r, â_θ) changes direction from point to point. Only â_x, â_y, â_z are constant."
+      ],
+      "check": {
+        "q": "What is â_x × â_y, and what is â_y × â_x?",
+        "a": "â_z and −â_z. The cross product is anticommutative; the order sets the sign."
+      }
     },
     {
       "id": "coords",
@@ -172,7 +180,15 @@
           "label": "Khan Academy · Multivariable calculus",
           "url": "https://www.khanacademy.org/math/multivariable-calculus"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Mixing up which coordinate is held constant on a surface. ρ = const is a cylinder; z = const is a plane; r = const is a sphere; θ = const is a cone.",
+        "Using the wrong differential element. In spherical coordinates the surface element on a sphere is r² sin θ dθ dφ, not dθ dφ."
+      ],
+      "check": {
+        "q": "In spherical coordinates, what shape is the surface θ = π/2?",
+        "a": "The xy-plane. θ is measured from the +z axis, so θ = π/2 is everything at 90° from it."
+      }
     },
     {
       "id": "integrals",
@@ -195,7 +211,15 @@
           "label": "Paul's Notes · Vector Functions practice",
           "url": "https://tutorial.math.lamar.edu/problems/calcii/vectorfunctions.aspx"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Pulling a vector out of an integral when its *direction* varies along the path or surface. Only magnitude-and-direction-constant quantities come out.",
+        "Losing track of what the integration variable is. For a line charge, integrate along the charge, not along the field point."
+      ],
+      "check": {
+        "q": "A line charge ρ_L runs along the z-axis from z = 0 to z = L. Write the total charge as an integral.",
+        "a": "Q = ∫₀ᴸ ρ_L dz. If ρ_L is constant this is just ρ_L L."
+      }
     },
     {
       "id": "flux",
@@ -230,7 +254,14 @@
       "requires": [
         "integrals"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Thinking a field with curved field lines must have circulation. A field can curve and still have zero circulation around every loop — the static E field does exactly that."
+      ],
+      "check": {
+        "q": "Is the circulation of a static electric field around a closed loop ever nonzero?",
+        "a": "No — ∮E·dl = 0 for any loop in electrostatics. Nonzero circulation of E requires a time-varying magnetic field."
+      }
     },
     {
       "id": "gradient",
@@ -244,7 +275,15 @@
       "requires": [
         "coords"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Mixing up the direction. ∇V points toward *increasing* V; E = −∇V points downhill, from high potential to low.",
+        "Applying the Cartesian formula in cylindrical or spherical coordinates. The φ and θ components pick up 1/ρ or 1/r factors."
+      ],
+      "check": {
+        "q": "V increases toward +x. Which way does E point?",
+        "a": "Toward −x. E = −∇V points from high potential to low, opposite to the gradient."
+      }
     },
     {
       "id": "divergence",
@@ -264,7 +303,14 @@
           "label": "3Blue1Brown · Divergence and curl",
           "url": "https://www.youtube.com/watch?v=rB83DpBJQsE"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Reading 'the field lines spread out here' as positive divergence. Lines spreading while weakening can have zero divergence — the point-charge field does, everywhere except at the charge."
+      ],
+      "check": {
+        "q": "What is ∇·E at a point in empty space 1 m from a point charge?",
+        "a": "Zero. Divergence is nonzero only where charge density is nonzero; at that point ρ = 0."
+      }
     },
     {
       "id": "curl",
@@ -284,7 +330,15 @@
           "label": "3Blue1Brown · Divergence and curl",
           "url": "https://www.youtube.com/watch?v=rB83DpBJQsE"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Expecting curl to be a scalar. It is a vector; its direction is the axis the field circulates around, by the right-hand rule.",
+        "Treating zero curl as 'the field is uniform.' Zero curl means conservative, not constant."
+      ],
+      "check": {
+        "q": "Which has nonzero curl: a uniform field, or the field B that circles a straight wire, evaluated outside the wire?",
+        "a": "Neither. The uniform field has zero curl trivially; the field outside a wire circles but its curl is zero because no current flows there. Curl measures local circulation, not whether lines curve."
+      }
     },
     {
       "id": "div-thm",
@@ -299,7 +353,15 @@
         "divergence",
         "flux"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Applying it to an open surface. The theorem needs a *closed* surface and the volume it encloses.",
+        "Forgetting it is pure mathematics. It says nothing about physics until you put Gauss's law into it."
+      ],
+      "check": {
+        "q": "The divergence theorem relates which two things?",
+        "a": "The net flux of a vector field out of a closed surface, and the volume integral of its divergence over the enclosed region."
+      }
     },
     {
       "id": "stokes",
@@ -314,7 +376,15 @@
         "curl",
         "circulation"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Thinking the surface is fixed. Any surface bounded by the loop works — so pick the easiest one.",
+        "Getting the orientation wrong. The loop direction and the surface normal are tied together by the right-hand rule."
+      ],
+      "check": {
+        "q": "Stokes' theorem relates which two things?",
+        "a": "The circulation of a vector field around a closed loop, and the flux of its curl through any surface bounded by that loop."
+      }
     },
     {
       "id": "charge",
@@ -328,7 +398,15 @@
       "requires": [
         "integrals"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Mixing up the charge densities. ρ_L is per length, ρ_S per area, ρ_v per volume; the integral that gives total charge must match.",
+        "Treating a 'point charge' as physically tiny. It is a model: anything whose size is small compared with the distance you care about."
+      ],
+      "check": {
+        "q": "A uniformly charged spherical shell of radius a carries total charge Q. What is its surface charge density?",
+        "a": "ρ_S = Q / (4πa²)."
+      }
     },
     {
       "id": "coulomb",
@@ -356,7 +434,15 @@
           "label": "oPhysics · Coulomb forces on three charges",
           "url": "https://ophysics.com/em1a.html"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Dropping the vector. Coulomb's law gives a direction along the line joining the charges; summing magnitudes alone is wrong unless everything is collinear.",
+        "Using the distance to the wrong point. R is from the *source* charge to the *field* point, and â_R points the same way."
+      ],
+      "check": {
+        "q": "Two equal charges are 1 m apart. If the distance is doubled, by what factor does the force change?",
+        "a": "It drops to one quarter. Coulomb force goes as 1/R²."
+      }
     },
     {
       "id": "E",
@@ -379,7 +465,15 @@
           "label": "Falstad · 2D/3D Electrostatic Fields",
           "url": "https://www.falstad.com/emstatic/"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Thinking the field exists only where there is a test charge. E is defined at every point in space whether or not anything is there to feel it.",
+        "Summing the fields of a continuous distribution without splitting them into components first. Each dQ contributes a vector; integrate component by component."
+      ],
+      "check": {
+        "q": "Two equal positive charges sit at x = −a and x = +a. What is E at the origin?",
+        "a": "Zero. The two fields are equal in magnitude and opposite in direction, so they cancel."
+      }
     },
     {
       "id": "dipole-E",
@@ -393,7 +487,15 @@
       "requires": [
         "E"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Expecting the dipole field to fall off as 1/r². The two charges nearly cancel at a distance, so the leading term goes as 1/r³.",
+        "Using the far-field dipole formula close to the charges, where it is not valid."
+      ],
+      "check": {
+        "q": "Along the dipole axis, how does the electric field magnitude scale with distance r far from the dipole?",
+        "a": "As 1/r³ — one power faster than a single charge, because the two charges nearly cancel."
+      }
     },
     {
       "id": "gauss-int",
@@ -413,7 +515,11 @@
         "q": "A point charge sits just *outside* a closed surface. What is the net electric flux through the surface?",
         "a": "Zero. Every field line that enters the surface also leaves it, so the net flux is zero even though E is nonzero on the surface. Only enclosed charge produces net flux."
       },
-      "notes": "notes/gauss-int.md"
+      "notes": "notes/gauss-int.md",
+      "pitfalls": [
+        "Treating Gauss's law as a formula for E. It is a statement about total flux; it only yields E when symmetry lets you pull |E| out of the integral.",
+        "Counting charge outside the surface in Q_enc. Outside charge shapes E on the surface but contributes zero *net* flux."
+      ]
     },
     {
       "id": "gauss-diff",
@@ -428,7 +534,14 @@
         "gauss-int",
         "divergence"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Expecting ∇·E to be nonzero wherever the field is strong. It is nonzero only *where the charge is*. In empty space ∇·E = 0 no matter how big E is."
+      ],
+      "check": {
+        "q": "Starting from ∮E·dS = Q_enc/ε₀, which theorem gets you to ∇·E = ρ_v/ε₀?",
+        "a": "The divergence theorem, which turns the closed-surface flux into ∫(∇·E)dv; equating integrands with Q_enc = ∫ρ_v dv gives the differential form."
+      }
     },
     {
       "id": "gauss-apps",
@@ -470,7 +583,10 @@
       "check": {
         "q": "What property of E lets us define a potential at all?",
         "a": "Its circulation around any closed path is zero (∇×E = 0), so the work between two points is independent of path and a single-valued scalar V can be assigned to each point."
-      }
+      },
+      "pitfalls": [
+        "Confusing 'the integral around a closed loop is zero' with 'the integral along any path is zero.' Only the closed-loop integral vanishes; an open path gives the potential difference."
+      ]
     },
     {
       "id": "conservative-diff",
@@ -488,7 +604,11 @@
       "resources": [],
       "pitfalls": [
         "Reading ∇×E = 0 as 'E has no rotation in the picture.' It is a local statement at each point; field lines can still curve."
-      ]
+      ],
+      "check": {
+        "q": "What does ∇×E = 0 let you define?",
+        "a": "A scalar potential V with E = −∇V. Any curl-free field is the gradient of something."
+      }
     },
     {
       "id": "V",
@@ -530,7 +650,15 @@
       "requires": [
         "V"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Double counting. The ½ in ½∫ρV dv is there because each pair of charges would otherwise be counted twice.",
+        "Expecting the two energy formulas to disagree. ½∫ρV dv and ½∫ε₀E² dv give the same total for any complete distribution; they just place the energy in different places."
+      ],
+      "check": {
+        "q": "Three equal charges are assembled from infinity into a triangle. How many pair interactions contribute to the stored energy?",
+        "a": "Three — one for each pair. The ½∫ρV dv formula counts each pair once because of the ½."
+      }
     },
     {
       "id": "poisson-laplace",
@@ -545,7 +673,15 @@
         "gauss-diff",
         "V"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Using Laplace's equation in a region that contains charge. Laplace is the special case ρ = 0; with charge present you need Poisson.",
+        "Forgetting boundary conditions. The equation alone has infinitely many solutions; the boundary values pick the one you want."
+      ],
+      "check": {
+        "q": "Between the plates of a charged parallel-plate capacitor (vacuum, no charge between the plates), which equation does V satisfy?",
+        "a": "Laplace's equation, ∇²V = 0 — there is no charge density in the gap. The plates enter as boundary conditions."
+      }
     },
     {
       "id": "numerical",
@@ -572,7 +708,15 @@
           "label": "MATLAB Onramp (free course)",
           "url": "https://matlabacademy.mathworks.com/details/matlab-onramp/gettingstarted"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Trusting a result because it converged. A converged iteration can still be wrong if the grid is too coarse or a boundary was set up badly — compare with an analytical case first.",
+        "Making the grid finer than you need. Runtime grows fast with grid size; refine until the answer stops changing, then stop."
+      ],
+      "check": {
+        "q": "In the iterative Laplace solver, what does the update V_ij ← ¼(sum of four neighbors) enforce?",
+        "a": "That the discrete second derivatives in x and y sum to zero — the finite-difference version of ∇²V = 0. Repeating it drives the grid toward the solution."
+      }
     },
     {
       "id": "conductors",
@@ -587,7 +731,15 @@
         "E",
         "V"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Assuming E = 0 inside a conductor that is carrying a current. The zero-field result holds only in *electrostatic* equilibrium.",
+        "Putting charge inside a conductor. In equilibrium all excess charge sits on the surface."
+      ],
+      "check": {
+        "q": "A hollow conducting sphere has charge +Q placed at its center. What charge appears on the inner and outer surfaces?",
+        "a": "−Q on the inner surface (so E = 0 inside the metal) and +Q on the outer surface (the conductor is neutral overall)."
+      }
     },
     {
       "id": "polarization",
@@ -601,7 +753,15 @@
       "requires": [
         "dipole-E"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Thinking bound charge is 'fake.' It is real charge, just not free to move; it produces real fields.",
+        "Expecting polarization to add to the applied field. Inside a dielectric the bound charge *reduces* the net field."
+      ],
+      "check": {
+        "q": "A dielectric slab is placed in a uniform field E₀. Is the field inside the slab larger or smaller than E₀?",
+        "a": "Smaller. Bound surface charge produces a field opposing E₀, so the net field inside is E₀/ε_r for a linear dielectric."
+      }
     },
     {
       "id": "D",
@@ -642,7 +802,11 @@
       "resources": [],
       "pitfalls": [
         "Applying the tangential condition to D or the normal condition to E. Tangential: E is continuous. Normal: D jumps by the free surface charge."
-      ]
+      ],
+      "check": {
+        "q": "At the surface of a perfect conductor in electrostatics, what are the tangential E and normal D just outside?",
+        "a": "Tangential E is zero (it must match the zero field inside) and normal D equals the surface charge density ρ_s."
+      }
     },
     {
       "id": "capacitance",
@@ -662,7 +826,15 @@
           "label": "PhET · Capacitor Lab: Basics",
           "url": "https://phet.colorado.edu/en/simulations/capacitor-lab-basics"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Thinking capacitance depends on the charge or voltage. It depends only on geometry and the dielectric; Q/V is the same at any Q.",
+        "Using the parallel-plate formula for plates that are not close together compared with their size. Fringe fields make the real C larger."
+      ],
+      "check": {
+        "q": "A parallel-plate capacitor's plate separation is halved. What happens to C?",
+        "a": "It doubles. C = εA/d for close plates, so halving d doubles C."
+      }
     },
     {
       "id": "current",
@@ -676,7 +848,15 @@
       "requires": [
         "integrals"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Confusing I, K and J. I is a total in amperes; K is amperes per meter across a surface; J is amperes per square meter through a surface.",
+        "Forgetting that steady currents must flow in closed loops. There is no such thing as a static isolated current segment."
+      ],
+      "check": {
+        "q": "A surface current K = 5 â_x A/m flows on the z = 0 plane. How much current crosses a 2 m segment of the y-axis?",
+        "a": "10 A. Surface current density times the width perpendicular to the flow."
+      }
     },
     {
       "id": "biot-savart",
@@ -694,7 +874,11 @@
       "resources": [],
       "pitfalls": [
         "Putting the vector dl × â_R in the wrong order. Swapping them flips the sign of B."
-      ]
+      ],
+      "check": {
+        "q": "A current element I dl points along +z at the origin. What is dB at a point on the +x axis?",
+        "a": "Along +y: dl × â_R = â_z × â_x = â_y. The field circles the current."
+      }
     },
     {
       "id": "B",
@@ -713,7 +897,15 @@
           "label": "PhET · Magnets and Electromagnets",
           "url": "https://phet.colorado.edu/en/simulations/magnets-and-electromagnets"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Reading the direction of B as 'along the current.' B circles the current; use the right-hand rule with your thumb along I.",
+        "Expecting B to point from north to south in a magnet the way E points from + to −. Field lines of B close on themselves; they do not start or end."
+      ],
+      "check": {
+        "q": "At the center of a circular current loop, which way does B point relative to the current direction?",
+        "a": "Along the loop axis, by the right-hand rule — curl your fingers with the current and your thumb gives B."
+      }
     },
     {
       "id": "lorentz",
@@ -756,7 +948,15 @@
         "lorentz",
         "current"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Expecting the force on a current element to be along the current. It is perpendicular to both the current and the field.",
+        "Remembering 'parallel currents attract' but not why. Each wire sits in the other's circling field; apply dF = I dl × B to see the direction."
+      ],
+      "check": {
+        "q": "Two long parallel wires carry currents in opposite directions. Do they attract or repel?",
+        "a": "Repel. Antiparallel currents repel; parallel currents attract."
+      }
     },
     {
       "id": "ampere-int",
@@ -775,7 +975,11 @@
       "check": {
         "q": "Is Ampère's law ∮B·dl = μ₀I_enc valid for a short straight wire segment carrying current I?",
         "a": "The law as written assumes steady currents, which must form closed circuits. A finite segment alone is not a steady current; you need Biot–Savart (or the full time-varying law) for it."
-      }
+      },
+      "pitfalls": [
+        "Treating Ampère's law as a formula for B. Like Gauss's law it is a statement about a total — the circulation — and only yields B when symmetry lets you pull |B| out.",
+        "Forgetting the sign convention: the direction you traverse the loop and the direction that counts as positive current are linked by the right-hand rule."
+      ]
     },
     {
       "id": "ampere-diff",
@@ -790,7 +994,14 @@
         "ampere-int",
         "curl"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Expecting ∇×B to be nonzero wherever B is strong. It is nonzero only where current actually flows. Outside a wire the curl is zero even though B is not."
+      ],
+      "check": {
+        "q": "Inside a wire carrying uniform current density J, what is ∇×B?",
+        "a": "μ₀J, pointing along the current. Outside the wire it is zero."
+      }
     },
     {
       "id": "ampere-apps",
@@ -809,7 +1020,11 @@
       "pitfalls": [
         "Choosing an Amperian loop that doesn't follow a field line. If |B| isn't constant along the loop, the integral won't collapse.",
         "Counting a current that passes beside the loop rather than through the surface it bounds."
-      ]
+      ],
+      "check": {
+        "q": "For a long solenoid with n turns per meter carrying I, what is B inside and outside?",
+        "a": "Inside: B = μ₀nI along the axis. Outside (ideal, infinitely long): zero. A rectangular Amperian loop straddling the winding gives both."
+      }
     },
     {
       "id": "no-monopoles-int",
@@ -828,7 +1043,10 @@
       "check": {
         "q": "Can the net magnetic flux through a closed surface ever be nonzero?",
         "a": "No. ∮B·dS = 0 always, because there are no magnetic charges. Field lines of B never begin or end."
-      }
+      },
+      "pitfalls": [
+        "Concluding that the flux of B through *every* surface is zero. Only closed surfaces give zero; flux through an open surface (a coil's cross-section) is what inductance is built on."
+      ]
     },
     {
       "id": "no-monopoles-diff",
@@ -843,7 +1061,14 @@
         "no-monopoles-int",
         "divergence"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Thinking ∇·B = 0 is a statics-only result. It holds always, time-varying or not; it is the one Maxwell equation that never gains a term."
+      ],
+      "check": {
+        "q": "Why does ∇·B = 0 guarantee a vector potential exists?",
+        "a": "The divergence of any curl is identically zero, so a divergence-free field can always be written as the curl of some A."
+      }
     },
     {
       "id": "dipole-M",
@@ -857,7 +1082,15 @@
       "requires": [
         "force-currents"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Treating a bar magnet as having magnetic 'charges' at its ends. The equivalent description is bound surface current circulating around the magnet.",
+        "Expecting bound currents to dissipate power. They are not conduction currents; nothing is moving through a resistance."
+      ],
+      "check": {
+        "q": "A uniformly magnetized cylinder has magnetization M along its axis. Where is the bound current?",
+        "a": "Only on the curved surface, as K_b = M × â_n circling the cylinder — like a solenoid. The volume bound current J_b = ∇×M is zero because M is uniform."
+      }
     },
     {
       "id": "H",
@@ -872,7 +1105,15 @@
         "dipole-M",
         "ampere-int"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Thinking H is 'the field in a material' and B is 'the field in vacuum.' Both exist everywhere; H is the bookkeeping quantity whose circulation only counts the free current.",
+        "Mixing units: B in tesla, H in amperes per meter. They are not interchangeable even in free space."
+      ],
+      "check": {
+        "q": "A long solenoid is filled with a linear material of relative permeability μ_r. Compared with the empty solenoid at the same current, what happens to H and to B inside?",
+        "a": "H is unchanged (it depends only on free current: H = nI). B increases by the factor μ_r, since B = μ₀μ_r H."
+      }
     },
     {
       "id": "magnetic-materials",
@@ -891,7 +1132,15 @@
           "label": "PhET · Magnets and Electromagnets",
           "url": "https://phet.colorado.edu/en/simulations/magnets-and-electromagnets"
         }
-      ]
+      ],
+      "pitfalls": [
+        "Assuming μ is a constant for ferromagnets. It depends strongly on H and on history (hysteresis); linear formulas are only approximations.",
+        "Expecting paramagnets to be noticeably magnetic. Their μ_r is barely above 1; only ferromagnets are magnetic in the everyday sense."
+      ],
+      "check": {
+        "q": "What does the area inside a hysteresis loop represent?",
+        "a": "Energy lost per unit volume per cycle, dissipated as heat in the material. Transformer cores use narrow loops to keep that loss small."
+      }
     },
     {
       "id": "bc-B",
@@ -906,7 +1155,14 @@
         "H",
         "no-monopoles-int"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Swapping the conditions. Normal B is continuous; tangential H jumps by the surface current. Compare: normal D jumps, tangential E is continuous."
+      ],
+      "check": {
+        "q": "At an interface with no surface current, which component of B is continuous and which component of H is continuous?",
+        "a": "Normal B and tangential H are both continuous. Tangential B and normal H jump if the two permeabilities differ."
+      }
     },
     {
       "id": "inductance",
@@ -947,7 +1203,14 @@
       "requires": [
         "inductance"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Thinking the energy is 'in the current.' It is stored in the field; the ½LI² form is just the field integral evaluated for a particular geometry."
+      ],
+      "check": {
+        "q": "An inductor of 2 H carries 3 A. How much energy does it store, and where is it?",
+        "a": "W = ½LI² = 9 J, stored in the magnetic field — mostly inside the coil for a solenoid."
+      }
     },
     {
       "id": "A",
@@ -962,7 +1225,15 @@
         "no-monopoles-diff",
         "curl"
       ],
-      "resources": []
+      "resources": [],
+      "pitfalls": [
+        "Expecting A to be unique. Adding the gradient of any scalar to A leaves B unchanged; a choice of gauge is needed to pin it down.",
+        "Looking for a physical meaning in A's direction at a point. In magnetostatics A roughly follows the current that produces it — but only B is directly measurable here."
+      ],
+      "check": {
+        "q": "If A is replaced by A + ∇ψ for any scalar ψ, what happens to B?",
+        "a": "Nothing. ∇×(∇ψ) = 0, so B = ∇×A is unchanged. This freedom is called gauge freedom."
+      }
     },
     {
       "id": "x-time-varying",

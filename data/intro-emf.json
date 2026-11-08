@@ -7,18 +7,47 @@
       "requires": "You need the source topic before the target topic makes sense.",
       "translates": "Integral and differential forms of the same law, converted by a theorem.",
       "mirrors": "The electrostatic / magnetostatic twin of a topic."
-    }
+    },
+    "equationFormat": "latex"
   },
-
   "groups": [
-    { "id": "u1", "name": "Unit 1 · Vector calculus", "short": "Vector calc", "color": "#6b7280" },
-    { "id": "u2", "name": "Unit 2 · Electrostatics", "short": "Electrostatics", "color": "#d97706" },
-    { "id": "u3", "name": "Unit 3 · Electric fields in materials", "short": "E in materials", "color": "#b45309" },
-    { "id": "u4", "name": "Unit 4 · Magnetostatics", "short": "Magnetostatics", "color": "#2563eb" },
-    { "id": "u5", "name": "Unit 5 · Magnetic fields in materials", "short": "B in materials", "color": "#1d4ed8" },
-    { "id": "exit", "name": "Beyond this course", "short": "Beyond", "color": "#7c3aed" }
+    {
+      "id": "u1",
+      "name": "Unit 1 · Vector calculus",
+      "short": "Vector calc",
+      "color": "#6b7280"
+    },
+    {
+      "id": "u2",
+      "name": "Unit 2 · Electrostatics",
+      "short": "Electrostatics",
+      "color": "#d97706"
+    },
+    {
+      "id": "u3",
+      "name": "Unit 3 · Electric fields in materials",
+      "short": "E in materials",
+      "color": "#b45309"
+    },
+    {
+      "id": "u4",
+      "name": "Unit 4 · Magnetostatics",
+      "short": "Magnetostatics",
+      "color": "#2563eb"
+    },
+    {
+      "id": "u5",
+      "name": "Unit 5 · Magnetic fields in materials",
+      "short": "B in materials",
+      "color": "#1d4ed8"
+    },
+    {
+      "id": "exit",
+      "name": "Beyond this course",
+      "short": "Beyond",
+      "color": "#7c3aed"
+    }
   ],
-
   "kinds": {
     "tool": "Math tool",
     "concept": "Concept",
@@ -30,540 +59,1051 @@
     "technique": "Technique",
     "exit": "Where this leads"
   },
-
   "nodes": [
     {
-      "id": "vectors", "group": "u1", "kind": "tool", "side": "center",
+      "id": "vectors",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Vectors, dot & cross products",
       "summary": "Components, unit vectors, addition and subtraction, projections, and the two products. The cross product gives the direction of magnetic forces; the dot product gives flux and work.",
-      "equation": "A·B = |A||B|cos θ,  |A×B| = |A||B|sin θ",
+      "equation": "\\mathbf{A}\\cdot\\mathbf{B}=|\\mathbf{A}||\\mathbf{B}|\\cos\\theta,\\qquad |\\mathbf{A}\\times\\mathbf{B}|=|\\mathbf{A}||\\mathbf{B}|\\sin\\theta",
       "sadiku": "1.3 – 1.8",
       "requires": [],
       "resources": [
-        { "label": "PhET · Vector Addition", "url": "https://phet.colorado.edu/en/simulations/vector-addition" },
-        { "label": "Paul's Notes · 3-Dimensional Space", "url": "https://tutorial.math.lamar.edu/Problems/CalcII/3DSpace.aspx" },
-        { "label": "3Blue1Brown · Essence of Linear Algebra", "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" }
+        {
+          "label": "PhET · Vector Addition",
+          "url": "https://phet.colorado.edu/en/simulations/vector-addition"
+        },
+        {
+          "label": "Paul's Notes · 3-Dimensional Space",
+          "url": "https://tutorial.math.lamar.edu/Problems/CalcII/3DSpace.aspx"
+        },
+        {
+          "label": "3Blue1Brown · Essence of Linear Algebra",
+          "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"
+        }
       ]
     },
     {
-      "id": "coords", "group": "u1", "kind": "tool", "side": "center",
+      "id": "coords",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Coordinate systems & constant surfaces",
       "summary": "Cartesian, cylindrical and spherical coordinates, how to transform between them, and the surfaces where one coordinate is held constant. Picking the coordinate system that matches the symmetry of a problem is most of the work in Gauss's and Ampère's laws.",
-      "equation": "dl, dS, dv in each system",
+      "equation": "d\\mathbf{l},\\; d\\mathbf{S},\\; dv \\text{ in Cartesian, cylindrical and spherical coordinates}",
       "sadiku": "2.2 – 2.5",
-      "requires": ["vectors"],
+      "requires": [
+        "vectors"
+      ],
       "resources": [
-        { "label": "Khan Academy · Multivariable calculus", "url": "https://www.khanacademy.org/math/multivariable-calculus" }
+        {
+          "label": "Khan Academy · Multivariable calculus",
+          "url": "https://www.khanacademy.org/math/multivariable-calculus"
+        }
       ]
     },
     {
-      "id": "integrals", "group": "u1", "kind": "tool", "side": "center",
+      "id": "integrals",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Line, surface & volume integrals",
       "summary": "Integrating a scalar or vector quantity along a path, over a surface, or through a volume. Every continuous charge or current distribution, every flux, and every circulation is one of these integrals.",
-      "equation": "∫ A·dl,  ∫ A·dS,  ∫ ρ dv",
+      "equation": "\\int_L \\mathbf{A}\\cdot d\\mathbf{l},\\qquad \\int_S \\mathbf{A}\\cdot d\\mathbf{S},\\qquad \\int_v \\rho\\, dv",
       "sadiku": "3.2 – 3.4",
-      "requires": ["coords"],
+      "requires": [
+        "coords"
+      ],
       "resources": [
-        { "label": "Paul's Notes · Calculus II", "url": "https://tutorial.math.lamar.edu/Problems/CalcII/CalcII.aspx" },
-        { "label": "Paul's Notes · Vector Functions practice", "url": "https://tutorial.math.lamar.edu/problems/calcii/vectorfunctions.aspx" }
+        {
+          "label": "Paul's Notes · Calculus II",
+          "url": "https://tutorial.math.lamar.edu/Problems/CalcII/CalcII.aspx"
+        },
+        {
+          "label": "Paul's Notes · Vector Functions practice",
+          "url": "https://tutorial.math.lamar.edu/problems/calcii/vectorfunctions.aspx"
+        }
       ]
     },
     {
-      "id": "flux", "group": "u1", "kind": "concept", "side": "center",
+      "id": "flux",
+      "group": "u1",
+      "kind": "concept",
+      "side": "center",
       "name": "Flux — \"how much passes through\"",
       "summary": "The surface integral of a vector field: how much of the field pokes through a surface. Flux is the physical meaning of the whole left column of Maxwell's equations. Read divergence as 'flux per unit volume'.",
-      "equation": "Ψ = ∮ A·dS",
+      "equation": "\\Psi=\\oint_S \\mathbf{A}\\cdot d\\mathbf{S}",
       "sadiku": "3.3, 4.4",
-      "requires": ["integrals"],
-      "resources": []
+      "requires": [
+        "integrals"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Counting flux through a closed surface as 'total field present.' Field lines that go in and come back out contribute zero net flux."
+      ],
+      "check": {
+        "q": "A uniform field E points along +z. What is the flux through a flat disk lying in the xy-plane, and through the same disk tilted 60° from the xy-plane?",
+        "a": "Ψ = E·A for the flat disk; Ψ = E·A·cos 60° = ½ E·A when tilted. Flux counts only the component of E normal to the surface."
+      }
     },
     {
-      "id": "circulation", "group": "u1", "kind": "concept", "side": "center",
+      "id": "circulation",
+      "group": "u1",
+      "kind": "concept",
+      "side": "center",
       "name": "Circulation — \"how much goes around\"",
       "summary": "The closed line integral of a vector field: how much the field pushes you along a loop. Circulation is the physical meaning of the right column of Maxwell's equations. Read curl as 'circulation per unit area'.",
-      "equation": "∮ A·dl",
+      "equation": "\\oint_L \\mathbf{A}\\cdot d\\mathbf{l}",
       "sadiku": "3.3",
-      "requires": ["integrals"],
+      "requires": [
+        "integrals"
+      ],
       "resources": []
     },
     {
-      "id": "gradient", "group": "u1", "kind": "tool", "side": "center",
+      "id": "gradient",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Gradient",
       "summary": "The direction and rate of steepest increase of a scalar field. Gradient never appears in Maxwell's equations directly; it is how you climb back from a potential to a field.",
-      "equation": "∇V",
+      "equation": "\\nabla V",
       "sadiku": "3.5",
-      "requires": ["coords"],
+      "requires": [
+        "coords"
+      ],
       "resources": []
     },
     {
-      "id": "divergence", "group": "u1", "kind": "tool", "side": "center",
+      "id": "divergence",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Divergence",
       "summary": "Net outward flux per unit volume at a point. Positive where field lines start, negative where they end, zero where they just pass through.",
-      "equation": "∇·A",
+      "equation": "\\nabla\\cdot\\mathbf{A}",
       "sadiku": "3.6",
-      "requires": ["coords", "flux"],
+      "requires": [
+        "coords",
+        "flux"
+      ],
       "resources": [
-        { "label": "3Blue1Brown · Divergence and curl", "url": "https://www.youtube.com/watch?v=rB83DpBJQsE" }
+        {
+          "label": "3Blue1Brown · Divergence and curl",
+          "url": "https://www.youtube.com/watch?v=rB83DpBJQsE"
+        }
       ]
     },
     {
-      "id": "curl", "group": "u1", "kind": "tool", "side": "center",
+      "id": "curl",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Curl",
       "summary": "Circulation per unit area at a point, as a vector along the axis of rotation. A field with zero curl everywhere is conservative and has a scalar potential.",
-      "equation": "∇×A",
+      "equation": "\\nabla\\times\\mathbf{A}",
       "sadiku": "3.7",
-      "requires": ["coords", "circulation"],
+      "requires": [
+        "coords",
+        "circulation"
+      ],
       "resources": [
-        { "label": "3Blue1Brown · Divergence and curl", "url": "https://www.youtube.com/watch?v=rB83DpBJQsE" }
+        {
+          "label": "3Blue1Brown · Divergence and curl",
+          "url": "https://www.youtube.com/watch?v=rB83DpBJQsE"
+        }
       ]
     },
     {
-      "id": "div-thm", "group": "u1", "kind": "tool", "side": "center",
+      "id": "div-thm",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Divergence theorem",
       "summary": "Total flux out of a closed surface equals the volume integral of the divergence inside it. This is the translator between the integral and differential forms of Gauss's law and of ∇·B = 0.",
-      "equation": "∮ A·dS = ∫ (∇·A) dv",
+      "equation": "\\oint_S \\mathbf{A}\\cdot d\\mathbf{S}=\\int_v (\\nabla\\cdot\\mathbf{A})\\,dv",
       "sadiku": "3.6",
-      "requires": ["divergence", "flux"],
+      "requires": [
+        "divergence",
+        "flux"
+      ],
       "resources": []
     },
     {
-      "id": "stokes", "group": "u1", "kind": "tool", "side": "center",
+      "id": "stokes",
+      "group": "u1",
+      "kind": "tool",
+      "side": "center",
       "name": "Stokes' theorem",
       "summary": "Circulation around a closed loop equals the flux of the curl through any surface bounded by the loop. This is the translator between the integral and differential forms of Ampère's law and of ∇×E = 0.",
-      "equation": "∮ A·dl = ∫ (∇×A)·dS",
+      "equation": "\\oint_L \\mathbf{A}\\cdot d\\mathbf{l}=\\int_S (\\nabla\\times\\mathbf{A})\\cdot d\\mathbf{S}",
       "sadiku": "3.7",
-      "requires": ["curl", "circulation"],
+      "requires": [
+        "curl",
+        "circulation"
+      ],
       "resources": []
     },
-
     {
-      "id": "charge", "group": "u2", "kind": "source", "side": "E",
+      "id": "charge",
+      "group": "u2",
+      "kind": "source",
+      "side": "E",
       "name": "Charge distributions",
       "summary": "Discrete point charges, and line, surface and volume charge densities. Charge is the source of the electric field; a continuous distribution is handled by integrating over infinitesimal point charges.",
-      "equation": "Q = ∫ ρ_L dl = ∫ ρ_S dS = ∫ ρ_v dv",
+      "equation": "Q=\\int \\rho_L\\,dl=\\int \\rho_S\\,dS=\\int \\rho_v\\,dv",
       "sadiku": "4.3",
-      "requires": ["integrals"],
+      "requires": [
+        "integrals"
+      ],
       "resources": []
     },
     {
-      "id": "coulomb", "group": "u2", "kind": "law", "side": "E",
+      "id": "coulomb",
+      "group": "u2",
+      "kind": "law",
+      "side": "E",
       "name": "Coulomb's law",
       "summary": "The force between two point charges, from Coulomb's torsion-balance experiment. Dividing out the test charge defines the electric field. The explicit solution to the 'divergence' half of electrostatics.",
-      "equation": "F = Q₁Q₂ / (4πε₀R²) â_R",
+      "equation": "\\mathbf{F}=\\frac{Q_1Q_2}{4\\pi\\varepsilon_0 R^2}\\,\\hat{\\mathbf{a}}_R",
       "sadiku": "4.2",
-      "requires": ["charge", "vectors"],
+      "requires": [
+        "charge",
+        "vectors"
+      ],
       "resources": [
-        { "label": "PhET · Coulomb's Law", "url": "https://phet.colorado.edu/en/simulations/coulombs-law" },
-        { "label": "oPhysics · Coulomb's Law, two charges", "url": "https://ophysics.com/em1.html" },
-        { "label": "oPhysics · Coulomb forces on three charges", "url": "https://ophysics.com/em1a.html" }
+        {
+          "label": "PhET · Coulomb's Law",
+          "url": "https://phet.colorado.edu/en/simulations/coulombs-law"
+        },
+        {
+          "label": "oPhysics · Coulomb's Law, two charges",
+          "url": "https://ophysics.com/em1.html"
+        },
+        {
+          "label": "oPhysics · Coulomb forces on three charges",
+          "url": "https://ophysics.com/em1a.html"
+        }
       ]
     },
     {
-      "id": "E", "group": "u2", "kind": "quantity", "side": "E",
+      "id": "E",
+      "group": "u2",
+      "kind": "quantity",
+      "side": "E",
       "name": "The electric field E",
       "summary": "Force per unit charge on a test charge. Fields of discrete charges add as vectors; fields of continuous distributions are integrals of Coulomb's law. Field lines start on positive charge and end on negative charge.",
-      "equation": "E = F/q,  E = ∫ dQ / (4πε₀R²) â_R",
+      "equation": "\\mathbf{E}=\\frac{\\mathbf{F}}{q},\\qquad \\mathbf{E}=\\int\\frac{dQ}{4\\pi\\varepsilon_0 R^2}\\,\\hat{\\mathbf{a}}_R",
       "sadiku": "4.2 – 4.3",
-      "requires": ["coulomb"],
+      "requires": [
+        "coulomb"
+      ],
       "resources": [
-        { "label": "PhET · Charges and Fields", "url": "https://phet.colorado.edu/en/simulations/charges-and-fields" },
-        { "label": "Falstad · 2D/3D Electrostatic Fields", "url": "https://www.falstad.com/emstatic/" }
+        {
+          "label": "PhET · Charges and Fields",
+          "url": "https://phet.colorado.edu/en/simulations/charges-and-fields"
+        },
+        {
+          "label": "Falstad · 2D/3D Electrostatic Fields",
+          "url": "https://www.falstad.com/emstatic/"
+        }
       ]
     },
     {
-      "id": "dipole-E", "group": "u2", "kind": "quantity", "side": "E",
+      "id": "dipole-E",
+      "group": "u2",
+      "kind": "quantity",
+      "side": "E",
       "name": "The electric dipole",
       "summary": "Two equal and opposite charges a small distance apart. Its field falls off as 1/r³, and it is the building block for polarization in dielectrics.",
-      "equation": "p = Qd,  V = p·â_r / (4πε₀r²)",
+      "equation": "\\mathbf{p}=Q\\mathbf{d},\\qquad V=\\frac{\\mathbf{p}\\cdot\\hat{\\mathbf{a}}_r}{4\\pi\\varepsilon_0 r^2}",
       "sadiku": "4.9",
-      "requires": ["E"],
+      "requires": [
+        "E"
+      ],
       "resources": []
     },
     {
-      "id": "gauss-int", "group": "u2", "kind": "law", "side": "E",
+      "id": "gauss-int",
+      "group": "u2",
+      "kind": "law",
+      "side": "E",
       "name": "Gauss's law (integral)",
       "summary": "The total electric flux out of any closed surface equals the enclosed charge over ε₀. Maxwell's first equation in the form you can compute with: pick a surface that matches the symmetry and the integral collapses.",
-      "equation": "∮ E·dS = Q_enc / ε₀",
+      "equation": "\\oint_S \\mathbf{E}\\cdot d\\mathbf{S}=\\frac{Q_{\\text{enc}}}{\\varepsilon_0}",
       "sadiku": "4.5",
-      "requires": ["E", "flux"],
-      "resources": []
+      "requires": [
+        "E",
+        "flux"
+      ],
+      "resources": [],
+      "check": {
+        "q": "A point charge sits just *outside* a closed surface. What is the net electric flux through the surface?",
+        "a": "Zero. Every field line that enters the surface also leaves it, so the net flux is zero even though E is nonzero on the surface. Only enclosed charge produces net flux."
+      },
+      "notes": "notes/gauss-int.md"
     },
     {
-      "id": "gauss-diff", "group": "u2", "kind": "law", "side": "E",
+      "id": "gauss-diff",
+      "group": "u2",
+      "kind": "law",
+      "side": "E",
       "name": "Gauss's law (differential)",
       "summary": "The divergence of E at a point equals the charge density there over ε₀. Same law as the integral form, translated by the divergence theorem. This is the form that leads to Poisson's equation.",
-      "equation": "∇·E = ρ_v / ε₀",
+      "equation": "\\nabla\\cdot\\mathbf{E}=\\frac{\\rho_v}{\\varepsilon_0}",
       "sadiku": "4.5",
-      "requires": ["gauss-int", "divergence"],
+      "requires": [
+        "gauss-int",
+        "divergence"
+      ],
       "resources": []
     },
     {
-      "id": "gauss-apps", "group": "u2", "kind": "technique", "side": "E",
+      "id": "gauss-apps",
+      "group": "u2",
+      "kind": "technique",
+      "side": "E",
       "name": "Applying Gauss: symmetry & composite structures",
       "summary": "Spheres, infinite lines and planes, coaxial cables, nested shells. The recipe: identify the symmetry, choose the matching Gaussian surface, pull |E| out of the integral, solve region by region.",
-      "equation": "E · (area) = Q_enc / ε₀",
+      "equation": "|\\mathbf{E}|\\cdot(\\text{area})=\\frac{Q_{\\text{enc}}}{\\varepsilon_0}",
       "sadiku": "4.6",
-      "requires": ["gauss-int", "coords"],
-      "resources": []
+      "requires": [
+        "gauss-int",
+        "coords"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Using Gauss's law where there is no symmetry. The law is always true; it is only *useful* when |E| is constant on the surface you chose.",
+        "Forgetting that Q_enc is only the charge inside the surface — outside charge still contributes to E, but its net flux through the surface is zero."
+      ],
+      "check": {
+        "q": "Why can't you use Gauss's law alone to find E from an electric dipole?",
+        "a": "There is no surface on which |E| is constant and E is everywhere parallel or perpendicular to the surface. Gauss's law still holds — it just doesn't let you pull E out of the integral."
+      }
     },
     {
-      "id": "conservative-int", "group": "u2", "kind": "law", "side": "E",
+      "id": "conservative-int",
+      "group": "u2",
+      "kind": "law",
+      "side": "E",
       "name": "E is conservative:  ∮ E·dl = 0",
       "summary": "The work done moving a charge around any closed loop in a static electric field is zero, so the work between two points is path-independent. This is what makes a scalar potential possible.",
-      "equation": "∮ E·dl = 0",
+      "equation": "\\oint_L \\mathbf{E}\\cdot d\\mathbf{l}=0",
       "sadiku": "4.7",
-      "requires": ["E", "circulation"],
-      "resources": []
+      "requires": [
+        "E",
+        "circulation"
+      ],
+      "resources": [],
+      "check": {
+        "q": "What property of E lets us define a potential at all?",
+        "a": "Its circulation around any closed path is zero (∇×E = 0), so the work between two points is independent of path and a single-valued scalar V can be assigned to each point."
+      }
     },
     {
-      "id": "conservative-diff", "group": "u2", "kind": "law", "side": "E",
+      "id": "conservative-diff",
+      "group": "u2",
+      "kind": "law",
+      "side": "E",
       "name": "∇×E = 0",
       "summary": "The static electric field has no curl anywhere. Translated from the integral form by Stokes' theorem. This cell of Maxwell's equations is where Faraday's law appears once fields vary in time.",
-      "equation": "∇×E = 0",
+      "equation": "\\nabla\\times\\mathbf{E}=0",
       "sadiku": "4.7",
-      "requires": ["conservative-int", "curl"],
-      "resources": []
+      "requires": [
+        "conservative-int",
+        "curl"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Reading ∇×E = 0 as 'E has no rotation in the picture.' It is a local statement at each point; field lines can still curve."
+      ]
     },
     {
-      "id": "V", "group": "u2", "kind": "quantity", "side": "E",
+      "id": "V",
+      "group": "u2",
+      "kind": "quantity",
+      "side": "E",
       "name": "Electric potential V",
       "summary": "Work per unit charge to bring a test charge in from a reference point. A scalar, so it adds as a number rather than a vector. E is the negative gradient of V; V is the negative line integral of E.",
-      "equation": "V = −∫ E·dl,  E = −∇V",
+      "equation": "V=-\\int \\mathbf{E}\\cdot d\\mathbf{l},\\qquad \\mathbf{E}=-\\nabla V",
       "sadiku": "4.7 – 4.8",
-      "requires": ["conservative-int", "gradient"],
+      "requires": [
+        "conservative-int",
+        "gradient"
+      ],
       "resources": [
-        { "label": "oPhysics · Charged particle in an electric field", "url": "https://ophysics.com/em6.html" }
-      ]
+        {
+          "label": "oPhysics · Charged particle in an electric field",
+          "url": "https://ophysics.com/em6.html"
+        }
+      ],
+      "pitfalls": [
+        "Dropping the minus sign in E = −∇V, or in V = −∫E·dl.",
+        "Treating V as a vector. Potentials of several charges add as plain numbers — that is the whole reason to use them."
+      ],
+      "check": {
+        "q": "The potential in a region is V = 3x² (volts, x in meters). What is E at x = 1 m?",
+        "a": "E = −∇V = −6x â_x, so at x = 1 m, E = −6 â_x V/m. It points toward decreasing x, i.e. downhill in V."
+      }
     },
     {
-      "id": "energy-E", "group": "u2", "kind": "quantity", "side": "E",
+      "id": "energy-E",
+      "group": "u2",
+      "kind": "quantity",
+      "side": "E",
       "name": "Energy in charge distributions & in the field",
       "summary": "The work to assemble a set of charges, which can be rewritten as an energy density stored in the field itself. The field-energy form is what you use for capacitors.",
-      "equation": "W = ½ ∫ ρ_v V dv = ½ ∫ ε₀ E² dv",
+      "equation": "W=\\tfrac12\\int \\rho_v V\\,dv=\\tfrac12\\int \\varepsilon_0 E^2\\,dv",
       "sadiku": "4.10",
-      "requires": ["V"],
+      "requires": [
+        "V"
+      ],
       "resources": []
     },
     {
-      "id": "poisson-laplace", "group": "u2", "kind": "law", "side": "E",
+      "id": "poisson-laplace",
+      "group": "u2",
+      "kind": "law",
+      "side": "E",
       "name": "Poisson's & Laplace's equations",
       "summary": "Substitute E = −∇V into ∇·E = ρ/ε₀ and you get one scalar equation for V. With no charge in the region it becomes Laplace's equation. Solving these with boundary conditions is the general method of electrostatics.",
-      "equation": "∇²V = −ρ_v / ε₀,  ∇²V = 0",
+      "equation": "\\nabla^2 V=-\\frac{\\rho_v}{\\varepsilon_0},\\qquad \\nabla^2 V=0",
       "sadiku": "6.2",
-      "requires": ["gauss-diff", "V"],
+      "requires": [
+        "gauss-diff",
+        "V"
+      ],
       "resources": []
     },
     {
-      "id": "numerical", "group": "u2", "kind": "technique", "side": "E",
+      "id": "numerical",
+      "group": "u2",
+      "kind": "technique",
+      "side": "E",
       "name": "Numerical methods: mesh grids & iterative solvers",
       "summary": "Discretize space onto a grid, replace derivatives with differences, and iterate until the potential stops changing. Accuracy versus runtime is the trade-off; this is what field simulation software does under the hood.",
-      "equation": "V_ij ≈ ¼ (V_{i+1,j} + V_{i−1,j} + V_{i,j+1} + V_{i,j−1})",
+      "equation": "V_{i,j}\\approx\\tfrac14\\left(V_{i+1,j}+V_{i-1,j}+V_{i,j+1}+V_{i,j-1}\\right)",
       "sadiku": "14.1, 14.3",
-      "requires": ["poisson-laplace"],
+      "requires": [
+        "poisson-laplace"
+      ],
       "resources": [
-        { "label": "SciPy · Integration and ODE solvers", "url": "https://docs.scipy.org/doc/scipy/tutorial/integrate.html" },
-        { "label": "MATLAB · basic functions cheat sheet", "url": "https://www.mathworks.com/campaigns/offers/matlab-basic-functions-reference-cheat-sheet.html" },
-        { "label": "MATLAB Onramp (free course)", "url": "https://matlabacademy.mathworks.com/details/matlab-onramp/gettingstarted" }
+        {
+          "label": "SciPy · Integration and ODE solvers",
+          "url": "https://docs.scipy.org/doc/scipy/tutorial/integrate.html"
+        },
+        {
+          "label": "MATLAB · basic functions cheat sheet",
+          "url": "https://www.mathworks.com/campaigns/offers/matlab-basic-functions-reference-cheat-sheet.html"
+        },
+        {
+          "label": "MATLAB Onramp (free course)",
+          "url": "https://matlabacademy.mathworks.com/details/matlab-onramp/gettingstarted"
+        }
       ]
     },
-
     {
-      "id": "conductors", "group": "u3", "kind": "property", "side": "E",
+      "id": "conductors",
+      "group": "u3",
+      "kind": "property",
+      "side": "E",
       "name": "Conductors: induced charge, current, resistance",
       "summary": "Inside a perfect conductor in equilibrium E is zero and the surface is an equipotential; charge rearranges on the surface to make it so. With a steady current, Ohm's law in field form gives the resistance of a structure.",
-      "equation": "J = σE,  R = V/I = ∫ dl / (σ S)",
+      "equation": "\\mathbf{J}=\\sigma\\mathbf{E},\\qquad R=\\frac{V}{I}=\\int\\frac{dl}{\\sigma S}",
       "sadiku": "5.2 – 5.4",
-      "requires": ["E", "V"],
+      "requires": [
+        "E",
+        "V"
+      ],
       "resources": []
     },
     {
-      "id": "polarization", "group": "u3", "kind": "property", "side": "E",
+      "id": "polarization",
+      "group": "u3",
+      "kind": "property",
+      "side": "E",
       "name": "Polarization P & bound charge",
       "summary": "An applied field stretches or aligns the molecular dipoles in a dielectric. The net effect is equivalent to bound surface and volume charge, which partially cancels the applied field.",
-      "equation": "P = dipole moment / volume,  ρ_b = −∇·P,  ρ_sb = P·â_n",
+      "equation": "\\mathbf{P}=\\frac{\\text{dipole moment}}{\\text{volume}},\\qquad \\rho_b=-\\nabla\\cdot\\mathbf{P},\\quad \\rho_{sb}=\\mathbf{P}\\cdot\\hat{\\mathbf{a}}_n",
       "sadiku": "5.5 – 5.6",
-      "requires": ["dipole-E"],
+      "requires": [
+        "dipole-E"
+      ],
       "resources": []
     },
     {
-      "id": "D", "group": "u3", "kind": "quantity", "side": "E",
+      "id": "D",
+      "group": "u3",
+      "kind": "quantity",
+      "side": "E",
       "name": "Displacement field D & permittivity",
       "summary": "Define D so that its flux depends only on the free charge you control, hiding the bound charge. In a linear dielectric D is just ε times E. Gauss's law in a dielectric is Gauss's law with D and free charge.",
-      "equation": "D = ε₀E + P = εE,  ∮ D·dS = Q_free",
+      "equation": "\\mathbf{D}=\\varepsilon_0\\mathbf{E}+\\mathbf{P}=\\varepsilon\\mathbf{E},\\qquad \\oint_S \\mathbf{D}\\cdot d\\mathbf{S}=Q_{\\text{free}}",
       "sadiku": "5.7 – 5.8",
-      "requires": ["polarization", "gauss-int"],
-      "resources": []
+      "requires": [
+        "polarization",
+        "gauss-int"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Thinking D is 'the real field' in a dielectric. E is what exerts force; D is bookkeeping that hides the bound charge so Gauss's law only needs the free charge."
+      ],
+      "check": {
+        "q": "A parallel-plate capacitor has a fixed charge on its plates. A dielectric slab is inserted. What happens to D and to E between the plates?",
+        "a": "D stays the same (it depends only on the free charge). E drops by a factor of ε_r, because the bound charge on the dielectric surfaces partially cancels the plate charge."
+      }
     },
     {
-      "id": "bc-E", "group": "u3", "kind": "law", "side": "E",
+      "id": "bc-E",
+      "group": "u3",
+      "kind": "law",
+      "side": "E",
       "name": "Boundary conditions for E and D",
       "summary": "At an interface, tangential E is continuous and the jump in normal D equals the surface charge. Both follow directly from the integral forms: a tiny loop for the tangential condition, a tiny pillbox for the normal one.",
-      "equation": "E₁t = E₂t,  D₁n − D₂n = ρ_s",
+      "equation": "E_{1t}=E_{2t},\\qquad D_{1n}-D_{2n}=\\rho_s",
       "sadiku": "5.9",
-      "requires": ["D", "conductors", "conservative-int"],
-      "resources": []
+      "requires": [
+        "D",
+        "conductors",
+        "conservative-int"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Applying the tangential condition to D or the normal condition to E. Tangential: E is continuous. Normal: D jumps by the free surface charge."
+      ]
     },
     {
-      "id": "capacitance", "group": "u3", "kind": "device", "side": "E",
+      "id": "capacitance",
+      "group": "u3",
+      "kind": "device",
+      "side": "E",
       "name": "Capacitance, stored energy, fringe fields",
       "summary": "Charge stored per volt between two conductors, a property of the geometry and the dielectric only. Compute it from Q/V or from the stored energy. Real capacitors have fringe fields at the edges that the ideal formulas ignore.",
-      "equation": "C = Q/V,  W = ½CV²",
+      "equation": "C=\\frac{Q}{V},\\qquad W=\\tfrac12 CV^2",
       "sadiku": "6.5 – 6.6",
-      "requires": ["bc-E", "energy-E"],
+      "requires": [
+        "bc-E",
+        "energy-E"
+      ],
       "resources": [
-        { "label": "PhET · Capacitor Lab: Basics", "url": "https://phet.colorado.edu/en/simulations/capacitor-lab-basics" }
+        {
+          "label": "PhET · Capacitor Lab: Basics",
+          "url": "https://phet.colorado.edu/en/simulations/capacitor-lab-basics"
+        }
       ]
     },
-
     {
-      "id": "current", "group": "u4", "kind": "source", "side": "B",
+      "id": "current",
+      "group": "u4",
+      "kind": "source",
+      "side": "B",
       "name": "Current distributions",
       "summary": "Line currents, surface current density K and volume current density J. Moving charge is the source of the magnetic field, in the same way static charge is the source of the electric field.",
-      "equation": "I = ∫ K dl = ∫ J·dS",
+      "equation": "I=\\int K\\,dl=\\int \\mathbf{J}\\cdot d\\mathbf{S}",
       "sadiku": "5.3, 7.2",
-      "requires": ["integrals"],
+      "requires": [
+        "integrals"
+      ],
       "resources": []
     },
     {
-      "id": "biot-savart", "group": "u4", "kind": "law", "side": "B",
+      "id": "biot-savart",
+      "group": "u4",
+      "kind": "law",
+      "side": "B",
       "name": "Biot–Savart law",
       "summary": "The magnetic field of a current element, from Ampère's and Biot and Savart's experiments. It plays the role Coulomb's law plays in electrostatics: the explicit solution you integrate over the source.",
-      "equation": "dB = μ₀ I dl × â_R / (4πR²)",
+      "equation": "d\\mathbf{B}=\\frac{\\mu_0 I\\,d\\mathbf{l}\\times\\hat{\\mathbf{a}}_R}{4\\pi R^2}",
       "sadiku": "7.2",
-      "requires": ["current", "vectors"],
-      "resources": []
+      "requires": [
+        "current",
+        "vectors"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Putting the vector dl × â_R in the wrong order. Swapping them flips the sign of B."
+      ]
     },
     {
-      "id": "B", "group": "u4", "kind": "quantity", "side": "B",
+      "id": "B",
+      "group": "u4",
+      "kind": "quantity",
+      "side": "B",
       "name": "The magnetic field B",
       "summary": "Fields of straight wires, loops and solenoids come from integrating Biot–Savart. Field lines of B always close on themselves; they never start or end anywhere.",
-      "equation": "B = ∫ μ₀ I dl × â_R / (4πR²)",
+      "equation": "\\mathbf{B}=\\int\\frac{\\mu_0 I\\,d\\mathbf{l}\\times\\hat{\\mathbf{a}}_R}{4\\pi R^2}",
       "sadiku": "7.2 – 7.3",
-      "requires": ["biot-savart"],
+      "requires": [
+        "biot-savart"
+      ],
       "resources": [
-        { "label": "PhET · Magnets and Electromagnets", "url": "https://phet.colorado.edu/en/simulations/magnets-and-electromagnets" }
+        {
+          "label": "PhET · Magnets and Electromagnets",
+          "url": "https://phet.colorado.edu/en/simulations/magnets-and-electromagnets"
+        }
       ]
     },
     {
-      "id": "lorentz", "group": "u4", "kind": "law", "side": "center",
+      "id": "lorentz",
+      "group": "u4",
+      "kind": "law",
+      "side": "center",
       "name": "Lorentz force",
       "summary": "The force on a moving charge in electric and magnetic fields. The only equation in this course containing both E and B, and so the one place the two halves of the map touch directly.",
-      "equation": "F = q(E + u × B)",
+      "equation": "\\mathbf{F}=q\\left(\\mathbf{E}+\\mathbf{u}\\times\\mathbf{B}\\right)",
       "sadiku": "8.2",
-      "requires": ["E", "B"],
+      "requires": [
+        "E",
+        "B"
+      ],
       "resources": [
-        { "label": "oPhysics · Charged particle in a magnetic field", "url": "https://ophysics.com/em7.html" }
-      ]
+        {
+          "label": "oPhysics · Charged particle in a magnetic field",
+          "url": "https://ophysics.com/em7.html"
+        }
+      ],
+      "pitfalls": [
+        "Getting the direction of u × B backwards. Right-hand rule: fingers along u, curl toward B, thumb is the force on a positive charge — flip it for a negative one.",
+        "Expecting the magnetic force to do work. It is always perpendicular to the velocity, so it only changes direction."
+      ],
+      "check": {
+        "q": "A proton moves along +x through a magnetic field along +y. Which way is the force?",
+        "a": "+z. F = q u × B, and x̂ × ŷ = ẑ for a positive charge."
+      }
     },
     {
-      "id": "force-currents", "group": "u4", "kind": "quantity", "side": "B",
+      "id": "force-currents",
+      "group": "u4",
+      "kind": "quantity",
+      "side": "B",
       "name": "Forces between currents; torque & moment",
       "summary": "Sum the Lorentz force over the charges in a wire and you get the force on a current element in a field, then the force between two wires. A current loop in a field feels a torque, which defines its magnetic dipole moment.",
-      "equation": "dF = I dl × B,  T = m × B,  m = I S â_n",
+      "equation": "d\\mathbf{F}=I\\,d\\mathbf{l}\\times\\mathbf{B},\\qquad \\mathbf{T}=\\mathbf{m}\\times\\mathbf{B},\\quad \\mathbf{m}=IS\\,\\hat{\\mathbf{a}}_n",
       "sadiku": "8.3",
-      "requires": ["lorentz", "current"],
+      "requires": [
+        "lorentz",
+        "current"
+      ],
       "resources": []
     },
     {
-      "id": "ampere-int", "group": "u4", "kind": "law", "side": "B",
+      "id": "ampere-int",
+      "group": "u4",
+      "kind": "law",
+      "side": "B",
       "name": "Ampère's law (integral)",
       "summary": "The circulation of B around any closed loop equals μ₀ times the current threading the loop. The magnetostatic counterpart of Gauss's law: with the right symmetry the integral collapses and B falls out.",
-      "equation": "∮ B·dl = μ₀ I_enc",
+      "equation": "\\oint_L \\mathbf{B}\\cdot d\\mathbf{l}=\\mu_0 I_{\\text{enc}}",
       "sadiku": "7.4",
-      "requires": ["B", "circulation"],
-      "resources": []
+      "requires": [
+        "B",
+        "circulation"
+      ],
+      "resources": [],
+      "check": {
+        "q": "Is Ampère's law ∮B·dl = μ₀I_enc valid for a short straight wire segment carrying current I?",
+        "a": "The law as written assumes steady currents, which must form closed circuits. A finite segment alone is not a steady current; you need Biot–Savart (or the full time-varying law) for it."
+      }
     },
     {
-      "id": "ampere-diff", "group": "u4", "kind": "law", "side": "B",
+      "id": "ampere-diff",
+      "group": "u4",
+      "kind": "law",
+      "side": "B",
       "name": "∇×B = μ₀J",
       "summary": "The curl of B at a point is μ₀ times the current density there. Translated from the integral form by Stokes' theorem. In time-varying fields a displacement-current term joins J here.",
-      "equation": "∇×B = μ₀ J",
+      "equation": "\\nabla\\times\\mathbf{B}=\\mu_0\\mathbf{J}",
       "sadiku": "7.4",
-      "requires": ["ampere-int", "curl"],
+      "requires": [
+        "ampere-int",
+        "curl"
+      ],
       "resources": []
     },
     {
-      "id": "ampere-apps", "group": "u4", "kind": "technique", "side": "B",
+      "id": "ampere-apps",
+      "group": "u4",
+      "kind": "technique",
+      "side": "B",
       "name": "Applying Ampère: symmetry & composite structures",
       "summary": "Infinite wires, coaxial cables, solenoids, toroids, current sheets. Same recipe as Gauss: find the symmetry, pick the Amperian loop that follows it, pull |B| out, solve region by region.",
-      "equation": "B · (path length) = μ₀ I_enc",
+      "equation": "|\\mathbf{B}|\\cdot(\\text{path length})=\\mu_0 I_{\\text{enc}}",
       "sadiku": "7.4 – 7.5",
-      "requires": ["ampere-int", "coords"],
-      "resources": []
+      "requires": [
+        "ampere-int",
+        "coords"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Choosing an Amperian loop that doesn't follow a field line. If |B| isn't constant along the loop, the integral won't collapse.",
+        "Counting a current that passes beside the loop rather than through the surface it bounds."
+      ]
     },
     {
-      "id": "no-monopoles-int", "group": "u4", "kind": "law", "side": "B",
+      "id": "no-monopoles-int",
+      "group": "u4",
+      "kind": "law",
+      "side": "B",
       "name": "∮ B·dS = 0",
       "summary": "The net magnetic flux out of any closed surface is zero: there are no magnetic charges for field lines to start or end on. Flux through an open surface is still meaningful and is what inductance is built on.",
-      "equation": "∮ B·dS = 0,  Ψ = ∫ B·dS",
+      "equation": "\\oint_S \\mathbf{B}\\cdot d\\mathbf{S}=0,\\qquad \\Psi=\\int_S \\mathbf{B}\\cdot d\\mathbf{S}",
       "sadiku": "7.5",
-      "requires": ["B", "flux"],
-      "resources": []
+      "requires": [
+        "B",
+        "flux"
+      ],
+      "resources": [],
+      "check": {
+        "q": "Can the net magnetic flux through a closed surface ever be nonzero?",
+        "a": "No. ∮B·dS = 0 always, because there are no magnetic charges. Field lines of B never begin or end."
+      }
     },
     {
-      "id": "no-monopoles-diff", "group": "u4", "kind": "law", "side": "B",
+      "id": "no-monopoles-diff",
+      "group": "u4",
+      "kind": "law",
+      "side": "B",
       "name": "∇·B = 0",
       "summary": "B has no divergence anywhere, in statics or otherwise. Translated from the integral form by the divergence theorem. Because of this, B can always be written as the curl of a vector potential.",
-      "equation": "∇·B = 0",
+      "equation": "\\nabla\\cdot\\mathbf{B}=0",
       "sadiku": "7.5",
-      "requires": ["no-monopoles-int", "divergence"],
+      "requires": [
+        "no-monopoles-int",
+        "divergence"
+      ],
       "resources": []
     },
-
     {
-      "id": "dipole-M", "group": "u5", "kind": "property", "side": "B",
+      "id": "dipole-M",
+      "group": "u5",
+      "kind": "property",
+      "side": "B",
       "name": "Magnetic dipole, magnetization M & bound currents",
       "summary": "A small current loop is a magnetic dipole; a material full of aligned dipoles has a magnetization M. The net effect is equivalent to bound surface and volume currents, the magnetic twin of bound charge.",
-      "equation": "M = dipole moment / volume,  J_b = ∇×M,  K_b = M × â_n",
+      "equation": "\\mathbf{M}=\\frac{\\text{dipole moment}}{\\text{volume}},\\qquad \\mathbf{J}_b=\\nabla\\times\\mathbf{M},\\quad \\mathbf{K}_b=\\mathbf{M}\\times\\hat{\\mathbf{a}}_n",
       "sadiku": "8.4",
-      "requires": ["force-currents"],
+      "requires": [
+        "force-currents"
+      ],
       "resources": []
     },
     {
-      "id": "H", "group": "u5", "kind": "quantity", "side": "B",
+      "id": "H",
+      "group": "u5",
+      "kind": "quantity",
+      "side": "B",
       "name": "Auxiliary field H & permeability",
       "summary": "Define H so that its circulation depends only on the free current you control, hiding the bound currents. In a linear material B is just μ times H. Ampère's law in a material is Ampère's law with H and free current.",
-      "equation": "H = B/μ₀ − M,  B = μH,  ∮ H·dl = I_free",
+      "equation": "\\mathbf{H}=\\frac{\\mathbf{B}}{\\mu_0}-\\mathbf{M},\\qquad \\mathbf{B}=\\mu\\mathbf{H},\\qquad \\oint_L \\mathbf{H}\\cdot d\\mathbf{l}=I_{\\text{free}}",
       "sadiku": "8.4 – 8.5",
-      "requires": ["dipole-M", "ampere-int"],
+      "requires": [
+        "dipole-M",
+        "ampere-int"
+      ],
       "resources": []
     },
     {
-      "id": "magnetic-materials", "group": "u5", "kind": "property", "side": "B",
+      "id": "magnetic-materials",
+      "group": "u5",
+      "kind": "property",
+      "side": "B",
       "name": "Dia-, para- & ferromagnetism",
       "summary": "Diamagnets weakly oppose an applied field, paramagnets weakly follow it, and ferromagnets have domains that align strongly and stay aligned: saturation, hysteresis, and permanent magnets.",
-      "equation": "μ_r < 1, ≳ 1, ≫ 1 (and nonlinear)",
+      "equation": "\\mu_r<1,\\quad \\mu_r\\gtrsim 1,\\quad \\mu_r\\gg 1 \\text{ (and nonlinear)}",
       "sadiku": "8.5",
-      "requires": ["H"],
+      "requires": [
+        "H"
+      ],
       "resources": [
-        { "label": "PhET · Magnets and Electromagnets", "url": "https://phet.colorado.edu/en/simulations/magnets-and-electromagnets" }
+        {
+          "label": "PhET · Magnets and Electromagnets",
+          "url": "https://phet.colorado.edu/en/simulations/magnets-and-electromagnets"
+        }
       ]
     },
     {
-      "id": "bc-B", "group": "u5", "kind": "law", "side": "B",
+      "id": "bc-B",
+      "group": "u5",
+      "kind": "law",
+      "side": "B",
       "name": "Boundary conditions for B and H",
       "summary": "At an interface, normal B is continuous and the jump in tangential H equals the surface current. Pillbox and loop arguments again, now applied to ∮B·dS = 0 and Ampère's law.",
-      "equation": "B₁n = B₂n,  H₁t − H₂t = K",
+      "equation": "B_{1n}=B_{2n},\\qquad H_{1t}-H_{2t}=K",
       "sadiku": "8.6",
-      "requires": ["H", "no-monopoles-int"],
+      "requires": [
+        "H",
+        "no-monopoles-int"
+      ],
       "resources": []
     },
     {
-      "id": "inductance", "group": "u5", "kind": "device", "side": "B",
+      "id": "inductance",
+      "group": "u5",
+      "kind": "device",
+      "side": "B",
       "name": "Flux linkage, self & mutual inductance",
       "summary": "Flux linked per ampere of current, a property of geometry and material only. Compute it from flux linkage or from stored energy. Real inductors have resistance, parasitic capacitance and leakage flux that the ideal formulas ignore.",
-      "equation": "L = λ/I = NΨ/I,  M₁₂ = λ₁₂/I₂",
+      "equation": "L=\\frac{\\lambda}{I}=\\frac{N\\Psi}{I},\\qquad M_{12}=\\frac{\\lambda_{12}}{I_2}",
       "sadiku": "8.7 – 8.8",
-      "requires": ["no-monopoles-int", "ampere-apps"],
+      "requires": [
+        "no-monopoles-int",
+        "ampere-apps"
+      ],
       "resources": [
-        { "label": "PhET · Faraday's Electromagnetic Lab", "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab" }
-      ]
+        {
+          "label": "PhET · Faraday's Electromagnetic Lab",
+          "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab"
+        }
+      ],
+      "pitfalls": [
+        "Confusing flux Ψ with flux linkage λ = NΨ. For a coil with N turns, each turn links the flux once."
+      ],
+      "check": {
+        "q": "Doubling the number of turns on a long solenoid (same length, same current) does what to its inductance?",
+        "a": "Quadruples it. B inside scales with N, and flux linkage λ = NΨ picks up another factor of N, so L ∝ N²."
+      }
     },
     {
-      "id": "energy-B", "group": "u5", "kind": "quantity", "side": "B",
+      "id": "energy-B",
+      "group": "u5",
+      "kind": "quantity",
+      "side": "B",
       "name": "Energy in the magnetic field & in an inductor",
       "summary": "The work to establish a current against its own induced field, rewritten as an energy density stored in the field. The second route to inductance.",
-      "equation": "W = ½LI² = ½ ∫ B·H dv",
+      "equation": "W=\\tfrac12 LI^2=\\tfrac12\\int \\mathbf{B}\\cdot\\mathbf{H}\\,dv",
       "sadiku": "8.9",
-      "requires": ["inductance"],
+      "requires": [
+        "inductance"
+      ],
       "resources": []
     },
     {
-      "id": "A", "group": "u5", "kind": "quantity", "side": "B",
+      "id": "A",
+      "group": "u5",
+      "kind": "quantity",
+      "side": "B",
       "name": "Magnetic vector potential A",
       "summary": "Because ∇·B = 0, B can be written as the curl of some vector field A. It is the magnetic twin of the scalar potential V, and it is the quantity that becomes central once fields vary in time.",
-      "equation": "B = ∇×A,  A = ∫ μ₀ I dl / (4πR)",
+      "equation": "\\mathbf{B}=\\nabla\\times\\mathbf{A},\\qquad \\mathbf{A}=\\int\\frac{\\mu_0 I\\,d\\mathbf{l}}{4\\pi R}",
       "sadiku": "7.7",
-      "requires": ["no-monopoles-diff", "curl"],
+      "requires": [
+        "no-monopoles-diff",
+        "curl"
+      ],
       "resources": []
     },
-
     {
-      "id": "x-time-varying", "group": "exit", "kind": "exit", "side": "center", "leadsTo": "emf-2",
+      "id": "x-time-varying",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
+      "leadsTo": "emf-2",
       "name": "Time-varying fields",
       "summary": "The two 'empty' cells of the static Maxwell equations are where the action is once things move. A changing B puts a term into ∇×E = 0 (Faraday's law); a changing E puts a term into ∇×B = μ₀J (displacement current). That coupling is what makes waves, and it is the next course.",
-      "equation": "∇×E = −∂B/∂t,  ∇×B = μ₀J + μ₀ε₀ ∂E/∂t",
+      "equation": "\\nabla\\times\\mathbf{E}=-\\frac{\\partial\\mathbf{B}}{\\partial t},\\qquad \\nabla\\times\\mathbf{B}=\\mu_0\\mathbf{J}+\\mu_0\\varepsilon_0\\frac{\\partial\\mathbf{E}}{\\partial t}",
       "sadiku": "9",
-      "requires": ["conservative-diff", "ampere-diff"],
+      "requires": [
+        "conservative-diff",
+        "ampere-diff"
+      ],
       "resources": [
-        { "label": "PhET · Faraday's Law", "url": "https://phet.colorado.edu/en/simulations/faradays-law" },
-        { "label": "PhET · Faraday's Electromagnetic Lab", "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab" }
+        {
+          "label": "PhET · Faraday's Law",
+          "url": "https://phet.colorado.edu/en/simulations/faradays-law"
+        },
+        {
+          "label": "PhET · Faraday's Electromagnetic Lab",
+          "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab"
+        }
       ]
     },
     {
-      "id": "x-rf", "group": "exit", "kind": "exit", "side": "center",
+      "id": "x-rf",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Antennas & RF",
       "summary": "Everything about radiating structures is Ampère's law, boundary conditions and material properties with time dependence added. Antenna design is where this course's symmetry arguments and material models get used for real.",
       "equation": "",
       "sadiku": "",
-      "requires": ["ampere-apps", "magnetic-materials"],
+      "requires": [
+        "ampere-apps",
+        "magnetic-materials"
+      ],
       "resources": [
-        { "label": "Antenna-Theory.com", "url": "https://www.antenna-theory.com/" },
-        { "label": "4nec2 antenna modeling", "url": "https://www.qsl.net/4nec2/" },
-        { "label": "Microwaves101 calculators", "url": "https://www.microwaves101.com/calculators/" },
-        { "label": "AntennaCAT (machine-learning antenna design)", "url": "https://github.com/LC-Linkous/AntennaCalculationAutotuningTool" }
+        {
+          "label": "Antenna-Theory.com",
+          "url": "https://www.antenna-theory.com/"
+        },
+        {
+          "label": "4nec2 antenna modeling",
+          "url": "https://www.qsl.net/4nec2/"
+        },
+        {
+          "label": "Microwaves101 calculators",
+          "url": "https://www.microwaves101.com/calculators/"
+        },
+        {
+          "label": "AntennaCAT (machine-learning antenna design)",
+          "url": "https://github.com/LC-Linkous/AntennaCalculationAutotuningTool"
+        }
       ]
     },
     {
-      "id": "x-solvers", "group": "exit", "kind": "exit", "side": "center",
+      "id": "x-solvers",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Full EM solvers",
       "summary": "The iterative Laplace solver you build on a grid is the smallest version of what finite-difference and finite-element field solvers do. Meep is a free, serious one.",
       "equation": "",
       "sadiku": "",
-      "requires": ["numerical"],
+      "requires": [
+        "numerical"
+      ],
       "resources": [
-        { "label": "Meep · free FDTD solver (MIT)", "url": "https://meep.readthedocs.io/" }
+        {
+          "label": "Meep · free FDTD solver (MIT)",
+          "url": "https://meep.readthedocs.io/"
+        }
       ]
     },
     {
-      "id": "x-circuits", "group": "exit", "kind": "exit", "side": "center",
+      "id": "x-circuits",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Circuits",
       "summary": "C and L are the two field quantities that survive into circuit theory as lumped elements. Circuit simulators let you see what the stored-energy formulas do in time.",
-      "equation": "i = C dv/dt,  v = L di/dt",
+      "equation": "i=C\\frac{dv}{dt},\\qquad v=L\\frac{di}{dt}",
       "sadiku": "",
-      "requires": ["capacitance", "inductance"],
+      "requires": [
+        "capacitance",
+        "inductance"
+      ],
       "resources": [
-        { "label": "Falstad · Circuit Simulator", "url": "https://www.falstad.com/circuit/" },
-        { "label": "LTspice (free)", "url": "https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html" }
+        {
+          "label": "Falstad · Circuit Simulator",
+          "url": "https://www.falstad.com/circuit/"
+        },
+        {
+          "label": "LTspice (free)",
+          "url": "https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html"
+        }
       ]
     },
     {
-      "id": "x-dsp", "group": "exit", "kind": "exit", "side": "center",
+      "id": "x-dsp",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Fourier & signals",
       "summary": "Separable solutions of Laplace's equation are the first place Fourier series show up in field theory. From there the same mathematics runs all of signal processing and modern radio.",
       "equation": "",
       "sadiku": "6.4",
-      "requires": ["poisson-laplace"],
+      "requires": [
+        "poisson-laplace"
+      ],
       "resources": [
-        { "label": "3Blue1Brown · But what is a Fourier series?", "url": "https://www.youtube.com/watch?v=r6sGWTCMz2k" },
-        { "label": "Falstad · Fourier Series applet", "url": "https://www.falstad.com/fourier/" },
-        { "label": "PySDR · frequency domain", "url": "https://pysdr.org/content/frequency_domain.html" }
+        {
+          "label": "3Blue1Brown · But what is a Fourier series?",
+          "url": "https://www.youtube.com/watch?v=r6sGWTCMz2k"
+        },
+        {
+          "label": "Falstad · Fourier Series applet",
+          "url": "https://www.falstad.com/fourier/"
+        },
+        {
+          "label": "PySDR · frequency domain",
+          "url": "https://pysdr.org/content/frequency_domain.html"
+        }
       ]
     }
   ],
-
   "translates": [
-    { "a": "gauss-int", "b": "gauss-diff", "via": "div-thm" },
-    { "a": "conservative-int", "b": "conservative-diff", "via": "stokes" },
-    { "a": "ampere-int", "b": "ampere-diff", "via": "stokes" },
-    { "a": "no-monopoles-int", "b": "no-monopoles-diff", "via": "div-thm" }
+    {
+      "a": "gauss-int",
+      "b": "gauss-diff",
+      "via": "div-thm"
+    },
+    {
+      "a": "conservative-int",
+      "b": "conservative-diff",
+      "via": "stokes"
+    },
+    {
+      "a": "ampere-int",
+      "b": "ampere-diff",
+      "via": "stokes"
+    },
+    {
+      "a": "no-monopoles-int",
+      "b": "no-monopoles-diff",
+      "via": "div-thm"
+    }
   ],
-
   "mirrors": [
-    { "e": "charge", "b": "current" },
-    { "e": "coulomb", "b": "biot-savart" },
-    { "e": "E", "b": "B" },
-    { "e": "dipole-E", "b": "dipole-M" },
-    { "e": "gauss-int", "b": "ampere-int" },
-    { "e": "gauss-diff", "b": "ampere-diff" },
-    { "e": "gauss-apps", "b": "ampere-apps" },
-    { "e": "conservative-int", "b": "no-monopoles-int" },
-    { "e": "conservative-diff", "b": "no-monopoles-diff" },
-    { "e": "V", "b": "A" },
-    { "e": "energy-E", "b": "energy-B" },
-    { "e": "polarization", "b": "dipole-M" },
-    { "e": "D", "b": "H" },
-    { "e": "bc-E", "b": "bc-B" },
-    { "e": "capacitance", "b": "inductance" }
+    {
+      "e": "charge",
+      "b": "current"
+    },
+    {
+      "e": "coulomb",
+      "b": "biot-savart"
+    },
+    {
+      "e": "E",
+      "b": "B"
+    },
+    {
+      "e": "dipole-E",
+      "b": "dipole-M"
+    },
+    {
+      "e": "gauss-int",
+      "b": "ampere-int"
+    },
+    {
+      "e": "gauss-diff",
+      "b": "ampere-diff"
+    },
+    {
+      "e": "gauss-apps",
+      "b": "ampere-apps"
+    },
+    {
+      "e": "conservative-int",
+      "b": "no-monopoles-int"
+    },
+    {
+      "e": "conservative-diff",
+      "b": "no-monopoles-diff"
+    },
+    {
+      "e": "V",
+      "b": "A"
+    },
+    {
+      "e": "energy-E",
+      "b": "energy-B"
+    },
+    {
+      "e": "polarization",
+      "b": "dipole-M"
+    },
+    {
+      "e": "D",
+      "b": "H"
+    },
+    {
+      "e": "bc-E",
+      "b": "bc-B"
+    },
+    {
+      "e": "capacitance",
+      "b": "inductance"
+    }
   ]
 }

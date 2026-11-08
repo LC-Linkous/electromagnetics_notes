@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Electromagnetics Notes</title>
+  <link rel="stylesheet" href="vendor/katex/katex.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -25,6 +26,7 @@
 
     <div class="tools">
       <input id="search" type="search" placeholder="Find a topic…" aria-label="Find a topic" autocomplete="off">
+      <button id="gaps" class="btn toggle" title="Show only topics you marked shaky, and everything that builds on them" aria-pressed="false">My gaps</button>
       <button id="fit" class="btn" title="Fit map to window">Fit</button>
       <button id="help-btn" class="btn" title="How to read this map">?</button>
     </div>
@@ -50,6 +52,11 @@
       </g>
     </svg>
 
+    <div id="focus-banner" class="focus-banner" hidden>
+      <span id="focus-text"></span>
+      <button id="focus-exit" class="btn small">Show everything</button>
+    </div>
+
     <p id="view-hint" class="view-hint"></p>
 
     <aside id="panel" class="panel" aria-live="polite" hidden>
@@ -61,9 +68,20 @@
       <h2 id="p-name"></h2>
       <p id="p-summary" class="summary"></p>
 
+      <div class="panel-actions">
+        <button id="p-focus" class="btn small" title="Hide everything that is not on this topic's path">Focus on this path</button>
+        <div class="selfcheck" role="group" aria-label="How well do you know this?">
+          <span class="lbl">I know this:</span>
+          <button data-level="shaky" class="lvl">shaky</button>
+          <button data-level="okay"  class="lvl">okay</button>
+          <button data-level="solid" class="lvl">solid</button>
+        </div>
+      </div>
+      <p id="p-readiness" class="readiness" hidden></p>
+
       <section id="p-eq-wrap">
         <h3>Key equation</h3>
-        <code id="p-eq" class="eq"></code>
+        <div id="p-eq" class="eq"></div>
       </section>
 
       <section id="p-read-wrap">
@@ -74,6 +92,18 @@
       <section id="p-try-wrap" hidden>
         <h3>Try it</h3>
         <p id="p-try"></p>
+      </section>
+
+      <section id="p-pitfalls-wrap" hidden>
+        <h3>Where students get stuck</h3>
+        <ul id="p-pitfalls"></ul>
+      </section>
+
+      <section id="p-check-wrap" hidden>
+        <h3>Check yourself</h3>
+        <p id="p-check-q"></p>
+        <button id="p-check-btn" class="btn small">Show answer</button>
+        <p id="p-check-a" class="answer" hidden></p>
       </section>
 
       <section id="p-res-wrap">
@@ -96,7 +126,7 @@
 
       <section id="p-notes-wrap" hidden>
         <h3>Notes</h3>
-        <div id="p-notes"></div>
+        <div id="p-notes" class="notes"></div>
       </section>
     </aside>
 
@@ -104,7 +134,7 @@
       <div class="help-card">
         <button id="help-close" class="close" aria-label="Close">×</button>
         <h2>How to read this map</h2>
-        <p>Each box is a topic. <strong>Click</strong> one to open its card; <strong>hover</strong> to light up what it connects to. Drag to pan, scroll to zoom.</p>
+        <p>Each box is a topic. <strong>Click</strong> one to open its card and light up everything it builds on (and everything that builds on it). <strong>Hover</strong> to see direct connections. Drag to pan, scroll to zoom.</p>
         <dl>
           <dt>Flow</dt>
           <dd>Left to right is "what you need first." An arrow from A to B means B builds on A. If a later topic isn't clicking, follow its arrows back.</dd>
@@ -113,11 +143,16 @@
           <dt>Units</dt>
           <dd>The same topics grouped the way the course is organized.</dd>
         </dl>
+        <p><strong>Focus on this path</strong> hides everything not connected to the open topic. <strong>I know this</strong> lets you mark topics shaky / okay / solid; <strong>My gaps</strong> then shows only your shaky topics and what depends on them. Marks are saved in this browser only — nobody else sees them.</p>
+        <p><strong>Keyboard:</strong> ← prerequisite · → next topic · ↑↓ neighbors in the same column · Esc closes.</p>
         <p class="muted">Dashed boxes are exits: where the material leads after this course. Dashed lines join the integral and differential forms of the same law.</p>
       </div>
     </div>
   </main>
 
+  <script src="vendor/katex/katex.min.js"></script>
+  <script src="vendor/katex/contrib/auto-render.min.js"></script>
+  <script src="vendor/marked.umd.js"></script>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -12,7 +12,11 @@ The map has three views of the same topics:
 | **Duality** | Electrostatics on the left, magnetostatics on the right, each topic lined up against its twin. The vector-calculus tools and the Lorentz force (the one law that uses both fields) sit in the middle. |
 | **Units** | Topics grouped the way the course is organized. |
 
-Click a topic to open its card: a short summary, the key equation, suggested reading in Sadiku (6th ed.), links to free simulators and references, and its connections to other topics. Hover to light up what a topic connects to. Dashed boxes are *exits* — where the material leads after this course.
+Click a topic to open its card and light up its whole path — everything it builds on and everything that builds on it. The card holds a short summary, the key equation, suggested reading in Sadiku (6th ed.), common sticking points, a check-yourself question, links to free simulators and references, connections to other topics, and longer notes where they exist. **Focus on this path** hides everything else and re-lays out just that path. Hover to see direct connections. Dashed boxes are *exits* — where the material leads after this course.
+
+Students can mark each topic **shaky / okay / solid**; the marks are stored in their own browser only (nothing is sent anywhere). **My gaps** then shows just the shaky topics and everything that depends on them, and each card reports which of its prerequisites are marked shaky.
+
+Every view and topic is linkable: `#flow/gauss-int`, `#duality/lorentz`, `#units`. Arrow keys walk the map from the selected topic (← prerequisite, → next, ↑↓ neighbors).
 
 The center of the map is Maxwell's equations for statics as a 2×2 grid (E / B × divergence / curl), with the divergence and Stokes' theorems as the translators between integral and differential forms.
 
@@ -25,9 +29,11 @@ js/app.js             loading, rendering, interaction
 js/layout.js          the three layouts (pure functions of the data)
 data/courses.json     the catalog: site title and the list of courses
 data/intro-emf.json   ← the content for Introduction to EMF. This is the file that normally changes.
+notes/<topic-id>.md   optional longer notes per topic, in Markdown with $…$ / $$…$$ math
+vendor/               KaTeX (equations) and marked (Markdown), vendored so the site has no runtime dependencies
 ```
 
-No build step, no dependencies. Plain ES modules, so it needs to be served over HTTP (not opened as a `file://`). Locally:
+No build step. Plain ES modules, so it needs to be served over HTTP (not opened as a `file://`). Locally:
 
 ```
 python -m http.server 8000
@@ -54,20 +60,25 @@ Everything students see for a course lives in its topic file, e.g. `data/intro-e
   "side": "E",
   "name": "Gauss's law (integral)",
   "summary": "One or two sentences a student can read in ten seconds.",
-  "equation": "∮ E·dS = Q_enc / ε₀",
+  "equation": "\\oint_S \\mathbf{E}\\cdot d\\mathbf{S}=\\frac{Q_{\\text{enc}}}{\\varepsilon_0}",
   "sadiku": "4.5",
   "requires": ["E", "flux"],
   "resources": [ { "label": "PhET · Charges and Fields", "url": "https://…" } ],
   "tryIt": { "label": "Open in the field simulator", "url": "https://…" },
-  "notes": "Optional longer explanation. Shown in its own section when present."
+  "pitfalls": [ "One sentence per common mistake. *Inline Markdown* is fine." ],
+  "check": { "q": "A short concept question.", "a": "Its answer, revealed on click." },
+  "notes": "notes/gauss-int.md"
 }
 ```
+
+- `equation` is LaTeX (rendered with KaTeX); remember to double the backslashes inside JSON.
 
 - `group` — one of the ids in `groups` (sets the color and the Units view cluster).
 - `kind` — `tool`, `concept`, `source`, `law`, `quantity`, `property`, `device`, `technique`, or `exit`. Controls the box style and the small label.
 - `side` — `E`, `B`, or `center`. Only used by the Duality view.
 - `requires` — ids of topics a student needs first. These are the arrows in the Flow view. The graph must stay acyclic; the page logs a warning in the console if an id is unknown.
-- `tryIt`, `notes` and `leadsTo` are optional and the card hides the section when they are absent.
+- `pitfalls`, `check`, `tryIt`, `notes` and `leadsTo` are optional; the card hides any section that is empty.
+- `notes` is either a path to a Markdown file (`notes/<id>.md`, fetched when the card opens) or a plain string.
 
 **Edges** other than `requires`:
 

@@ -1,6 +1,6 @@
 # Electromagnetics Notes
 
-An interactive topic map of electromagnetic field theory, built as supporting material for the EMF course sequence at VCU. **Introduction to EMF** (electrostatics and magnetostatics, EGRE 309) is complete. **Electromagnetic Fields II** (time-varying fields, waves, transmission lines) is included as a *draft* skeleton — coverage of the second course varies by instructor, so it is a starting point rather than a syllabus.
+An interactive topic map of electromagnetic field theory, built as supporting material for the EMF course sequence at VCU. **Introduction to EMF** (electrostatics and magnetostatics, EGRE 309) is complete. **Electromagnetic Fields II** (time-varying fields, waves, transmission lines) is included as a *draft* skeleton — coverage of the second course varies by instructor, so it is a starting point rather than a syllabus. Its Unit 1 (time-varying fields) has pitfalls and check questions; the rest has summaries only until the syllabus is settled.
 
 **Live page:** https://lc-linkous.github.io/electromagnetics_notes/
 

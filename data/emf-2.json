@@ -4,23 +4,53 @@
     "subtitle": "DRAFT — time-varying fields, waves, transmission lines. Coverage varies by instructor; this is a skeleton to grow.",
     "text": "Sadiku, Elements of Electromagnetics, 6th ed. (section numbers are suggested reading, not required)",
     "equationFormat": "latex",
-    "imports": ["intro-emf"],
+    "imports": [
+      "intro-emf"
+    ],
     "edgeKinds": {
       "requires": "You need the source topic before the target topic makes sense.",
       "translates": "Integral and differential forms of the same law, converted by a theorem.",
       "mirrors": "The electric / magnetic twin of a topic."
     }
   },
-
   "groups": [
-    { "id": "w1", "name": "Unit 1 · Time-varying fields", "short": "Time-varying", "color": "#059669" },
-    { "id": "w2", "name": "Unit 2 · Plane waves", "short": "Waves", "color": "#0891b2" },
-    { "id": "w3", "name": "Unit 3 · Reflection & transmission", "short": "Boundaries", "color": "#0e7490" },
-    { "id": "w4", "name": "Unit 4 · Transmission lines", "short": "T-lines", "color": "#7c3aed" },
-    { "id": "w5", "name": "Unit 5 · Waveguides & antennas", "short": "Guides & antennas", "color": "#6d28d9" },
-    { "id": "exit", "name": "Beyond this course", "short": "Beyond", "color": "#9333ea" }
+    {
+      "id": "w1",
+      "name": "Unit 1 · Time-varying fields",
+      "short": "Time-varying",
+      "color": "#059669"
+    },
+    {
+      "id": "w2",
+      "name": "Unit 2 · Plane waves",
+      "short": "Waves",
+      "color": "#0891b2"
+    },
+    {
+      "id": "w3",
+      "name": "Unit 3 · Reflection & transmission",
+      "short": "Boundaries",
+      "color": "#0e7490"
+    },
+    {
+      "id": "w4",
+      "name": "Unit 4 · Transmission lines",
+      "short": "T-lines",
+      "color": "#7c3aed"
+    },
+    {
+      "id": "w5",
+      "name": "Unit 5 · Waveguides & antennas",
+      "short": "Guides & antennas",
+      "color": "#6d28d9"
+    },
+    {
+      "id": "exit",
+      "name": "Beyond this course",
+      "short": "Beyond",
+      "color": "#9333ea"
+    }
   ],
-
   "kinds": {
     "tool": "Math tool",
     "concept": "Concept",
@@ -32,233 +62,780 @@
     "technique": "Technique",
     "exit": "Where this leads"
   },
-
   "maxwell": {
     "title": "Maxwell's equations, complete",
     "caption": "The same grid as the intro course, with the two empty cells filled. A changing B drives circulating E (Faraday); a changing E acts like a current and drives circulating B (displacement current). The rows now talk to each other — that coupling is what makes waves. Grey boxes are from Introduction to EMF.",
     "columns": [
-      { "label": "How does the field spread out?  (divergence · flux)", "header": ["flux", "divergence", "div-thm"] },
-      { "label": "How does the field circulate?  (curl · circulation)", "header": ["circulation", "curl", "stokes"] }
+      {
+        "label": "How does the field spread out?  (divergence · flux)",
+        "header": [
+          "flux",
+          "divergence",
+          "div-thm"
+        ]
+      },
+      {
+        "label": "How does the field circulate?  (curl · circulation)",
+        "header": [
+          "circulation",
+          "curl",
+          "stokes"
+        ]
+      }
     ],
     "rows": [
-      { "node": "E", "cells": [["gauss-int", "gauss-diff"], ["faraday-int", "faraday-diff"]], "below": [["charge"], ["emf-motional"]] },
-      { "node": "B", "cells": [["no-monopoles-int", "no-monopoles-diff"], ["ampere-maxwell-int", "ampere-maxwell-diff"]], "below": [[], ["current", "displacement-current"]] }
+      {
+        "node": "E",
+        "cells": [
+          [
+            "gauss-int",
+            "gauss-diff"
+          ],
+          [
+            "faraday-int",
+            "faraday-diff"
+          ]
+        ],
+        "below": [
+          [
+            "charge"
+          ],
+          [
+            "emf-motional"
+          ]
+        ]
+      },
+      {
+        "node": "B",
+        "cells": [
+          [
+            "no-monopoles-int",
+            "no-monopoles-diff"
+          ],
+          [
+            "ampere-maxwell-int",
+            "ampere-maxwell-diff"
+          ]
+        ],
+        "below": [
+          [],
+          [
+            "current",
+            "displacement-current"
+          ]
+        ]
+      }
     ],
     "bridge": "lorentz",
     "future": "wave-eq"
   },
-
   "nodes": [
-    { "id": "faraday-int", "group": "w1", "kind": "law", "side": "center",
+    {
+      "id": "faraday-int",
+      "group": "w1",
+      "kind": "law",
+      "side": "center",
       "name": "Faraday's law (integral)",
       "summary": "A changing magnetic flux through a loop drives an EMF around it — a circulating electric field. The cell of the static grid that read ∮E·dl = 0 now has a right-hand side.",
       "equation": "\\oint_L \\mathbf{E}\\cdot d\\mathbf{l} = -\\frac{d}{dt}\\int_S \\mathbf{B}\\cdot d\\mathbf{S}",
-      "sadiku": "9.2 – 9.3", "requires": ["conservative-int", "no-monopoles-int"], "resources": [
-        { "label": "PhET · Faraday's Law", "url": "https://phet.colorado.edu/en/simulations/faradays-law" },
-        { "label": "PhET · Faraday's Electromagnetic Lab", "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab" } ] },
-    { "id": "faraday-diff", "group": "w1", "kind": "law", "side": "center",
+      "sadiku": "9.2 – 9.3",
+      "requires": [
+        "conservative-int",
+        "no-monopoles-int"
+      ],
+      "resources": [
+        {
+          "label": "PhET · Faraday's Law",
+          "url": "https://phet.colorado.edu/en/simulations/faradays-law"
+        },
+        {
+          "label": "PhET · Faraday's Electromagnetic Lab",
+          "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab"
+        }
+      ],
+      "pitfalls": [
+        "Dropping the minus sign — or keeping it without knowing what it means. Lenz's law: the induced EMF drives a current whose field *opposes* the change in flux.",
+        "Confusing 'large B' with 'changing B'. A steady field through a fixed loop induces nothing, however strong."
+      ],
+      "check": {
+        "q": "A loop sits in a uniform B that increases with time. In which direction does the induced current flow, relative to B?",
+        "a": "So that its own field inside the loop points *against* B — opposing the increase (Lenz). Viewed with B toward you, the current is clockwise."
+      }
+    },
+    {
+      "id": "faraday-diff",
+      "group": "w1",
+      "kind": "law",
+      "side": "center",
       "name": "∇×E = −∂B/∂t",
       "summary": "Faraday's law at a point, via Stokes' theorem. The electric field is no longer conservative when B varies in time, so a scalar potential alone no longer describes it.",
       "equation": "\\nabla\\times\\mathbf{E} = -\\frac{\\partial\\mathbf{B}}{\\partial t}",
-      "sadiku": "9.3", "requires": ["faraday-int", "conservative-diff"], "resources": [] },
-    { "id": "emf-motional", "group": "w1", "kind": "concept", "side": "center",
+      "sadiku": "9.3",
+      "requires": [
+        "faraday-int",
+        "conservative-diff"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Still writing E = −∇V. With ∇×E ≠ 0 the electric field is no longer conservative and a scalar potential alone cannot describe it."
+      ],
+      "check": {
+        "q": "In a region where B is changing, is the line integral of E around a closed loop zero?",
+        "a": "No. ∮E·dl = −dΦ_B/dt ≠ 0. E is not conservative there, so no single-valued scalar potential exists."
+      }
+    },
+    {
+      "id": "emf-motional",
+      "group": "w1",
+      "kind": "concept",
+      "side": "center",
       "name": "Motional and transformer EMF",
       "summary": "Two ways to change flux: move the conductor through a field (motional EMF, from the Lorentz force) or change the field through a fixed loop (transformer EMF). Both are Faraday's law.",
       "equation": "\\mathcal{E} = \\oint (\\mathbf{u}\\times\\mathbf{B})\\cdot d\\mathbf{l} \\;-\\; \\int \\frac{\\partial\\mathbf{B}}{\\partial t}\\cdot d\\mathbf{S}",
-      "sadiku": "9.3", "requires": ["faraday-int", "lorentz"], "resources": [] },
-    { "id": "displacement-current", "group": "w1", "kind": "concept", "side": "center",
+      "sadiku": "9.3",
+      "requires": [
+        "faraday-int",
+        "lorentz"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Treating motional and transformer EMF as different physics. They are two ways of changing flux; Faraday's law covers both, and in one frame or another each becomes the other."
+      ],
+      "check": {
+        "q": "A conducting bar of length ℓ slides at speed u on rails in a uniform B perpendicular to the plane. What is the EMF?",
+        "a": "|EMF| = Bℓu. Each charge in the bar feels q u × B along the bar; equivalently the flux through the circuit changes at rate Bℓu."
+      }
+    },
+    {
+      "id": "displacement-current",
+      "group": "w1",
+      "kind": "concept",
+      "side": "center",
       "name": "Displacement current",
       "summary": "A changing electric field acts like a current density ∂D/∂t. Maxwell added it so that Ampère's law stays consistent with charge conservation — and in doing so predicted electromagnetic waves.",
       "equation": "\\mathbf{J}_d = \\frac{\\partial\\mathbf{D}}{\\partial t}",
-      "sadiku": "9.5", "requires": ["ampere-diff", "continuity"], "resources": [] },
-    { "id": "continuity", "group": "w1", "kind": "law", "side": "center",
+      "sadiku": "9.5",
+      "requires": [
+        "ampere-diff",
+        "continuity"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Thinking displacement current is a flow of charge. Nothing moves; ∂D/∂t simply acts like a current in Ampère's law. In the gap of a charging capacitor it is the *only* current.",
+        "Forgetting it in Ampère's law at high frequency. At DC it is zero; at RF it is often the dominant term."
+      ],
+      "check": {
+        "q": "A capacitor is charging with current I in its leads. What is the displacement current through a surface spanning the gap?",
+        "a": "I. The changing electric flux in the gap equals the conduction current in the wires, so Ampère's law gives the same B around the gap as around the wire."
+      }
+    },
+    {
+      "id": "continuity",
+      "group": "w1",
+      "kind": "law",
+      "side": "center",
       "name": "Continuity equation",
       "summary": "Charge is conserved: current flowing out of a region reduces the charge inside it. Taking the divergence of Ampère's static law contradicts this unless displacement current is added.",
       "equation": "\\nabla\\cdot\\mathbf{J} = -\\frac{\\partial\\rho_v}{\\partial t}",
-      "sadiku": "5.4, 9.5", "requires": ["current", "gauss-diff"], "resources": [] },
-    { "id": "ampere-maxwell-int", "group": "w1", "kind": "law", "side": "center",
+      "sadiku": "5.4, 9.5",
+      "requires": [
+        "current",
+        "gauss-diff"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Reading ∇·J = −∂ρ/∂t as something separate from Maxwell's equations. It follows from them — take the divergence of the Ampère–Maxwell law — and is the reason displacement current had to be added."
+      ],
+      "check": {
+        "q": "Take the divergence of ∇×H = J + ∂D/∂t. What do you get?",
+        "a": "0 = ∇·J + ∂(∇·D)/∂t = ∇·J + ∂ρ/∂t — the continuity equation. Without the displacement term it would say ∇·J = 0, which is false while charge accumulates."
+      }
+    },
+    {
+      "id": "ampere-maxwell-int",
+      "group": "w1",
+      "kind": "law",
+      "side": "center",
       "name": "Ampère–Maxwell law (integral)",
       "summary": "Ampère's law with displacement current: the circulation of H counts conduction current plus the rate of change of electric flux through the loop.",
       "equation": "\\oint_L \\mathbf{H}\\cdot d\\mathbf{l} = I_{\\text{enc}} + \\frac{d}{dt}\\int_S \\mathbf{D}\\cdot d\\mathbf{S}",
-      "sadiku": "9.5", "requires": ["ampere-int", "displacement-current"], "resources": [] },
-    { "id": "ampere-maxwell-diff", "group": "w1", "kind": "law", "side": "center",
+      "sadiku": "9.5",
+      "requires": [
+        "ampere-int",
+        "displacement-current"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Counting conduction current but not the changing electric flux through the loop. In a capacitor gap I_enc = 0 and the whole right-hand side is the displacement term."
+      ],
+      "check": {
+        "q": "In the static case, what does the Ampère–Maxwell law reduce to?",
+        "a": "∮H·dl = I_enc — Ampère's law from the intro course. The displacement term vanishes when D is constant in time."
+      }
+    },
+    {
+      "id": "ampere-maxwell-diff",
+      "group": "w1",
+      "kind": "law",
+      "side": "center",
       "name": "∇×H = J + ∂D/∂t",
       "summary": "The Ampère–Maxwell law at a point. Together with Faraday's law it couples E and B: each one's change drives the other's circulation.",
       "equation": "\\nabla\\times\\mathbf{H} = \\mathbf{J} + \\frac{\\partial\\mathbf{D}}{\\partial t}",
-      "sadiku": "9.5", "requires": ["ampere-maxwell-int", "ampere-diff"], "resources": [] },
-    { "id": "maxwell-full", "group": "w1", "kind": "law", "side": "center",
+      "sadiku": "9.5",
+      "requires": [
+        "ampere-maxwell-int",
+        "ampere-diff"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Writing ∇×B = μ₀J + ∂D/∂t with mismatched fields and units. With H and D it is ∇×H = J + ∂D/∂t; with B and E in vacuum it is ∇×B = μ₀J + μ₀ε₀ ∂E/∂t."
+      ],
+      "check": {
+        "q": "Which two Maxwell equations couple E and B to each other?",
+        "a": "The two curl equations: ∇×E = −∂B/∂t and ∇×H = J + ∂D/∂t. The divergence equations each involve one field only."
+      }
+    },
+    {
+      "id": "maxwell-full",
+      "group": "w1",
+      "kind": "law",
+      "side": "center",
       "name": "Maxwell's equations, complete",
       "summary": "All four laws with their time-dependent terms, in integral and differential form, plus the constitutive relations D = εE, B = μH, J = σE. Everything in this course follows from these.",
       "equation": "\\nabla\\cdot\\mathbf{D}=\\rho_v,\\quad \\nabla\\cdot\\mathbf{B}=0,\\quad \\nabla\\times\\mathbf{E}=-\\partial_t\\mathbf{B},\\quad \\nabla\\times\\mathbf{H}=\\mathbf{J}+\\partial_t\\mathbf{D}",
-      "sadiku": "9.6", "requires": ["faraday-diff", "ampere-maxwell-diff", "gauss-diff", "no-monopoles-diff"], "resources": [] },
-    { "id": "potentials-tv", "group": "w1", "kind": "quantity", "side": "center",
+      "sadiku": "9.6",
+      "requires": [
+        "faraday-diff",
+        "ampere-maxwell-diff",
+        "gauss-diff",
+        "no-monopoles-diff"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Memorizing the four equations as a list. They come as two pairs: the divergence pair (sources: ρ and nothing) and the curl pair (circulation: driven by the other field's change and by J).",
+        "Forgetting the constitutive relations. The four laws alone do not close without D = εE, B = μH, J = σE."
+      ],
+      "check": {
+        "q": "Which of the four Maxwell equations is unchanged from the static case?",
+        "a": "∇·B = 0 (and Gauss's law ∇·D = ρ, if you count it as unchanged in form). The two curl equations each gain a time-derivative term."
+      }
+    },
+    {
+      "id": "potentials-tv",
+      "group": "w1",
+      "kind": "quantity",
+      "side": "center",
       "name": "Time-varying potentials V and A",
       "summary": "With B = ∇×A, Faraday's law gives E = −∇V − ∂A/∂t. Choosing the Lorenz gauge turns Maxwell's equations into wave equations for V and A with sources ρ and J.",
       "equation": "\\mathbf{E} = -\\nabla V - \\frac{\\partial\\mathbf{A}}{\\partial t},\\qquad \\nabla\\cdot\\mathbf{A} = -\\mu\\varepsilon\\frac{\\partial V}{\\partial t}",
-      "sadiku": "9.7", "requires": ["V", "A", "faraday-diff"], "resources": [] },
-
-    { "id": "wave-eq", "group": "w2", "kind": "law", "side": "center",
+      "sadiku": "9.7",
+      "requires": [
+        "V",
+        "A",
+        "faraday-diff"
+      ],
+      "resources": [],
+      "pitfalls": [
+        "Expecting E = −∇V to survive. In time-varying fields E = −∇V − ∂A/∂t; the second term is what Faraday's law adds."
+      ],
+      "check": {
+        "q": "Why can B always be written as ∇×A, even in time-varying fields?",
+        "a": "Because ∇·B = 0 always holds, and the divergence of a curl is identically zero. The time dependence changes E's relation to the potentials, not B's."
+      }
+    },
+    {
+      "id": "wave-eq",
+      "group": "w2",
+      "kind": "law",
+      "side": "center",
       "name": "The wave equation",
       "summary": "Take the curl of Faraday's law, substitute the Ampère–Maxwell law, and in a source-free region each field satisfies a wave equation with speed 1/√(με). In vacuum that speed is c.",
       "equation": "\\nabla^2\\mathbf{E} - \\mu\\varepsilon\\frac{\\partial^2\\mathbf{E}}{\\partial t^2} = 0,\\qquad c = \\frac{1}{\\sqrt{\\mu_0\\varepsilon_0}}",
-      "sadiku": "10.2", "requires": ["maxwell-full"], "resources": [] },
-    { "id": "phasors", "group": "w2", "kind": "tool", "side": "center",
+      "sadiku": "10.2",
+      "requires": [
+        "maxwell-full"
+      ],
+      "resources": []
+    },
+    {
+      "id": "phasors",
+      "group": "w2",
+      "kind": "tool",
+      "side": "center",
       "name": "Phasors and time-harmonic fields",
       "summary": "For sinusoidal steady state, replace ∂/∂t with jω and work with complex amplitudes. Maxwell's equations become algebraic in time; the wave equation becomes the Helmholtz equation.",
       "equation": "\\mathbf{E}(\\mathbf{r},t) = \\operatorname{Re}\\{\\mathbf{E}_s(\\mathbf{r})\\,e^{j\\omega t}\\},\\qquad \\partial_t \\to j\\omega",
-      "sadiku": "9.7, 10.2", "requires": ["wave-eq"], "resources": [] },
-    { "id": "plane-wave", "group": "w2", "kind": "quantity", "side": "center",
+      "sadiku": "9.7, 10.2",
+      "requires": [
+        "wave-eq"
+      ],
+      "resources": []
+    },
+    {
+      "id": "plane-wave",
+      "group": "w2",
+      "kind": "quantity",
+      "side": "center",
       "name": "Uniform plane waves in lossless media",
       "summary": "The simplest solution: E and H perpendicular to each other and to the direction of travel, in phase, with E/H fixed by the medium. Wavelength, phase velocity and wavenumber follow.",
       "equation": "\\mathbf{E} = E_0\\cos(\\omega t - \\beta z)\\,\\hat{\\mathbf{a}}_x,\\qquad \\beta = \\omega\\sqrt{\\mu\\varepsilon},\\quad v_p = \\frac{\\omega}{\\beta}",
-      "sadiku": "10.3 – 10.4", "requires": ["wave-eq", "phasors"], "resources": [
-        { "label": "Falstad · Ripple Tank", "url": "https://www.falstad.com/ripple/" } ] },
-    { "id": "intrinsic-impedance", "group": "w2", "kind": "property", "side": "center",
+      "sadiku": "10.3 – 10.4",
+      "requires": [
+        "wave-eq",
+        "phasors"
+      ],
+      "resources": [
+        {
+          "label": "Falstad · Ripple Tank",
+          "url": "https://www.falstad.com/ripple/"
+        }
+      ]
+    },
+    {
+      "id": "intrinsic-impedance",
+      "group": "w2",
+      "kind": "property",
+      "side": "center",
       "name": "Intrinsic impedance η",
       "summary": "The ratio of E to H in a plane wave, set by the medium: √(μ/ε), about 377 Ω in free space. It plays the role for waves that characteristic impedance plays for transmission lines.",
       "equation": "\\eta = \\frac{E}{H} = \\sqrt{\\frac{\\mu}{\\varepsilon}},\\qquad \\eta_0 \\approx 377\\,\\Omega",
-      "sadiku": "10.4", "requires": ["plane-wave"], "resources": [] },
-    { "id": "polarization-wave", "group": "w2", "kind": "concept", "side": "center",
+      "sadiku": "10.4",
+      "requires": [
+        "plane-wave"
+      ],
+      "resources": []
+    },
+    {
+      "id": "polarization-wave",
+      "group": "w2",
+      "kind": "concept",
+      "side": "center",
       "name": "Wave polarization",
       "summary": "The path traced by the tip of E as the wave passes: linear, circular or elliptical, depending on the relative amplitude and phase of two perpendicular components.",
       "equation": "\\mathbf{E} = E_x\\hat{\\mathbf{a}}_x + E_y e^{j\\delta}\\hat{\\mathbf{a}}_y",
-      "sadiku": "10.5", "requires": ["plane-wave"], "resources": [] },
-    { "id": "lossy", "group": "w2", "kind": "property", "side": "center",
+      "sadiku": "10.5",
+      "requires": [
+        "plane-wave"
+      ],
+      "resources": []
+    },
+    {
+      "id": "lossy",
+      "group": "w2",
+      "kind": "property",
+      "side": "center",
       "name": "Waves in lossy media",
       "summary": "With conductivity, the wavenumber becomes complex: the wave attenuates as it travels and E and H fall out of phase. The loss tangent σ/ωε says whether a material acts like a dielectric or a conductor at a given frequency.",
       "equation": "\\gamma = \\alpha + j\\beta = \\sqrt{j\\omega\\mu(\\sigma + j\\omega\\varepsilon)},\\qquad \\tan\\delta = \\frac{\\sigma}{\\omega\\varepsilon}",
-      "sadiku": "10.3", "requires": ["plane-wave", "conductors"], "resources": [] },
-    { "id": "skin-depth", "group": "w2", "kind": "quantity", "side": "center",
+      "sadiku": "10.3",
+      "requires": [
+        "plane-wave",
+        "conductors"
+      ],
+      "resources": []
+    },
+    {
+      "id": "skin-depth",
+      "group": "w2",
+      "kind": "quantity",
+      "side": "center",
       "name": "Good conductors and skin depth",
       "summary": "In a good conductor the wave dies out within a skin depth δ = 1/α, which shrinks with frequency. High-frequency current flows only in a thin surface layer — why RF conductors are plated and why shielding works.",
       "equation": "\\delta = \\frac{1}{\\alpha} \\approx \\frac{1}{\\sqrt{\\pi f\\mu\\sigma}}",
-      "sadiku": "10.6", "requires": ["lossy"], "resources": [
-        { "label": "Microwaves101 · skin depth calculator", "url": "https://www.microwaves101.com/calculators/" } ] },
-    { "id": "poynting", "group": "w2", "kind": "quantity", "side": "center",
+      "sadiku": "10.6",
+      "requires": [
+        "lossy"
+      ],
+      "resources": [
+        {
+          "label": "Microwaves101 · skin depth calculator",
+          "url": "https://www.microwaves101.com/calculators/"
+        }
+      ]
+    },
+    {
+      "id": "poynting",
+      "group": "w2",
+      "kind": "quantity",
+      "side": "center",
       "name": "Poynting vector and power flow",
       "summary": "E × H is power per unit area carried by the field. Its divergence accounts for the energy stored in E and B and the power dissipated as heat — conservation of energy for fields.",
       "equation": "\\mathbf{S} = \\mathbf{E}\\times\\mathbf{H},\\qquad \\langle\\mathbf{S}\\rangle = \\tfrac12\\operatorname{Re}\\{\\mathbf{E}_s\\times\\mathbf{H}_s^*\\}",
-      "sadiku": "10.7", "requires": ["plane-wave", "energy-E", "energy-B"], "resources": [] },
-
-    { "id": "normal-incidence", "group": "w3", "kind": "law", "side": "center",
+      "sadiku": "10.7",
+      "requires": [
+        "plane-wave",
+        "energy-E",
+        "energy-B"
+      ],
+      "resources": []
+    },
+    {
+      "id": "normal-incidence",
+      "group": "w3",
+      "kind": "law",
+      "side": "center",
       "name": "Normal incidence on a boundary",
       "summary": "A plane wave hitting an interface splits into reflected and transmitted waves. The boundary conditions on tangential E and H fix the reflection and transmission coefficients in terms of the two impedances.",
       "equation": "\\Gamma = \\frac{\\eta_2 - \\eta_1}{\\eta_2 + \\eta_1},\\qquad \\tau = \\frac{2\\eta_2}{\\eta_2 + \\eta_1}",
-      "sadiku": "10.8", "requires": ["plane-wave", "intrinsic-impedance", "bc-E", "bc-B"], "resources": [] },
-    { "id": "standing-waves", "group": "w3", "kind": "concept", "side": "center",
+      "sadiku": "10.8",
+      "requires": [
+        "plane-wave",
+        "intrinsic-impedance",
+        "bc-E",
+        "bc-B"
+      ],
+      "resources": []
+    },
+    {
+      "id": "standing-waves",
+      "group": "w3",
+      "kind": "concept",
+      "side": "center",
       "name": "Standing waves",
       "summary": "Incident and reflected waves interfere into a pattern that does not travel: nodes and antinodes fixed in space. The standing-wave ratio measures how much is reflected.",
       "equation": "s = \\frac{|E|_{\\max}}{|E|_{\\min}} = \\frac{1 + |\\Gamma|}{1 - |\\Gamma|}",
-      "sadiku": "10.8", "requires": ["normal-incidence"], "resources": [] },
-    { "id": "oblique", "group": "w3", "kind": "law", "side": "center",
+      "sadiku": "10.8",
+      "requires": [
+        "normal-incidence"
+      ],
+      "resources": []
+    },
+    {
+      "id": "oblique",
+      "group": "w3",
+      "kind": "law",
+      "side": "center",
       "name": "Oblique incidence; Snell's law",
       "summary": "At an angle, the wave's parallel and perpendicular polarizations reflect differently. Matching phase along the boundary gives the law of reflection and Snell's law.",
       "equation": "\\theta_r = \\theta_i,\\qquad \\beta_1\\sin\\theta_i = \\beta_2\\sin\\theta_t",
-      "sadiku": "10.9", "requires": ["normal-incidence", "polarization-wave"], "resources": [] },
-    { "id": "brewster", "group": "w3", "kind": "concept", "side": "center",
+      "sadiku": "10.9",
+      "requires": [
+        "normal-incidence",
+        "polarization-wave"
+      ],
+      "resources": []
+    },
+    {
+      "id": "brewster",
+      "group": "w3",
+      "kind": "concept",
+      "side": "center",
       "name": "Brewster angle",
       "summary": "At one angle of incidence the parallel-polarized reflection vanishes entirely. Reflected light at that angle is fully polarized — the principle behind polarizing sunglasses.",
       "equation": "\\tan\\theta_B = \\sqrt{\\frac{\\varepsilon_2}{\\varepsilon_1}}",
-      "sadiku": "10.9", "requires": ["oblique"], "resources": [] },
-    { "id": "tir", "group": "w3", "kind": "concept", "side": "center",
+      "sadiku": "10.9",
+      "requires": [
+        "oblique"
+      ],
+      "resources": []
+    },
+    {
+      "id": "tir",
+      "group": "w3",
+      "kind": "concept",
+      "side": "center",
       "name": "Total internal reflection",
       "summary": "Going from a denser to a lighter medium past the critical angle, nothing is transmitted — the field beyond the boundary is evanescent. Optical fibers run on this.",
       "equation": "\\sin\\theta_c = \\sqrt{\\frac{\\varepsilon_2}{\\varepsilon_1}}",
-      "sadiku": "10.9", "requires": ["oblique"], "resources": [] },
-
-    { "id": "tline-params", "group": "w4", "kind": "property", "side": "center",
+      "sadiku": "10.9",
+      "requires": [
+        "oblique"
+      ],
+      "resources": []
+    },
+    {
+      "id": "tline-params",
+      "group": "w4",
+      "kind": "property",
+      "side": "center",
       "name": "Distributed line parameters R, L, G, C",
       "summary": "A transmission line is capacitance and inductance per unit length (plus loss). The C and L you computed for coax and parallel plates in the intro course are exactly these.",
       "equation": "L' C' = \\mu\\varepsilon,\\qquad \\frac{G'}{C'} = \\frac{\\sigma}{\\varepsilon}",
-      "sadiku": "11.2", "requires": ["capacitance", "inductance"], "resources": [] },
-    { "id": "telegrapher", "group": "w4", "kind": "law", "side": "center",
+      "sadiku": "11.2",
+      "requires": [
+        "capacitance",
+        "inductance"
+      ],
+      "resources": []
+    },
+    {
+      "id": "telegrapher",
+      "group": "w4",
+      "kind": "law",
+      "side": "center",
       "name": "Telegrapher's equations",
       "summary": "Kirchhoff's laws applied to a short length of line give coupled equations for V and I along it. They are the wave equation again, for voltage and current instead of E and H.",
       "equation": "\\frac{\\partial V}{\\partial z} = -L'\\frac{\\partial I}{\\partial t},\\qquad \\frac{\\partial I}{\\partial z} = -C'\\frac{\\partial V}{\\partial t}",
-      "sadiku": "11.3", "requires": ["tline-params", "wave-eq"], "resources": [] },
-    { "id": "z0", "group": "w4", "kind": "property", "side": "center",
+      "sadiku": "11.3",
+      "requires": [
+        "tline-params",
+        "wave-eq"
+      ],
+      "resources": []
+    },
+    {
+      "id": "z0",
+      "group": "w4",
+      "kind": "property",
+      "side": "center",
       "name": "Characteristic impedance Z₀",
       "summary": "The ratio of voltage to current for a wave traveling one way on the line, fixed by geometry and material. The transmission-line twin of intrinsic impedance.",
       "equation": "Z_0 = \\sqrt{\\frac{R' + j\\omega L'}{G' + j\\omega C'}} \\;\\to\\; \\sqrt{\\frac{L'}{C'}}\\ \\text{(lossless)}",
-      "sadiku": "11.3", "requires": ["telegrapher"], "resources": [] },
-    { "id": "reflection-coef", "group": "w4", "kind": "law", "side": "center",
+      "sadiku": "11.3",
+      "requires": [
+        "telegrapher"
+      ],
+      "resources": []
+    },
+    {
+      "id": "reflection-coef",
+      "group": "w4",
+      "kind": "law",
+      "side": "center",
       "name": "Reflection coefficient at a load",
       "summary": "A load that does not equal Z₀ reflects part of the wave. Same formula as normal incidence on a boundary, with impedances instead of η.",
       "equation": "\\Gamma_L = \\frac{Z_L - Z_0}{Z_L + Z_0}",
-      "sadiku": "11.4", "requires": ["z0", "normal-incidence"], "resources": [] },
-    { "id": "vswr", "group": "w4", "kind": "quantity", "side": "center",
+      "sadiku": "11.4",
+      "requires": [
+        "z0",
+        "normal-incidence"
+      ],
+      "resources": []
+    },
+    {
+      "id": "vswr",
+      "group": "w4",
+      "kind": "quantity",
+      "side": "center",
       "name": "Standing-wave ratio on a line",
       "summary": "The voltage standing-wave pattern on a mismatched line; VSWR is what you read on an instrument to judge a match.",
       "equation": "\\text{VSWR} = \\frac{1 + |\\Gamma_L|}{1 - |\\Gamma_L|}",
-      "sadiku": "11.4", "requires": ["reflection-coef", "standing-waves"], "resources": [] },
-    { "id": "zin", "group": "w4", "kind": "quantity", "side": "center",
+      "sadiku": "11.4",
+      "requires": [
+        "reflection-coef",
+        "standing-waves"
+      ],
+      "resources": []
+    },
+    {
+      "id": "zin",
+      "group": "w4",
+      "kind": "quantity",
+      "side": "center",
       "name": "Input impedance of a line",
       "summary": "Looking into a length of line terminated in Z_L you see a different impedance, periodic in quarter wavelengths. Shorted and open stubs become inductors and capacitors; the quarter-wave transformer follows.",
       "equation": "Z_{\\text{in}} = Z_0\\,\\frac{Z_L + jZ_0\\tan\\beta\\ell}{Z_0 + jZ_L\\tan\\beta\\ell}",
-      "sadiku": "11.4", "requires": ["reflection-coef"], "resources": [] },
-    { "id": "smith", "group": "w4", "kind": "tool", "side": "center",
+      "sadiku": "11.4",
+      "requires": [
+        "reflection-coef"
+      ],
+      "resources": []
+    },
+    {
+      "id": "smith",
+      "group": "w4",
+      "kind": "tool",
+      "side": "center",
       "name": "The Smith chart",
       "summary": "A graphical map of the reflection coefficient on which impedances, admittances and line lengths can be read off. Still the standard way to think about matching.",
       "equation": "\\Gamma = \\frac{z - 1}{z + 1},\\qquad z = \\frac{Z}{Z_0}",
-      "sadiku": "11.5", "requires": ["zin"], "resources": [
-        { "label": "Microwaves101 · Smith chart", "url": "https://www.microwaves101.com/calculators/" } ] },
-    { "id": "transients", "group": "w4", "kind": "technique", "side": "center",
+      "sadiku": "11.5",
+      "requires": [
+        "zin"
+      ],
+      "resources": [
+        {
+          "label": "Microwaves101 · Smith chart",
+          "url": "https://www.microwaves101.com/calculators/"
+        }
+      ]
+    },
+    {
+      "id": "transients",
+      "group": "w4",
+      "kind": "technique",
+      "side": "center",
       "name": "Transients and bounce diagrams",
       "summary": "A step launched onto a line bounces between source and load; the bounce diagram tracks each reflection. This is the time-domain picture behind signal-integrity problems on circuit boards.",
       "equation": "V(z,t) = V^+\\!\\left(t - \\tfrac{z}{u}\\right) + V^-\\!\\left(t + \\tfrac{z}{u}\\right)",
-      "sadiku": "11.7", "requires": ["telegrapher", "reflection-coef"], "resources": [
-        { "label": "Falstad · Circuit Simulator (transmission line element)", "url": "https://www.falstad.com/circuit/" } ] },
-
-    { "id": "waveguide", "group": "w5", "kind": "device", "side": "center",
+      "sadiku": "11.7",
+      "requires": [
+        "telegrapher",
+        "reflection-coef"
+      ],
+      "resources": [
+        {
+          "label": "Falstad · Circuit Simulator (transmission line element)",
+          "url": "https://www.falstad.com/circuit/"
+        }
+      ]
+    },
+    {
+      "id": "waveguide",
+      "group": "w5",
+      "kind": "device",
+      "side": "center",
       "name": "Rectangular waveguide modes",
       "summary": "Confine a wave between conducting walls and only certain field patterns (TE and TM modes) satisfy the boundary conditions. Each has a cutoff frequency below which it will not propagate.",
       "equation": "f_{c,mn} = \\frac{1}{2\\sqrt{\\mu\\varepsilon}}\\sqrt{\\left(\\frac{m}{a}\\right)^2 + \\left(\\frac{n}{b}\\right)^2}",
-      "sadiku": "12.2 – 12.4", "requires": ["plane-wave", "bc-E"], "resources": [] },
-    { "id": "hertzian-dipole", "group": "w5", "kind": "source", "side": "center",
+      "sadiku": "12.2 – 12.4",
+      "requires": [
+        "plane-wave",
+        "bc-E"
+      ],
+      "resources": []
+    },
+    {
+      "id": "hertzian-dipole",
+      "group": "w5",
+      "kind": "source",
+      "side": "center",
       "name": "The Hertzian dipole",
       "summary": "A short current element with time-varying current radiates. Solving for its retarded vector potential gives near fields that look like the static dipole and far fields that are outgoing waves.",
       "equation": "\\mathbf{A} = \\frac{\\mu I_0 \\ell}{4\\pi r}e^{-j\\beta r}\\,\\hat{\\mathbf{a}}_z",
-      "sadiku": "13.2", "requires": ["potentials-tv", "dipole-E"], "resources": [
-        { "label": "Antenna-Theory.com", "url": "https://www.antenna-theory.com/" } ] },
-    { "id": "radiation-pattern", "group": "w5", "kind": "quantity", "side": "center",
+      "sadiku": "13.2",
+      "requires": [
+        "potentials-tv",
+        "dipole-E"
+      ],
+      "resources": [
+        {
+          "label": "Antenna-Theory.com",
+          "url": "https://www.antenna-theory.com/"
+        }
+      ]
+    },
+    {
+      "id": "radiation-pattern",
+      "group": "w5",
+      "kind": "quantity",
+      "side": "center",
       "name": "Radiation pattern, directivity, gain",
       "summary": "How radiated power varies with direction, and the single numbers that summarize it. Radiation resistance connects the antenna back to circuit theory.",
       "equation": "D = \\frac{4\\pi U_{\\max}}{P_{\\text{rad}}},\\qquad R_{\\text{rad}} = 80\\pi^2\\left(\\frac{\\ell}{\\lambda}\\right)^2 \\text{ (Hertzian)}",
-      "sadiku": "13.3 – 13.5", "requires": ["hertzian-dipole", "poynting"], "resources": [
-        { "label": "4nec2 antenna modeling", "url": "https://www.qsl.net/4nec2/" } ] },
-
-    { "id": "x-optics", "group": "exit", "kind": "exit", "side": "center",
+      "sadiku": "13.3 – 13.5",
+      "requires": [
+        "hertzian-dipole",
+        "poynting"
+      ],
+      "resources": [
+        {
+          "label": "4nec2 antenna modeling",
+          "url": "https://www.qsl.net/4nec2/"
+        }
+      ]
+    },
+    {
+      "id": "x-optics",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Optics and photonics",
       "summary": "Reflection, refraction, polarization and total internal reflection at optical frequencies are the same physics with ε set by the material at ~10¹⁴ Hz. Fiber, thin films and lasers start here.",
-      "equation": "", "sadiku": "", "requires": ["brewster", "tir"], "resources": [] },
-    { "id": "x-rf-design", "group": "exit", "kind": "exit", "side": "center",
+      "equation": "",
+      "sadiku": "",
+      "requires": [
+        "brewster",
+        "tir"
+      ],
+      "resources": []
+    },
+    {
+      "id": "x-rf-design",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "RF and microwave design",
       "summary": "Matching networks, filters, amplifiers and antennas as engineered components. Everything on the Smith chart and in the antenna unit is the entry ticket.",
-      "equation": "", "sadiku": "", "requires": ["smith", "radiation-pattern"], "resources": [
-        { "label": "Microwaves101", "url": "https://www.microwaves101.com/" },
-        { "label": "AntennaCAT (machine-learning antenna design)", "url": "https://github.com/LC-Linkous/AntennaCalculationAutotuningTool" } ] },
-    { "id": "x-signal-integrity", "group": "exit", "kind": "exit", "side": "center",
+      "equation": "",
+      "sadiku": "",
+      "requires": [
+        "smith",
+        "radiation-pattern"
+      ],
+      "resources": [
+        {
+          "label": "Microwaves101",
+          "url": "https://www.microwaves101.com/"
+        },
+        {
+          "label": "AntennaCAT (machine-learning antenna design)",
+          "url": "https://github.com/LC-Linkous/AntennaCalculationAutotuningTool"
+        }
+      ]
+    },
+    {
+      "id": "x-signal-integrity",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Signal integrity and high-speed digital",
       "summary": "Fast edges on circuit-board traces are transmission-line transients. Reflections, crosstalk and termination are the bounce diagram applied to real boards.",
-      "equation": "", "sadiku": "", "requires": ["transients", "skin-depth"], "resources": [] },
-    { "id": "x-sdr", "group": "exit", "kind": "exit", "side": "center",
+      "equation": "",
+      "sadiku": "",
+      "requires": [
+        "transients",
+        "skin-depth"
+      ],
+      "resources": []
+    },
+    {
+      "id": "x-sdr",
+      "group": "exit",
+      "kind": "exit",
+      "side": "center",
       "name": "Software-defined radio",
       "summary": "Phasors and time-harmonic fields are the physics; DSP is what you do with the sampled result. SDR is where this course meets signals and code.",
-      "equation": "", "sadiku": "", "requires": ["phasors", "polarization-wave"], "resources": [
-        { "label": "PySDR", "url": "https://pysdr.org/" },
-        { "label": "Software Defined Radio with HackRF", "url": "https://greatscottgadgets.com/sdr/" } ] }
+      "equation": "",
+      "sadiku": "",
+      "requires": [
+        "phasors",
+        "polarization-wave"
+      ],
+      "resources": [
+        {
+          "label": "PySDR",
+          "url": "https://pysdr.org/"
+        },
+        {
+          "label": "Software Defined Radio with HackRF",
+          "url": "https://greatscottgadgets.com/sdr/"
+        }
+      ]
+    }
   ],
-
   "translates": [
-    { "a": "faraday-int", "b": "faraday-diff", "via": "stokes" },
-    { "a": "ampere-maxwell-int", "b": "ampere-maxwell-diff", "via": "stokes" }
+    {
+      "a": "faraday-int",
+      "b": "faraday-diff",
+      "via": "stokes"
+    },
+    {
+      "a": "ampere-maxwell-int",
+      "b": "ampere-maxwell-diff",
+      "via": "stokes"
+    }
   ],
-
   "mirrors": [
-    { "e": "faraday-int", "b": "ampere-maxwell-int" },
-    { "e": "faraday-diff", "b": "ampere-maxwell-diff" },
-    { "e": "intrinsic-impedance", "b": "z0" },
-    { "e": "normal-incidence", "b": "reflection-coef" },
-    { "e": "standing-waves", "b": "vswr" }
+    {
+      "e": "faraday-int",
+      "b": "ampere-maxwell-int"
+    },
+    {
+      "e": "faraday-diff",
+      "b": "ampere-maxwell-diff"
+    },
+    {
+      "e": "intrinsic-impedance",
+      "b": "z0"
+    },
+    {
+      "e": "normal-incidence",
+      "b": "reflection-coef"
+    },
+    {
+      "e": "standing-waves",
+      "b": "vswr"
+    }
   ]
 }

@@ -1,6 +1,8 @@
 // Equation builder: a guided walk from "what is the source?" to the collapsed form of
 // Gauss's or Ampère's law. Everything it says lives in data/builder.json.
 
+import { sketch } from './sketch.js';
+
 const $ = sel => document.querySelector(sel);
 const tex = (s, display = false) => {
   if (window.katex) { try { return katex.renderToString(s, { displayMode: display, throwOnError: false }); } catch { /* fall through */ } }
@@ -121,7 +123,7 @@ function stepSymmetry() {
   const S = state.data.symmetries;
   const c = state.config;
   const li = addStep('What symmetry does it have?',
-    'Ask: what can I do to this source — rotate it, slide it — without changing anything? Each such move constrains the field.',
+    `<span class="lead-row">${sketch(c.sketch, { law: state.law })}<span>Ask: what can I do to this source — rotate it, slide it — without changing anything? Each such move constrains the field. The sketch shows the source and the direction its field must take.</span></span>`,
     Object.entries(S).map(([id, s]) => ({ id, html: `${s.name}<small>${s.test}</small>` })), {
       onChoose: (id, btn) => {
         truncateAfter(li);
@@ -159,10 +161,11 @@ function stepShape() {
   const c = state.config;
   const li = addStep(L.stepWords.shape,
     `You want a ${L.shapeWord} on which the field is everywhere ${state.law === 'gauss' ? 'normal to the surface' : 'tangent to the path'} (or exactly perpendicular, so it contributes nothing) and constant in magnitude wherever it contributes.`,
-    Object.entries(shapes).map(([id, s]) => ({ id, html: `${s.name}<small>${s.coords} coordinates</small>` })), {
+    Object.entries(shapes).map(([id, s]) => ({ id, html: `<span class="opt-row">${sketch(c.sketch, { law: state.law, shape: id })}<span>${s.name}<small>${s.coords} coordinates</small></span></span>` })), {
       onChoose: (id, btn) => {
         truncateAfter(li);
         const ok = id === c.shape;
+        btn.querySelector('.sketch').outerHTML = sketch(c.sketch, { law: state.law, shape: id, ok: ok ? 'ok' : 'bad' });
         if (ok) {
           mark(li, btn, true, `<strong>Yes.</strong>${md(shapes[id].why)}`);
           stepCollapse();

@@ -78,3 +78,11 @@
   .b-step { padding-left: 20px; padding-top: 50px; }
   .b-step::before { left: 18px; top: 14px; }
 }
+
+/* sketches */
+.sketch { width: 220px; height: 150px; flex: 0 0 220px; background: #fff; border: 1px solid var(--line); border-radius: 8px; }
+.lead-row, .opt-row { display: flex; gap: 14px; align-items: center; }
+.lead-row .sketch { width: 180px; height: 123px; flex-basis: 180px; }
+.opt-row .sketch { width: 150px; height: 102px; flex-basis: 150px; }
+.b-opt.locked .sketch { opacity: .7; }
+@media (max-width: 640px) { .lead-row, .opt-row { flex-direction: column; align-items: flex-start; } }

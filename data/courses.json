@@ -25,9 +25,9 @@
       "url": "builder.html"
     },
     {
-      "id": "aggregate",
-      "name": "Class gaps (tally marks codes)",
-      "url": "aggregate.html"
+      "id": "progress",
+      "name": "My progress (study list from my marks)",
+      "url": "progress.html"
     }
   ]
 }

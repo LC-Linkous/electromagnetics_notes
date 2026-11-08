@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My progress · Electromagnetics Notes</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/builder.css">
+  <link rel="stylesheet" href="css/progress.css">
+</head>
+<body class="builder-page">
+  <header class="topbar">
+    <div class="brand">
+      <h1><a href="index.html" class="home">Electromagnetics Notes</a> <span class="muted">/</span> My progress</h1>
+      <p class="muted">The topics you've marked on the map, as a study list. This page reads only what's saved in this browser.</p>
+    </div>
+    <div class="tools">
+      <select id="pg-course" aria-label="Course"></select>
+      <button id="pg-print" class="btn">Print</button>
+      <a class="btn" href="index.html">Back to the map</a>
+    </div>
+  </header>
+
+  <main class="b-main">
+    <p id="pg-summary" class="pg-summary"></p>
+    <section id="pg-shaky" class="pg-group" hidden><h2>Shaky <span class="count"></span></h2><p class="lead">Start here. Under each topic: what it builds on — if one of those is also shaky, go there first.</p><ul></ul></section>
+    <section id="pg-okay"  class="pg-group" hidden><h2>Okay <span class="count"></span></h2><ul></ul></section>
+    <section id="pg-solid" class="pg-group" hidden><h2>Solid <span class="count"></span></h2><ul></ul></section>
+    <section id="pg-unmarked" class="pg-group" hidden><h2>Not yet marked <span class="count"></span></h2><p class="lead">Open a card on the map and use <strong>I know this</strong>.</p><ul></ul></section>
+    <p id="pg-empty" class="pg-empty" hidden>Nothing marked yet for this course. On the map, open any topic and use <strong>I know this</strong>; your marks will show up here.</p>
+  </main>
+
+  <script type="module" src="js/progress.js"></script>
+</body>
+</html>

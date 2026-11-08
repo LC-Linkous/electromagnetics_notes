@@ -1,0 +1,22 @@
+#pg-course { font: inherit; font-size: 13px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+.pg-summary { font-size: 14px; color: var(--muted); margin: 0 0 18px; }
+.pg-summary b { color: var(--ink); }
+.pg-group { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 14px 20px 8px; margin-bottom: 14px; }
+.pg-group h2 { font-size: 15px; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+.pg-group h2 .count { font-weight: 500; color: var(--muted); font-size: 13px; }
+.pg-group .lead { font-size: 13px; color: var(--muted); margin: 0 0 10px; }
+.pg-group ul { list-style: none; margin: 0; padding: 0; }
+.pg-group li { padding: 9px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.pg-group li .name { font-weight: 600; }
+.pg-group li .name a { color: inherit; text-decoration: none; }
+.pg-group li .name a:hover { text-decoration: underline; }
+.pg-group li .unit { color: var(--muted); font-size: 12px; margin-left: 8px; }
+.pg-group li .deps { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+.pg-group li .deps .shaky { color: #9b1c1c; font-weight: 600; }
+#pg-shaky h2 { color: #9b1c1c; } #pg-okay h2 { color: #92400e; } #pg-solid h2 { color: #046c4e; }
+.pg-empty { font-size: 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+@media print {
+  .topbar .tools, .topbar .views { display: none; }
+  .pg-group { break-inside: avoid; border: 0; padding: 0; }
+  .pg-group li { break-inside: avoid; }
+}

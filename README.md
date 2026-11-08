@@ -15,7 +15,7 @@ The map has three views of the same topics:
 
 Click a topic to open its card and light up its whole path — everything it builds on and everything that builds on it. The card holds a short summary, the key equation, suggested reading in Sadiku (6th ed.), common sticking points, a check-yourself question, links to free simulators and references, connections to other topics, and longer notes where they exist. **Focus on this path** hides everything else and re-lays out just that path. Hover to see direct connections. Dashed boxes are *exits* — where the material leads after this course.
 
-Students can mark each topic **shaky / okay / solid**; the marks are stored in their own browser only (nothing is sent anywhere). **My gaps** then shows just the shaky topics and everything that depends on them, and each card reports which of its prerequisites are marked shaky. A progress line under the legend counts the marks, and **Copy / Paste** turn them into a short text code (`intro-emf shaky:V,curl okay:E`) so a student can carry them between a laptop and a lab machine — or paste them into a form if you ever want a class-wide picture.
+Students can mark each topic **shaky / okay / solid**; the marks are stored in their own browser only (nothing is sent anywhere). **My gaps** then shows just the shaky topics and everything that depends on them, and each card reports which of its prerequisites are marked shaky. A progress line under the legend counts the marks, and **Copy / Paste** turn them into a short text code (`intro-emf shaky:V,curl okay:E`) so a student can carry them between a laptop and a lab machine.
 
 **Print** builds a study sheet of every topic in prerequisite order — summary, equation, sticking points, check question — with the answers on the last page, and opens the browser's print dialog (save as PDF from there).
 
@@ -31,9 +31,9 @@ The center of the map is Maxwell's equations for statics as a 2×2 grid (E / B �
 
 It is reached from the **Tools** entry in the course switcher, from the *Try it* slot on the Gauss and Ampère cards, and directly at `builder.html#gauss/coax` or `builder.html#ampere/solenoid`. All of its text lives in `data/builder.json` (configurations, symmetry explanations, wrong-answer feedback), so tuning it after seeing what students actually pick is a data edit.
 
-## Class gaps (aggregate)
+## My progress
 
-`aggregate.html` takes many students' *Copy marks* codes pasted one per line and tallies them into a table — shaky / okay / solid per topic, sorted by most-shaky, each topic linking back to the map. Nothing is uploaded; the page is static. It's reachable from the Tools group and from a small link under the marks panel. How you collect the codes is up to you (a Canvas quiz with one text field works).
+`progress.html` reads the self-check marks saved in this browser and lays them out as a personal study list: shaky topics first, each with the prerequisites it depends on (shaky ones flagged) and a link into the map; then okay, solid, and not-yet-marked. Printable. It reads nothing but the browser's own storage — there is no class view and no upload anywhere in this site; the marks are the student's.
 
 ## Repo layout
 

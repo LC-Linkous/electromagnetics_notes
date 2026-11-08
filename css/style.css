@@ -334,3 +334,10 @@ a { color: inherit; }
   .sheet .katex-display { margin: 0; text-align: left; }
   .sheet .katex-display > .katex { text-align: left; }
 }
+
+/* ---------- patch 0007: imported (foreign) topics ---------- */
+.node.foreign rect.box { fill: #f3f4f6; stroke-dasharray: 2 3; }
+.node.foreign text { fill: #4b5563; }
+.foreign-note { margin: 10px 0 0 !important; padding: 8px 10px; font-size: 12.5px; background: #f3f4f6; border-radius: 8px; border: 1px solid var(--line); }
+.foreign-note a { cursor: pointer; text-decoration: underline dotted; }
+.selfcheck[hidden] { display: none; }

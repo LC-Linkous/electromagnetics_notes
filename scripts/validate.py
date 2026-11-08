@@ -33,11 +33,24 @@ def load(path):
         return None
 
 
-def check_course(path, course_ids):
+def ids_of(path):
+    d = load(path)
+    return {n["id"] for n in d.get("nodes", [])} if d else set()
+
+
+def check_course(path, course_ids, course_files):
     d = load(path)
     if d is None:
         return
     tag = os.path.basename(path)
+
+    # topics that may be referenced from imported courses
+    imported = set()
+    for cid in d.get("meta", {}).get("imports", []):
+        if cid not in course_files:
+            err(f"{tag}: imports unknown course '{cid}'")
+        elif course_files[cid]:
+            imported |= ids_of(course_files[cid])
 
     for key in ("meta", "groups", "kinds", "nodes", "translates", "mirrors"):
         if key not in d:
@@ -52,6 +65,7 @@ def check_course(path, course_ids):
     for i in sorted(dupes):
         err(f"{tag}: duplicate node id '{i}'")
     idset = set(ids)
+    refset = idset | imported
     for i in ids:
         if not re.fullmatch(r"[A-Za-z0-9-]+", i):
             err(f"{tag}: node id '{i}' should be letters, digits and hyphens (it goes in the URL)")
@@ -68,7 +82,7 @@ def check_course(path, course_ids):
         if n.get("side") not in SIDES:
             err(f"{tag}: node '{nid}' has unknown side '{n.get('side')}' (E, B or center)")
         for r in n.get("requires", []):
-            if r not in idset:
+            if r not in refset:
                 err(f"{tag}: node '{nid}' requires unknown node '{r}'")
             if r == nid:
                 err(f"{tag}: node '{nid}' requires itself")
@@ -85,6 +99,9 @@ def check_course(path, course_ids):
         lt = n.get("leadsTo")
         if lt and lt not in course_ids:
             err(f"{tag}: node '{nid}' leadsTo unknown course '{lt}'")
+        ltn = n.get("leadsToNode")
+        if ltn and lt and course_files.get(lt) and ltn not in ids_of(course_files[lt]):
+            err(f"{tag}: node '{nid}' leadsToNode '{ltn}' not found in course '{lt}'")
         chk = n.get("check")
         if chk is not None and (not isinstance(chk, dict) or "q" not in chk or "a" not in chk):
             err(f"{tag}: node '{nid}' check needs both 'q' and 'a'")
@@ -115,11 +132,11 @@ def check_course(path, course_ids):
 
     for t in d["translates"]:
         for k in ("a", "b", "via"):
-            if t.get(k) not in idset:
+            if t.get(k) not in refset:
                 err(f"{tag}: translates entry {t} has unknown '{k}'")
     for m in d["mirrors"]:
         for k in ("e", "b"):
-            if m.get(k) not in idset:
+            if m.get(k) not in refset:
                 err(f"{tag}: mirrors entry {m} has unknown '{k}'")
 
     mx = d.get("maxwell")
@@ -137,7 +154,7 @@ def check_course(path, course_ids):
             if mx.get(k):
                 refs.append(mx[k])
         for ref in refs:
-            if ref not in idset:
+            if ref not in refset:
                 err(f"{tag}: maxwell grid references unknown node '{ref}'")
         if len(mx.get("rows", [])) != 2 or len(mx.get("columns", [])) != 2:
             err(f"{tag}: maxwell grid should have exactly 2 rows and 2 columns")
@@ -159,12 +176,13 @@ def main():
     for c in cids:
         if cids.count(c) > 1:
             err(f"data/courses.json: duplicate course id '{c}'")
+    course_files = {c.get("id"): c.get("file") for c in courses}
     for c in courses:
         for key in ("id", "name"):
             if key not in c:
                 err(f"data/courses.json: course entry missing '{key}': {c}")
         if c.get("file"):
-            check_course(c["file"], set(cids))
+            check_course(c["file"], set(cids), course_files)
     if not any(c.get("file") for c in courses):
         err("data/courses.json: no course has a data file")
     return finish()

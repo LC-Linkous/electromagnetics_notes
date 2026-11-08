@@ -1272,7 +1272,8 @@
           "label": "PhET · Faraday's Electromagnetic Lab",
           "url": "https://phet.colorado.edu/en/simulations/faradays-electromagnetic-lab"
         }
-      ]
+      ],
+      "leadsToNode": "faraday-int"
     },
     {
       "id": "x-rf",

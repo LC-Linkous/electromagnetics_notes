@@ -57,10 +57,57 @@ async function main() {
 }
 
 /** Load a course's topic file and (re)build the whole map from it. */
-async function loadCourse(courseId) {
+const courseCache = new Map();
+async function fetchCourse(course) {
+  if (!courseCache.has(course.id)) courseCache.set(course.id, await (await fetch(course.file)).json());
+  return courseCache.get(course.id);
+}
+
+/**
+ * Resolve references to topics that live in another course (meta.imports). Each one
+ * becomes a stub node in a "From <course>" group so edges and the Maxwell grid can
+ * use it; its card links to the real topic in its own course.
+ */
+async function resolveImports(data) {
+  const imports = data.meta.imports || [];
+  if (!imports.length) return data;
+  const own = new Set(data.nodes.map(n => n.id));
+  const wanted = new Set();
+  data.nodes.forEach(n => n.requires.forEach(r => { if (!own.has(r)) wanted.add(r); }));
+  (data.translates || []).forEach(t => ['a', 'b', 'via'].forEach(k => { if (!own.has(t[k])) wanted.add(t[k]); }));
+  (data.mirrors || []).forEach(m => ['e', 'b'].forEach(k => { if (!own.has(m[k])) wanted.add(m[k]); }));
+  if (data.maxwell) {
+    const m = data.maxwell;
+    m.columns.forEach(c => c.header.forEach(id => { if (!own.has(id)) wanted.add(id); }));
+    m.rows.forEach(r => { [r.node, ...r.cells.flat(), ...r.below.flat()].forEach(id => { if (id && !own.has(id)) wanted.add(id); }); });
+    [m.bridge, m.future].forEach(id => { if (id && !own.has(id)) wanted.add(id); });
+  }
+  if (!wanted.size) return data;
+
+  const groups = data.groups.slice();
+  const nodes = data.nodes.slice();
+  for (const cid of imports) {
+    const course = state.catalog.courses.find(c => c.id === cid);
+    if (!course || !course.file) continue;
+    const src = await fetchCourse(course);
+    const gid = 'from-' + cid;
+    let added = false;
+    for (const n of src.nodes) {
+      if (!wanted.has(n.id)) continue;
+      nodes.push({ ...n, group: gid, requires: [], notes: undefined, pitfalls: undefined, check: undefined, foreign: cid, foreignGroup: n.group });
+      wanted.delete(n.id);
+      added = true;
+    }
+    if (added) groups.unshift({ id: gid, name: `From ${course.name}`, short: course.short || course.name, color: '#9ca3af' });
+  }
+  if (wanted.size) console.warn('unresolved imported topics: ' + [...wanted].join(', '));
+  return { ...data, groups, nodes };
+}
+
+async function loadCourse(courseId, selectId = null) {
   const course = state.catalog.courses.find(c => c.id === courseId);
   if (!course || !course.file) return;
-  const data = await (await fetch(course.file)).json();
+  const data = await resolveImports(await fetchCourse(course));
 
   // Tear down anything from a previously loaded course.
   state.selected = null;
@@ -104,10 +151,13 @@ async function loadCourse(courseId) {
   buildEdgeElements();
   // Views a course does not define are hidden.
   document.querySelector('.views a[data-view="maxwell"]').hidden = !data.maxwell;
+  document.querySelector('.views a[data-view="duality"]').hidden = !data.nodes.some(n => !n.foreign && (n.side === 'E' || n.side === 'B'));
 
   const { view, node } = parseHash();
-  setView(view, { instant: true });
-  if (node && state.byId.has(node)) select(node, { fromHash: true });
+  const okView = view === 'duality' && document.querySelector('.views a[data-view="duality"]').hidden ? 'flow' : view;
+  setView(okView, { instant: true });
+  const target = selectId || node;
+  if (target && state.byId.has(target)) select(target, { fromHash: true });
 }
 
 function buildCourseSwitcher() {
@@ -116,7 +166,7 @@ function buildCourseSwitcher() {
   for (const c of state.catalog.courses) {
     const o = document.createElement('option');
     o.value = c.id;
-    o.textContent = c.file ? c.name : `${c.name} (coming)`;
+    o.textContent = !c.file ? `${c.name} (coming)` : (c.status === 'draft' ? `${c.name} (draft)` : c.name);
     o.disabled = !c.file;
     sel.appendChild(o);
   }
@@ -253,7 +303,7 @@ function buildNodes() {
   const layer = $('#nodes');
   for (const n of state.data.nodes) {
     const g = state.groupById.get(n.group);
-    const grp = el('g', { class: `node kind-${n.kind} group-${n.group}`, 'data-id': n.id, tabindex: 0, role: 'button' });
+    const grp = el('g', { class: `node kind-${n.kind} group-${n.group}${n.foreign ? ' foreign' : ''}`, 'data-id': n.id, tabindex: 0, role: 'button' });
     const rx = (n.kind === 'tool' || n.kind === 'concept') ? 20 : (n.kind === 'law' ? 5 : 10);
     grp.appendChild(el('rect', { class: 'box', width: NODE_W, height: NODE_H, rx, stroke: g.color }));
     if (n.kind !== 'exit') grp.appendChild(el('rect', { class: 'bar', x: 0, y: 0, width: 5, height: NODE_H, rx: 2.5, fill: g.color }));
@@ -671,6 +721,7 @@ function renderReadiness(n) {
 }
 
 function renderLevelButtons(n) {
+  document.querySelector('.selfcheck').hidden = !!n.foreign;
   document.querySelectorAll('.selfcheck .lvl').forEach(b => b.classList.toggle('on', state.levels[n.id] === b.dataset.level));
 }
 
@@ -685,6 +736,13 @@ function showPanel(n) {
 
   renderLevelButtons(n);
   renderReadiness(n);
+
+  const foreignWrap = $('#p-foreign');
+  if (n.foreign) {
+    const c = state.catalog.courses.find(x => x.id === n.foreign);
+    foreignWrap.hidden = false;
+    foreignWrap.innerHTML = `This topic is from <strong>${c ? c.name : n.foreign}</strong>. <a data-course="${n.foreign}" data-node="${n.id}">Open it there</a> for its notes and connections.`;
+  } else foreignWrap.hidden = true;
 
   $('#p-eq-wrap').hidden = !n.equation;
   renderEquation($('#p-eq'), n.equation);
@@ -743,7 +801,7 @@ function showPanel(n) {
   if (target) {
     leadsWrap.hidden = false;
     $('#p-leads').innerHTML = target.file
-      ? `<a data-course="${target.id}">${target.name}</a>`
+      ? `<a data-course="${target.id}" data-node="${n.leadsToNode || ''}">${target.name}</a>${target.status === 'draft' ? ' <span class="muted">(draft)</span>' : ''}`
       : `${target.name} <span class="muted">(coming)</span>`;
   } else leadsWrap.hidden = true;
 
@@ -981,7 +1039,7 @@ function wireUI() {
     const a = e.target.closest('a[data-goto]');
     if (a) { e.preventDefault(); select(a.dataset.goto); return; }
     const c = e.target.closest('a[data-course]');
-    if (c) { e.preventDefault(); loadCourse(c.dataset.course); }
+    if (c) { e.preventDefault(); loadCourse(c.dataset.course, c.dataset.node || null); }
   });
   $('#help-btn').addEventListener('click', () => { $('#help').hidden = false; });
   $('#help-close').addEventListener('click', () => { $('#help').hidden = true; });

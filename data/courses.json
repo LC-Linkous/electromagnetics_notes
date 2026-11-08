@@ -13,9 +13,9 @@
       "id": "emf-2",
       "name": "Electromagnetic Fields II",
       "short": "EMF II",
-      "description": "Time-varying fields, Maxwell's equations in full, waves, transmission lines.",
-      "file": null,
-      "status": "planned"
+      "description": "Time-varying fields, waves, reflection and transmission, transmission lines, waveguides and antennas. Draft skeleton — coverage varies by instructor.",
+      "file": "data/emf-2.json",
+      "status": "draft"
     }
   ]
 }

@@ -1,6 +1,6 @@
 # Electromagnetics Notes
 
-An interactive topic map of electromagnetic field theory, built as supporting material for the EMF course sequence at VCU. The first course, **Introduction to EMF** (electrostatics and magnetostatics, EGRE 309), is in place; the structure is ready for a second course to be added as a data file.
+An interactive topic map of electromagnetic field theory, built as supporting material for the EMF course sequence at VCU. **Introduction to EMF** (electrostatics and magnetostatics, EGRE 309) is complete. **Electromagnetic Fields II** (time-varying fields, waves, transmission lines) is included as a *draft* skeleton — coverage of the second course varies by instructor, so it is a starting point rather than a syllabus.
 
 **Live page:** https://lc-linkous.github.io/electromagnetics_notes/
 
@@ -32,6 +32,7 @@ js/app.js             loading, rendering, interaction
 js/layout.js          the three layouts (pure functions of the data)
 data/courses.json     the catalog: site title and the list of courses
 data/intro-emf.json   ← the content for Introduction to EMF. This is the file that normally changes.
+data/emf-2.json       the draft skeleton for Electromagnetic Fields II
 notes/<topic-id>.md   optional longer notes per topic, in Markdown with $…$ / $$…$$ math
 vendor/               KaTeX (equations) and marked (Markdown), vendored so the site has no runtime dependencies
 scripts/validate.py   checks the data files; run it after editing (also runs on push via GitHub Actions)
@@ -48,7 +49,9 @@ python -m http.server 8000
 
 `data/courses.json` lists the courses. Each entry has an `id`, a `name`, a one-line `description`, and a `file` pointing at its topic data. An entry with `"file": null` is shown in the course switcher as *coming* and cannot be selected — that is how part 2 is listed today.
 
-To add a course: write its topic file (same format as `data/intro-emf.json`), point the catalog entry's `file` at it, and the switcher becomes live. An exit node in one course can carry `"leadsTo": "<course id>"`; its card then shows *Continues in …*, and once that course has a file the link opens it.
+To add a course: write its topic file (same format as `data/intro-emf.json`), point the catalog entry's `file` at it, and the switcher becomes live. `"status": "draft"` tags it *(draft)* in the switcher.
+
+**Across courses.** A course can list `"imports": ["intro-emf"]` in its `meta`. Any id it references in `requires`, `translates`, `mirrors` or the Maxwell grid that is not one of its own topics is looked up in the imported course and shown as a grey stub in a *From …* group; the stub's card links to the real topic. That is how part 2's Flow view starts from part-1 topics and how its Maxwell grid reuses the part-1 laws. An exit node in one course can carry `"leadsTo": "<course id>"` and optionally `"leadsToNode": "<topic id>"`; its card then shows *Continues in …* and the link opens that course at that topic.
 
 ## Editing content
 

@@ -15,7 +15,7 @@ The map has three views of the same topics:
 
 Click a topic to open its card and light up its whole path — everything it builds on and everything that builds on it. The card holds a short summary, the key equation, suggested reading in Sadiku (6th ed.), common sticking points, a check-yourself question, links to free simulators and references, connections to other topics, and longer notes where they exist. **Focus on this path** hides everything else and re-lays out just that path. Hover to see direct connections. Dashed boxes are *exits* — where the material leads after this course.
 
-Students can mark each topic **shaky / okay / solid**; the marks are stored in their own browser only (nothing is sent anywhere). **My gaps** then shows just the shaky topics and everything that depends on them, and each card reports which of its prerequisites are marked shaky.
+Students can mark each topic **shaky / okay / solid**; the marks are stored in their own browser only (nothing is sent anywhere). **My gaps** then shows just the shaky topics and everything that depends on them, and each card reports which of its prerequisites are marked shaky. A progress line under the legend counts the marks, and **Copy / Paste** turn them into a short text code (`intro-emf shaky:V,curl okay:E`) so a student can carry them between a laptop and a lab machine — or paste them into a form if you ever want a class-wide picture.
 
 **Print** builds a study sheet of every topic in prerequisite order — summary, equation, sticking points, check question — with the answers on the last page, and opens the browser's print dialog (save as PDF from there).
 

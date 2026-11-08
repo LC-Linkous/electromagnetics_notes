@@ -8,6 +8,7 @@ const el = (tag, attrs = {}, ns = SVG_NS) => {
   return e;
 };
 const LEVELS = ['shaky', 'okay', 'solid'];
+const reducedMotion = () => window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ------------------------------------------------------------------ state
 const state = {
@@ -290,6 +291,85 @@ function applyLevelClasses() {
     const lvl = state.levels[id];
     if (lvl) g.classList.add('lvl-' + lvl);
   }
+  renderProgress();
+}
+
+// ------------------------------------------------------------------ marks: progress line and transfer between browsers
+function renderProgress() {
+  const total = state.data.nodes.filter(n => n.kind !== 'exit').length;
+  const counts = { shaky: 0, okay: 0, solid: 0 };
+  for (const [id, lvl] of Object.entries(state.levels)) if (state.byId.has(id) && counts[lvl] != null) counts[lvl]++;
+  const marked = counts.shaky + counts.okay + counts.solid;
+  const p = $('#marks-progress');
+  p.innerHTML = marked
+    ? `Marked <b>${marked}</b> of ${total} · <b>${counts.shaky}</b> shaky · ${counts.okay} okay · ${counts.solid} solid`
+    : `No topics marked yet — open a card and use <b>I know this</b>.`;
+  $('#marks-copy').disabled = !marked;
+}
+
+/** A short, readable code: "<course> shaky:a,b okay:c solid:d,e" */
+function marksToCode() {
+  const parts = [state.course.id];
+  for (const lvl of LEVELS) {
+    const ids = Object.entries(state.levels).filter(([id, l]) => l === lvl && state.byId.has(id)).map(([id]) => id).sort();
+    if (ids.length) parts.push(`${lvl}:${ids.join(',')}`);
+  }
+  return parts.join(' ');
+}
+function codeToMarks(code) {
+  const tokens = code.trim().split(/\s+/);
+  if (!tokens.length || !tokens[0]) throw new Error('Nothing to apply.');
+  const courseId = tokens.shift();
+  if (courseId !== state.course.id) throw new Error(`That code is for “${courseId}”, not this course.`);
+  const levels = {};
+  let unknown = 0;
+  for (const t of tokens) {
+    const [lvl, list] = t.split(':');
+    if (!LEVELS.includes(lvl) || list == null) throw new Error(`Didn't understand “${t}”.`);
+    for (const id of list.split(',').filter(Boolean)) {
+      if (state.byId.has(id)) levels[id] = lvl; else unknown++;
+    }
+  }
+  return { levels, unknown };
+}
+function wireMarks() {
+  const io = $('#marks-io'), ta = $('#marks-text'), msg = $('#marks-msg');
+  let mode = null;
+  const open = (m, text, hint) => { mode = m; io.hidden = false; ta.value = text; msg.textContent = hint; ta.focus(); if (m === 'copy') ta.select(); };
+  const close = () => { io.hidden = true; mode = null; $('#marks-clear').textContent = 'Clear'; $('#marks-clear').classList.remove('danger'); };
+
+  $('#marks-copy').addEventListener('click', async () => {
+    const code = marksToCode();
+    let copied = false;
+    try { await navigator.clipboard.writeText(code); copied = true; } catch { /* fall back to showing it */ }
+    open('copy', code, copied ? 'Copied. Paste this code into the same page in another browser.' : 'Select and copy this code, then paste it into the same page in another browser.');
+  });
+  $('#marks-paste').addEventListener('click', () => open('paste', '', 'Paste a code from another browser, then Apply. It replaces the marks here.'));
+  $('#marks-cancel').addEventListener('click', close);
+  $('#marks-apply').addEventListener('click', () => {
+    if (mode !== 'paste') { close(); return; }
+    try {
+      const { levels, unknown } = codeToMarks(ta.value);
+      state.levels = levels;
+      writeLevels();
+      applyLevelClasses();
+      if (state.selected) { renderLevelButtons(state.byId.get(state.selected)); renderReadiness(state.byId.get(state.selected)); }
+      if (state.gapsMode) relayout();
+      msg.textContent = `Applied ${Object.keys(levels).length} marks` + (unknown ? ` (${unknown} unknown topics skipped).` : '.');
+      setTimeout(close, 1200);
+    } catch (e) { msg.textContent = e.message; }
+  });
+  // Clear is a two-click action; no confirm() dialogs in this page.
+  const clearBtn = $('#marks-clear');
+  clearBtn.addEventListener('click', () => {
+    if (clearBtn.textContent === 'Clear') { clearBtn.textContent = 'Really clear?'; clearBtn.classList.add('danger'); setTimeout(() => { clearBtn.textContent = 'Clear'; clearBtn.classList.remove('danger'); }, 3000); return; }
+    state.levels = {};
+    writeLevels();
+    applyLevelClasses();
+    if (state.selected) { renderLevelButtons(state.byId.get(state.selected)); renderReadiness(state.byId.get(state.selected)); }
+    if (state.gapsMode) toggleGaps();
+    close();
+  });
 }
 
 function buildEdgeElements() {
@@ -380,6 +460,7 @@ function drawClusters(clusters) {
 
 // ------------------------------------------------------------------ animation
 function animateTo(target, ms) {
+  if (reducedMotion()) ms = 0;
   if (state.anim) cancelAnimationFrame(state.anim);
   const from = new Map();
   for (const [id, p] of target) {
@@ -808,7 +889,7 @@ function fit(ms = 300) {
   const W = svg.clientWidth, H = svg.clientHeight;
   const panelOpen = !$('#panel').hidden && window.innerWidth > 760;
   const usableW = W - (panelOpen ? parseInt(getComputedStyle(document.documentElement).getPropertyValue('--panel-w')) : 0) - 40;
-  const legendW = window.innerWidth > 760 ? 180 : 0;
+  const legendW = window.innerWidth > 760 ? 250 : 0;
   const b = bounds();
   const bw = b.maxX - b.minX, bh = b.maxY - b.minY;
   const k = Math.min(1.1, (usableW - legendW) / bw, (H - 80) / bh);
@@ -818,6 +899,7 @@ function fit(ms = 300) {
 }
 
 function tweenTransform(to, ms) {
+  if (reducedMotion()) ms = 0;
   const from = { ...state.transform };
   const t0 = performance.now();
   const ease = t => 1 - Math.pow(1 - t, 3);
@@ -915,6 +997,7 @@ function wireUI() {
   });
   window.addEventListener('resize', () => fit(0));
   wirePanZoom();
+  wireMarks();
 }
 
 main().catch(err => {

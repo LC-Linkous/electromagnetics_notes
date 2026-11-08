@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Electromagnetics Notes</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="vendor/katex/katex.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -35,7 +36,25 @@
   </header>
 
   <main class="stage">
-    <div id="legend" class="legend" aria-label="Units (click to dim)"></div>
+    <div class="side-left">
+      <div id="legend" class="legend" aria-label="Units (click to dim)"></div>
+      <div id="marks" class="marks">
+        <p id="marks-progress" class="marks-progress"></p>
+        <div class="marks-actions">
+          <button id="marks-copy" class="btn tiny" title="Copy a short code of your marks to move them to another browser">Copy</button>
+          <button id="marks-paste" class="btn tiny" title="Paste a code copied from another browser">Paste</button>
+          <button id="marks-clear" class="btn tiny" title="Clear all marks">Clear</button>
+        </div>
+        <div id="marks-io" class="marks-io" hidden>
+          <textarea id="marks-text" rows="3" spellcheck="false" aria-label="Marks code"></textarea>
+          <div class="marks-actions">
+            <button id="marks-apply" class="btn tiny">Apply</button>
+            <button id="marks-cancel" class="btn tiny">Cancel</button>
+          </div>
+          <p id="marks-msg" class="muted"></p>
+        </div>
+      </div>
+    </div>
 
     <svg id="map" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Topic map">
       <defs>
@@ -148,6 +167,7 @@
           <dd>Just the four laws of static fields as a 2×2 grid — which field, and whether you ask how it spreads out or how it circulates — with the theorems that convert integral and differential forms, and what hangs off each law.</dd>
         </dl>
         <p><strong>Focus on this path</strong> hides everything not connected to the open topic. <strong>I know this</strong> lets you mark topics shaky / okay / solid; <strong>My gaps</strong> then shows only your shaky topics and what depends on them. Marks are saved in this browser only — nobody else sees them.</p>
+        <p>Marks can be moved between browsers: <strong>Copy</strong> under the legend gives a short text code, <strong>Paste</strong> applies one.</p>
         <p><strong>Keyboard:</strong> ← prerequisite · → next topic · ↑↓ neighbors in the same column · Esc closes.</p>
         <p class="muted">Dashed boxes are exits: where the material leads after this course. Dashed lines join the integral and differential forms of the same law.</p>
       </div>

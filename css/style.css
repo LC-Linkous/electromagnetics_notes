@@ -85,8 +85,12 @@ a { color: inherit; }
 #map { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
 #map.dragging { cursor: grabbing; }
 
-.legend {
+.side-left {
   position: absolute; left: 14px; top: 12px;
+  display: flex; flex-direction: column; gap: 10px;
+  pointer-events: none;
+}
+.legend {
   display: flex; flex-direction: column; gap: 4px;
   font-size: 12px;
   pointer-events: none;
@@ -222,6 +226,22 @@ a { color: inherit; }
 .help-card dd { margin: 2px 0 0; }
 
 /* ---------- small screens ---------- */
+/* ---------- marks (self-check progress & transfer) ---------- */
+.marks { pointer-events: auto; font-size: 12px; width: 232px; }
+.marks-progress { margin: 0 0 4px; color: var(--muted); background: rgba(255,255,255,.85); border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; }
+.marks-progress b { color: var(--ink); font-weight: 600; }
+.marks-actions { display: flex; gap: 4px; }
+.btn.tiny { font-size: 11px; padding: 3px 8px; }
+.btn.danger { border-color: #e02424; color: #9b1c1c; }
+.marks-io { margin-top: 6px; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+.marks-io[hidden] { display: none; }
+.marks-io textarea { width: 100%; font: 11px var(--mono); border: 1px solid var(--line); border-radius: 6px; padding: 6px; resize: vertical; margin-bottom: 6px; }
+.marks-io p { margin: 6px 0 0; font-size: 11px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .node rect.box, .edge { transition: none; }
+}
+
 @media (max-width: 760px) {
   .topbar { gap: 10px; }
   .tools { margin-left: 0; width: 100%; }
@@ -231,7 +251,7 @@ a { color: inherit; }
     border-left: 0; border-top: 1px solid var(--line);
     border-radius: 14px 14px 0 0;
   }
-  .legend { display: none; }
+  .side-left { display: none; }
 }
 
 /* ---------- patch 0002: focus, self-check, notes ---------- */

@@ -529,6 +529,26 @@ function renderEquation(target, eq) {
   target.textContent = eq;
 }
 
+/**
+ * Markdown + math. Math segments are lifted out before Markdown runs (so `_` and `*`
+ * inside formulas are not read as emphasis), then rendered with KaTeX.
+ */
+function renderMarkdownWithMath(md) {
+  const chunks = [];
+  const keep = (tex, display) => { chunks.push({ tex, display }); return `\u0000MATH${chunks.length - 1}\u0000`; };
+  let src = md.replace(/\$\$([\s\S]+?)\$\$/g, (_, t) => keep(t, true));
+  src = src.replace(/(^|[^\\$])\$([^$\n]+?)\$/g, (_, pre, t) => pre + keep(t, false));
+  let html = window.marked ? marked.parse(src) : `<pre>${src.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))}</pre>`;
+  html = html.replace(/\u0000MATH(\d+)\u0000/g, (_, i) => {
+    const { tex, display } = chunks[+i];
+    if (window.katex) {
+      try { return katex.renderToString(tex, { displayMode: display, throwOnError: false }); } catch { /* fall through */ }
+    }
+    return display ? `<pre>${tex}</pre>` : `<code>${tex}</code>`;
+  });
+  return html;
+}
+
 async function renderNotes(n) {
   const wrap = $('#p-notes-wrap'), out = $('#p-notes');
   if (!n.notes) { wrap.hidden = true; return; }
@@ -545,13 +565,7 @@ async function renderNotes(n) {
     }
     if (state.selected !== n.id) return;       // user moved on while we were fetching
     if (md == null) { out.innerHTML = `<p class="muted">Notes file not found: <code>${n.notes}</code></p>`; return; }
-    out.innerHTML = window.marked ? marked.parse(md) : `<pre>${md}</pre>`;
-    if (window.renderMathInElement) {
-      renderMathInElement(out, {
-        delimiters: [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }],
-        throwOnError: false,
-      });
-    }
+    out.innerHTML = renderMarkdownWithMath(md);
   } else {
     out.textContent = n.notes;
   }

@@ -240,7 +240,8 @@
       "check": {
         "q": "A uniform field E points along +z. What is the flux through a flat disk lying in the xy-plane, and through the same disk tilted 60° from the xy-plane?",
         "a": "Ψ = E·A for the flat disk; Ψ = E·A·cos 60° = ½ E·A when tilted. Flux counts only the component of E normal to the surface."
-      }
+      },
+      "notes": "notes/flux.md"
     },
     {
       "id": "circulation",
@@ -261,7 +262,8 @@
       "check": {
         "q": "Is the circulation of a static electric field around a closed loop ever nonzero?",
         "a": "No — ∮E·dl = 0 for any loop in electrostatics. Nonzero circulation of E requires a time-varying magnetic field."
-      }
+      },
+      "notes": "notes/circulation.md"
     },
     {
       "id": "gradient",
@@ -310,7 +312,8 @@
       "check": {
         "q": "What is ∇·E at a point in empty space 1 m from a point charge?",
         "a": "Zero. Divergence is nonzero only where charge density is nonzero; at that point ρ = 0."
-      }
+      },
+      "notes": "notes/divergence.md"
     },
     {
       "id": "curl",
@@ -338,7 +341,8 @@
       "check": {
         "q": "Which has nonzero curl: a uniform field, or the field B that circles a straight wire, evaluated outside the wire?",
         "a": "Neither. The uniform field has zero curl trivially; the field outside a wire circles but its curl is zero because no current flows there. Curl measures local circulation, not whether lines curve."
-      }
+      },
+      "notes": "notes/curl.md"
     },
     {
       "id": "div-thm",
@@ -361,7 +365,8 @@
       "check": {
         "q": "The divergence theorem relates which two things?",
         "a": "The net flux of a vector field out of a closed surface, and the volume integral of its divergence over the enclosed region."
-      }
+      },
+      "notes": "notes/div-thm.md"
     },
     {
       "id": "stokes",
@@ -384,7 +389,8 @@
       "check": {
         "q": "Stokes' theorem relates which two things?",
         "a": "The circulation of a vector field around a closed loop, and the flux of its curl through any surface bounded by that loop."
-      }
+      },
+      "notes": "notes/stokes.md"
     },
     {
       "id": "charge",
@@ -541,7 +547,8 @@
       "check": {
         "q": "Starting from ∮E·dS = Q_enc/ε₀, which theorem gets you to ∇·E = ρ_v/ε₀?",
         "a": "The divergence theorem, which turns the closed-surface flux into ∫(∇·E)dv; equating integrands with Q_enc = ∫ρ_v dv gives the differential form."
-      }
+      },
+      "notes": "notes/gauss-diff.md"
     },
     {
       "id": "gauss-apps",
@@ -586,7 +593,8 @@
       },
       "pitfalls": [
         "Confusing 'the integral around a closed loop is zero' with 'the integral along any path is zero.' Only the closed-loop integral vanishes; an open path gives the potential difference."
-      ]
+      ],
+      "notes": "notes/conservative-int.md"
     },
     {
       "id": "conservative-diff",
@@ -636,7 +644,8 @@
       "check": {
         "q": "The potential in a region is V = 3x² (volts, x in meters). What is E at x = 1 m?",
         "a": "E = −∇V = −6x â_x, so at x = 1 m, E = −6 â_x V/m. It points toward decreasing x, i.e. downhill in V."
-      }
+      },
+      "notes": "notes/V.md"
     },
     {
       "id": "energy-E",
@@ -933,7 +942,8 @@
       "check": {
         "q": "A proton moves along +x through a magnetic field along +y. Which way is the force?",
         "a": "+z. F = q u × B, and x̂ × ŷ = ẑ for a positive charge."
-      }
+      },
+      "notes": "notes/lorentz.md"
     },
     {
       "id": "force-currents",
@@ -979,7 +989,8 @@
       "pitfalls": [
         "Treating Ampère's law as a formula for B. Like Gauss's law it is a statement about a total — the circulation — and only yields B when symmetry lets you pull |B| out.",
         "Forgetting the sign convention: the direction you traverse the loop and the direction that counts as positive current are linked by the right-hand rule."
-      ]
+      ],
+      "notes": "notes/ampere-int.md"
     },
     {
       "id": "ampere-diff",
@@ -1001,7 +1012,8 @@
       "check": {
         "q": "Inside a wire carrying uniform current density J, what is ∇×B?",
         "a": "μ₀J, pointing along the current. Outside the wire it is zero."
-      }
+      },
+      "notes": "notes/ampere-diff.md"
     },
     {
       "id": "ampere-apps",
@@ -1046,7 +1058,8 @@
       },
       "pitfalls": [
         "Concluding that the flux of B through *every* surface is zero. Only closed surfaces give zero; flux through an open surface (a coil's cross-section) is what inductance is built on."
-      ]
+      ],
+      "notes": "notes/no-monopoles-int.md"
     },
     {
       "id": "no-monopoles-diff",
@@ -1233,7 +1246,8 @@
       "check": {
         "q": "If A is replaced by A + ∇ψ for any scalar ψ, what happens to B?",
         "a": "Nothing. ∇×(∇ψ) = 0, so B = ∇×A is unchanged. This freedom is called gauge freedom."
-      }
+      },
+      "notes": "notes/A.md"
     },
     {
       "id": "x-time-varying",

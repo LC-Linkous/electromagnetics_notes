@@ -21,7 +21,3 @@ The $r^2$ cancels — that cancellation *is* Gauss's law. It works because the f
 ## Where it sits in the map
 
 This is the top-left cell of the static Maxwell equations: the **divergence** half of the **electric** field. Its twin on the magnetic side is Ampère's law, which does the same job with circulation instead of flux. Its differential form, $\nabla\cdot\mathbf{E} = \rho_v/\varepsilon_0$, is what you get by shrinking the surface to a point — the divergence theorem is the bridge.
-
----
-
-*This is an example notes file. Notes live in `notes/<topic-id>.md` and render here when the topic's `notes` field points at them.*

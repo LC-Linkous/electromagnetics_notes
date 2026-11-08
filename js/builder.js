@@ -104,7 +104,7 @@ function stepPick() {
   const L = state.data.laws[state.law];
   const configs = state.data.configs.filter(c => c.law === state.law);
   addStep(L.stepWords.pick, 'Pick the source. Some of these will turn out not to work — that is part of the point.',
-    configs.map(c => ({ id: c.id, html: c.name })), {
+    configs.map(c => ({ id: c.id, html: `<span class="opt-row small">${sketch(c.sketch, { law: state.law })}<span>${c.name}</span></span>` })), {
       onChoose: (id, btn) => {
         const li = state.steps[0];
         truncateAfter(li);
@@ -262,6 +262,7 @@ function stepFinish(dead) {
   const otherLaw = state.law === 'gauss' ? 'ampere' : 'gauss';
   li.innerHTML = `<h2>${dead ? 'What to do instead' : 'Does it make sense?'}</h2>
     ${dead ? '' : `<div class="b-sanity">${md(c.sanity)}</div>`}
+    ${!dead && c.alternative ? `<div class="b-alt"><h3>${state.data.altHeading[state.law]}</h3><p>${md(c.alternative)}</p></div>` : ''}
     <div class="b-twin"><h3>The ${otherLaw === 'ampere' ? 'magnetic' : 'electric'} twin</h3>
       <p>${md(c.twinNote || '')} ${twin ? `<a href="#${otherLaw}/${twin.id}">Run the same steps for ${twin.name.split(',')[0].split(':')[0]} →</a>` : ''}</p></div>
     <div class="b-links">

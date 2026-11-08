@@ -10,7 +10,7 @@ The map has three views of the same topics:
 |---|---|
 | **Flow** | Left → right prerequisite order. An arrow from A to B means B builds on A. |
 | **Duality** | Electrostatics on the left, magnetostatics on the right, each topic lined up against its twin. The vector-calculus tools and the Lorentz force (the one law that uses both fields) sit in the middle. |
-| **Units** | Topics grouped the way the course is organized. |
+| **Units** | Topics grouped the way the course is organized. Click a unit heading to fold it. |
 | **Maxwell** | Just the four laws of static fields as a 2×2 grid (which field × spreads out / circulates), with the theorems that convert integral and differential forms and what hangs off each law. Shown only when the course defines a `maxwell` grid. |
 
 Click a topic to open its card and light up its whole path — everything it builds on and everything that builds on it. The card holds a short summary, the key equation, suggested reading in Sadiku (6th ed.), common sticking points, a check-yourself question, links to free simulators and references, connections to other topics, and longer notes where they exist. **Focus on this path** hides everything else and re-lays out just that path. Hover to see direct connections. Dashed boxes are *exits* — where the material leads after this course.
@@ -28,6 +28,10 @@ The center of the map is Maxwell's equations for statics as a 2×2 grid (E / B �
 `builder.html` is a guided walk through applying Gauss's or Ampère's law: pick the source, name its symmetry, choose the coordinate system and Gaussian surface / Amperian loop, say what the integral collapses to, then read off the enclosed charge or current region by region. Every step offers wrong answers too — a cube around a point charge, a sphere around a line, counting the end caps — and each one explains why it fails. The surface/loop step draws each candidate over a sketch of the source's field, so a wrong choice is visible (arrows cutting the surface at angles) before it is explained. After the collapsed form is chosen, the same sketch shows which parts of the surface or loop contribute (green) and which give zero (grey). The enclosed-charge step plots |E| or |B| against distance, piecewise, with the selected region highlighted — not to scale, but the right shape, so continuity and limiting behaviour can be checked by eye. Sketches are generated in `js/sketch.js` from a `sketch` key on each configuration; plots from a `plot` key (one segment per region: `zero`, `const`, `linear`, `inv`, `inv2`, or `coax-shell`). Sources with too little symmetry (a dipole, a finite segment) are included on purpose and end in "what to do instead." Every result ends with sanity checks and a link to its electric/magnetic twin.
 
 It is reached from the **Tools** entry in the course switcher, from the *Try it* slot on the Gauss and Ampère cards, and directly at `builder.html#gauss/coax` or `builder.html#ampere/solenoid`. All of its text lives in `data/builder.json` (configurations, symmetry explanations, wrong-answer feedback), so tuning it after seeing what students actually pick is a data edit.
+
+## Class gaps (aggregate)
+
+`aggregate.html` takes many students' *Copy marks* codes pasted one per line and tallies them into a table — shaky / okay / solid per topic, sorted by most-shaky, each topic linking back to the map. Nothing is uploaded; the page is static. It's reachable from the Tools group and from a small link under the marks panel. How you collect the codes is up to you (a Canvas quiz with one text field works).
 
 ## Repo layout
 

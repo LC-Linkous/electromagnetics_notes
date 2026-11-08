@@ -341,3 +341,10 @@ a { color: inherit; }
 .foreign-note { margin: 10px 0 0 !important; padding: 8px 10px; font-size: 12.5px; background: #f3f4f6; border-radius: 8px; border: 1px solid var(--line); }
 .foreign-note a { cursor: pointer; text-decoration: underline dotted; }
 .selfcheck[hidden] { display: none; }
+
+/* ---------- collapsible clusters ---------- */
+.cluster.clickable .hit { cursor: pointer; }
+.cluster.clickable:hover text { fill: var(--ink); }
+.cluster.collapsed rect:not(.hit) { fill: rgba(255,255,255,.85); stroke-dasharray: none; }
+.marks-foot { margin: 6px 0 0; font-size: 11px; }
+.marks-foot a { color: inherit; }

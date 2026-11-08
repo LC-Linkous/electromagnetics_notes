@@ -23,6 +23,11 @@
       "id": "builder",
       "name": "Equation builder (Gauss / Ampère)",
       "url": "builder.html"
+    },
+    {
+      "id": "aggregate",
+      "name": "Class gaps (tally marks codes)",
+      "url": "aggregate.html"
     }
   ]
 }

@@ -172,21 +172,27 @@ export function layoutUnits(data, byId) {
   // Column widths are equal; row heights depend on tallest cluster in the row.
   const rowHeights = [0, 0];
   const clusterNodes = new Map();
+  const collapsed = data.collapsedGroups || new Set();
+  const clusterH = (g, ns) => (collapsed.has(g.id) ? title + 2 * pad : Math.ceil(ns.length / perRow) * cellH - 14 + 2 * pad + title);
   for (const g of data.groups) {
     const ns = data.nodes.filter(n => n.group === g.id).sort(byDepth);
     clusterNodes.set(g.id, ns);
-    const h = Math.ceil(ns.length / perRow) * cellH - 14 + 2 * pad + title;
     const r = slots[g.id].row;
-    rowHeights[r] = Math.max(rowHeights[r] || 0, h);
+    rowHeights[r] = Math.max(rowHeights[r] || 0, clusterH(g, ns));
   }
 
   for (const g of data.groups) {
     const { col, row } = slots[g.id];
     const ns = clusterNodes.get(g.id);
-    const h = Math.ceil(ns.length / perRow) * cellH - 14 + 2 * pad + title;
+    const h = clusterH(g, ns);
     const cx = col * (clusterW + clusterGapX);
     const cy = row === 0 ? 0 : rowHeights[0] + clusterGapY;
-    clusters.push({ label: g.name, x: cx, y: cy, w: clusterW, h, color: g.color });
+    const isCollapsed = collapsed.has(g.id);
+    clusters.push({
+      label: `${isCollapsed ? '▸' : '▾'} ${g.name}${isCollapsed ? `  ·  ${g.count ?? ns.length} topics` : ''}`,
+      x: cx, y: cy, w: clusterW, h, color: g.color, groupId: g.id, collapsed: isCollapsed,
+    });
+    if (isCollapsed) continue;
     ns.forEach((n, i) => {
       pos.set(n.id, {
         x: cx + pad + (i % perRow) * cellW,

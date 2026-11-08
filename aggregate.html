@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Class gaps · Electromagnetics Notes</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/builder.css">
+  <link rel="stylesheet" href="css/aggregate.css">
+</head>
+<body class="builder-page">
+  <header class="topbar">
+    <div class="brand">
+      <h1><a href="index.html" class="home">Electromagnetics Notes</a> <span class="muted">/</span> Class gaps</h1>
+      <p class="muted">Paste students' <em>Copy marks</em> codes, one per line, to see which topics a class finds shaky. Nothing leaves this page; there is no server.</p>
+    </div>
+    <div class="tools">
+      <a class="btn" href="index.html">Back to the map</a>
+    </div>
+  </header>
+
+  <main class="b-main">
+    <section class="agg-input">
+      <label for="agg-codes" class="agg-label">Marks codes</label>
+      <textarea id="agg-codes" rows="7" spellcheck="false" placeholder="intro-emf shaky:V,curl okay:E solid:vectors
+intro-emf shaky:gauss-apps,V
+…"></textarea>
+      <div class="agg-actions">
+        <button id="agg-run" class="btn">Tally</button>
+        <button id="agg-copy" class="btn" disabled>Copy table as text</button>
+        <span id="agg-msg" class="muted"></span>
+      </div>
+    </section>
+
+    <section id="agg-out" class="agg-out" hidden>
+      <h2 id="agg-title"></h2>
+      <p id="agg-sub" class="muted"></p>
+      <div class="agg-controls">
+        <label><input type="radio" name="sort" value="shaky" checked> most shaky first</label>
+        <label><input type="radio" name="sort" value="course"> course order</label>
+        <label><input type="checkbox" id="agg-hide-empty" checked> hide topics nobody marked</label>
+      </div>
+      <table id="agg-table" class="agg-table">
+        <thead><tr><th>Topic</th><th>Unit</th><th class="num">Shaky</th><th class="num">Okay</th><th class="num">Solid</th><th>Spread</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script type="module" src="js/aggregate.js"></script>
+</body>
+</html>

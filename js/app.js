@@ -30,6 +30,7 @@ const state = {
   offGroups: new Set(),
   focusSet: null,         // Set of ids shown in focus mode, or null
   gapsMode: false,
+  collapsedGroups: new Set(),   // Units view: groups folded to a header
   levels: {},             // id -> 'shaky' | 'okay' | 'solid'
   transform: { k: 1, x: 0, y: 0 },
   nodeEls: new Map(),
@@ -120,6 +121,7 @@ async function loadCourse(courseId, selectId = null) {
   $('#focus-banner').hidden = true;
   state.gapsMode = false;
   $('#gaps').setAttribute('aria-pressed', 'false');
+  state.collapsedGroups = new Set();
   state.byId = new Map();
   state.groupById = new Map();
   state.edges = [];
@@ -272,6 +274,10 @@ function viewSet() {
 /** The set of node ids currently visible, or null when everything is. */
 function visibleSet() {
   let v = viewSet();
+  if (state.view === 'units' && state.collapsedGroups.size) {
+    const shown = new Set(state.data.nodes.filter(n => !state.collapsedGroups.has(n.group)).map(n => n.id));
+    v = v ? new Set([...v].filter(id => shown.has(id))) : shown;
+  }
   if (state.focusSet) v = v ? new Set([...v].filter(id => state.focusSet.has(id))) : new Set(state.focusSet);
   if (state.gapsMode) {
     const g = gapsSet();
@@ -474,7 +480,7 @@ function setView(view, { instant = false } = {}) {
   const hints = {
     flow: 'Left → right: what you need first. Click a topic to light up its whole path.',
     duality: 'Electrostatics ↔ magnetostatics, twin by twin. Hover a topic to see its own prerequisites.',
-    units: 'Topics grouped the way the course is organized. Hover a topic to see what it connects to.',
+    units: 'Topics grouped the way the course is organized. Hover a topic to see what it connects to; click a unit heading to fold it.',
     maxwell: state.data.maxwell?.caption || '',
   };
   $('#view-hint').textContent = hints[view] || '';
@@ -500,7 +506,14 @@ function visibleData() {
 function relayout(ms = 400) {
   const data = visibleData();
   const groupsInUse = new Set(data.nodes.map(n => n.group));
-  const layoutData = { ...data, groups: data.groups.filter(g => groupsInUse.has(g.id)) };
+  // Collapsed groups keep their cluster (as a header) even though their nodes are filtered out.
+  const keepGroup = g => groupsInUse.has(g.id) || (state.view === 'units' && state.collapsedGroups.has(g.id));
+  const counts = new Map(state.data.groups.map(g => [g.id, state.data.nodes.filter(n => n.group === g.id).length]));
+  const layoutData = {
+    ...data,
+    groups: state.data.groups.filter(keepGroup).map(g => ({ ...g, count: counts.get(g.id) })),
+    collapsedGroups: state.view === 'units' ? state.collapsedGroups : new Set(),
+  };
   state.layout = LAYOUTS[state.view](layoutData, state.byId);
   // Nodes that are hidden keep their last position so they can animate back in later.
   for (const [id, p] of state.cur) if (!state.layout.pos.has(id)) state.layout.pos.set(id, p);
@@ -513,11 +526,18 @@ function drawClusters(clusters) {
   const layer = $('#clusters');
   layer.innerHTML = '';
   for (const c of clusters) {
-    const g = el('g', { class: 'cluster' });
+    const g = el('g', { class: 'cluster' + (c.groupId ? ' clickable' : '') + (c.collapsed ? ' collapsed' : '') });
     g.appendChild(el('rect', { x: c.x, y: c.y, width: c.w, height: c.h, ...(c.color ? { stroke: c.color } : {}) }));
     const t = el('text', { x: c.x + 16, y: c.y + 22, ...(c.color ? { fill: c.color } : {}), ...(c.labelSize ? { 'font-size': c.labelSize } : {}) });
     t.textContent = c.label;
     g.appendChild(t);
+    if (c.groupId) {
+      // A wide, invisible header strip is the click target.
+      const hit = el('rect', { class: 'hit', x: c.x, y: c.y, width: c.w, height: 34, fill: 'transparent' });
+      hit.addEventListener('click', e => { e.stopPropagation(); toggleGroup(c.groupId); });
+      g.appendChild(hit);
+      g.appendChild(el('title')).textContent = c.collapsed ? 'Click to expand' : 'Click to collapse';
+    }
     layer.appendChild(g);
   }
 }
@@ -854,6 +874,13 @@ function showPanel(n) {
   panel.scrollTop = 0;
 }
 
+// ------------------------------------------------------------------ collapsible units (Units view)
+function toggleGroup(gid) {
+  if (state.collapsedGroups.has(gid)) state.collapsedGroups.delete(gid); else state.collapsedGroups.add(gid);
+  if (state.selected && state.byId.get(state.selected)?.group === gid && state.collapsedGroups.has(gid)) clearSelection();
+  relayout(300);
+}
+
 // ------------------------------------------------------------------ focus mode & gaps mode
 function enterFocus(id) {
   state.focusSet = pathSet(id);
@@ -1018,7 +1045,7 @@ function wirePanZoom() {
   const svg = $('#map');
   let drag = null;
   svg.addEventListener('pointerdown', e => {
-    if (e.target.closest('.node')) return;
+    if (e.target.closest('.node') || e.target.closest('.hit')) return;   // pointer capture would swallow their clicks
     drag = { x: e.clientX, y: e.clientY, tx: state.transform.x, ty: state.transform.y, moved: false };
     svg.setPointerCapture(e.pointerId);
     svg.classList.add('dragging');

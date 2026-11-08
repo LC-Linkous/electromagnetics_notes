@@ -231,7 +231,19 @@
       ],
       "sanity": "This is Coulomb's law — Gauss's law had better reproduce it. The r² in the area cancels the 1/r² in the field; that cancellation is why Gauss's law works at all.",
       "twinNote": "No magnetic twin: there is no magnetic point charge, which is exactly what ∮B·dS = 0 says.",
-      "sketch": "radial-point"
+      "sketch": "radial-point",
+      "plot": {
+        "var": "r",
+        "breaks": [],
+        "segments": [
+          {
+            "from": 0.25,
+            "to": 3,
+            "kind": "inv2",
+            "amp": 1
+          }
+        ]
+      }
     },
     {
       "id": "solid-sphere",
@@ -258,7 +270,27 @@
       ],
       "sanity": "E grows linearly inside, peaks at the surface, then falls as 1/r². The two expressions agree at r = a — check that. Far away it must look like a point charge, and it does.",
       "twinNote": "No magnetic twin — spherically symmetric static B does not exist.",
-      "sketch": "radial-point"
+      "sketch": "radial-point",
+      "plot": {
+        "var": "r",
+        "breaks": [
+          "a"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "linear",
+            "amp": 1
+          },
+          {
+            "from": 1,
+            "to": 3,
+            "kind": "inv2",
+            "amp": 1
+          }
+        ]
+      }
     },
     {
       "id": "shell",
@@ -284,7 +316,26 @@
       ],
       "sanity": "E = 0 inside a charged shell is the result students doubt most. It follows from symmetry plus Q_enc = 0 — no integration of Coulomb's law needed. A conducting sphere in equilibrium behaves the same way.",
       "twinNote": "No magnetic twin.",
-      "sketch": "radial-point"
+      "sketch": "radial-point",
+      "plot": {
+        "var": "r",
+        "breaks": [
+          "a"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "zero"
+          },
+          {
+            "from": 1,
+            "to": 3,
+            "kind": "inv2",
+            "amp": 1
+          }
+        ]
+      }
     },
     {
       "id": "line",
@@ -305,7 +356,19 @@
       ],
       "sanity": "Falls as 1/ρ, not 1/ρ²: the charge is spread along a line, so the field weakens more slowly than for a point. The L cancelling is your check that the surface was chosen correctly.",
       "twinNote": "The Ampère twin is the long straight wire: same cylinder/circle geometry, with B circling instead of E radiating.",
-      "sketch": "radial-axis"
+      "sketch": "radial-axis",
+      "plot": {
+        "var": "ρ",
+        "breaks": [],
+        "segments": [
+          {
+            "from": 0.25,
+            "to": 3,
+            "kind": "inv",
+            "amp": 1
+          }
+        ]
+      }
     },
     {
       "id": "solid-cylinder",
@@ -331,7 +394,27 @@
       ],
       "sanity": "Linear inside, 1/ρ outside, continuous at ρ = a. Compare with the solid sphere: same shape of curve, different powers.",
       "twinNote": "The Ampère twin is a wire of radius a with uniform current density — same inside/outside structure.",
-      "sketch": "radial-axis"
+      "sketch": "radial-axis",
+      "plot": {
+        "var": "ρ",
+        "breaks": [
+          "a"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "linear",
+            "amp": 1
+          },
+          {
+            "from": 1,
+            "to": 3,
+            "kind": "inv",
+            "amp": 1
+          }
+        ]
+      }
     },
     {
       "id": "coax",
@@ -364,7 +447,32 @@
       ],
       "sanity": "Field only between the conductors, 1/ρ there. Integrate E from a to b to get V, divide ρ_L by it, and you have the capacitance per unit length: 2πε₀ / ln(b/a).",
       "twinNote": "The Ampère twin is the coax carrying current I out on the inner conductor and back on the shell — B is confined to the gap the same way.",
-      "sketch": "radial-axis"
+      "sketch": "radial-axis",
+      "plot": {
+        "var": "ρ",
+        "breaks": [
+          "a",
+          "b"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "zero"
+          },
+          {
+            "from": 1,
+            "to": 2,
+            "kind": "inv",
+            "amp": 1
+          },
+          {
+            "from": 2,
+            "to": 3,
+            "kind": "zero"
+          }
+        ]
+      }
     },
     {
       "id": "sheet",
@@ -385,7 +493,19 @@
       ],
       "sanity": "Uniform, independent of distance — for an *infinite* sheet. A real finite sheet looks like this only close to it and far from its edges. Two such sheets with opposite charge give the parallel-plate capacitor: fields add between, cancel outside.",
       "twinNote": "The Ampère twin is the infinite current sheet: uniform B parallel to the sheet, same pillbox→rectangle swap.",
-      "sketch": "normal-plane"
+      "sketch": "normal-plane",
+      "plot": {
+        "var": "distance",
+        "breaks": [],
+        "segments": [
+          {
+            "from": 0,
+            "to": 3,
+            "kind": "const",
+            "amp": 0.6
+          }
+        ]
+      }
     },
     {
       "id": "slab",
@@ -412,7 +532,27 @@
       ],
       "sanity": "Linear inside, constant outside, continuous at the faces, zero at the center by symmetry. Same pattern as the solid sphere and cylinder, in planar form.",
       "twinNote": "The Ampère twin would be a thick slab of uniform current density; the same inside/outside structure appears.",
-      "sketch": "normal-plane"
+      "sketch": "normal-plane",
+      "plot": {
+        "var": "x",
+        "breaks": [
+          "d/2"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "linear",
+            "amp": 0.8
+          },
+          {
+            "from": 1,
+            "to": 3,
+            "kind": "const",
+            "amp": 0.8
+          }
+        ]
+      }
     },
     {
       "id": "dipole",
@@ -469,7 +609,27 @@
       ],
       "sanity": "Linear inside, 1/ρ outside, continuous at ρ = a — exactly the solid-cylinder Gauss result with E → B, ρ_v → J, ε₀ → 1/μ₀. The 1/ρ outside is the result Biot–Savart gives for an infinite wire after a much longer integral.",
       "twinNote": "The Gauss twin is the infinite line charge (outside) or the solid charged cylinder (inside and out).",
-      "sketch": "circling"
+      "sketch": "circling",
+      "plot": {
+        "var": "ρ",
+        "breaks": [
+          "a"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "linear",
+            "amp": 1
+          },
+          {
+            "from": 1,
+            "to": 3,
+            "kind": "inv",
+            "amp": 1
+          }
+        ]
+      }
     },
     {
       "id": "coax-b",
@@ -507,7 +667,42 @@
       ],
       "sanity": "Check continuity at a, b and c. Integrating B across the gap gives the flux per unit length, hence L' = (μ₀/2π) ln(b/a) — the twin of the coax capacitance formula.",
       "twinNote": "The Gauss twin is the charged coaxial cable.",
-      "sketch": "circling"
+      "sketch": "circling",
+      "plot": {
+        "var": "ρ",
+        "breaks": [
+          "a",
+          "b",
+          "c"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "linear",
+            "amp": 1
+          },
+          {
+            "from": 1,
+            "to": 2,
+            "kind": "inv",
+            "amp": 1
+          },
+          {
+            "from": 2,
+            "to": 3,
+            "kind": "coax-shell",
+            "b": 2,
+            "c": 3,
+            "amp": 1
+          },
+          {
+            "from": 3,
+            "to": 3.8,
+            "kind": "zero"
+          }
+        ]
+      }
     },
     {
       "id": "current-sheet",
@@ -531,7 +726,19 @@
       "collapseWrong": {
         "l": "Both long sides count here. B is parallel to the sheet and reverses across it; so does your direction of travel around the loop, so B·dl has the same sign on both. Each contributes |B|ℓ: total 2|B|ℓ."
       },
-      "sketch": "parallel-plane-B"
+      "sketch": "parallel-plane-B",
+      "plot": {
+        "var": "distance",
+        "breaks": [],
+        "segments": [
+          {
+            "from": 0,
+            "to": 3,
+            "kind": "const",
+            "amp": 0.6
+          }
+        ]
+      }
     },
     {
       "id": "solenoid",
@@ -564,7 +771,26 @@
       "collapseWrong": {
         "2pirho": "A circle in the cross-section has B perpendicular to dl everywhere — zero circulation, nothing enclosed, no information. The loop that works is the rectangle with one side inside."
       },
-      "sketch": "solenoid"
+      "sketch": "solenoid",
+      "plot": {
+        "var": "ρ",
+        "breaks": [
+          "R"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1.5,
+            "kind": "const",
+            "amp": 0.8
+          },
+          {
+            "from": 1.5,
+            "to": 3,
+            "kind": "zero"
+          }
+        ]
+      }
     },
     {
       "id": "toroid",
@@ -594,7 +820,35 @@
       "shapeWrong": {
         "rectangle": "Inside a toroid B circles the toroid's axis; a rectangle in the cross-section has B perpendicular to dl. Use a circle concentric with the toroid."
       },
-      "sketch": "toroid"
+      "sketch": "toroid",
+      "plot": {
+        "var": "ρ",
+        "breaks": [
+          "a",
+          "b"
+        ],
+        "segments": [
+          {
+            "from": 0,
+            "to": 1,
+            "kind": "zero",
+            "region": 1
+          },
+          {
+            "from": 1,
+            "to": 2,
+            "kind": "inv",
+            "amp": 1,
+            "region": 0
+          },
+          {
+            "from": 2,
+            "to": 3,
+            "kind": "zero",
+            "region": 1
+          }
+        ]
+      }
     },
     {
       "id": "segment",

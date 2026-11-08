@@ -162,3 +162,119 @@ export function sketch(field, { law = 'gauss', shape = null, ok = 'neutral' } = 
   const inner = f(law) + (shape && SHAPES[law][shape] ? SHAPES[law][shape](ok, field) : '');
   return `<svg class="sketch" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="${NS}" aria-hidden="true">${inner}</svg>`;
 }
+
+// ------------------------------------------------------------------ collapse step: which parts of the shape contribute
+const PARTS = {
+  gauss: {
+    sphere: () => `<circle cx="${CX}" cy="${CY}" r="48" fill="none" stroke="${col.shape}" stroke-width="3" />`
+      + label(CX, CY + 66, 'whole sphere: E ⊥ surface, |E| constant', col.shape),
+    cylinder: () => `<line x1="${CX - 34}" y1="26" x2="${CX - 34}" y2="124" stroke="${col.shape}" stroke-width="3" />`
+      + `<line x1="${CX + 34}" y1="26" x2="${CX + 34}" y2="124" stroke="${col.shape}" stroke-width="3" />`
+      + `<ellipse cx="${CX}" cy="26" rx="34" ry="9" fill="none" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+      + `<ellipse cx="${CX}" cy="124" rx="34" ry="9" fill="none" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+      + label(CX + 40, 18, 'caps: E ∥ surface → 0', col.shapeNeutral, 'start')
+      + label(CX + 40, 138, 'curved side: 2πρL', col.shape, 'start'),
+    pillbox: () => `<line x1="${CX - 42}" y1="${CY - 22}" x2="${CX + 42}" y2="${CY - 22}" stroke="${col.shape}" stroke-width="3" />`
+      + `<line x1="${CX - 42}" y1="${CY + 22}" x2="${CX + 42}" y2="${CY + 22}" stroke="${col.shape}" stroke-width="3" />`
+      + `<line x1="${CX - 42}" y1="${CY - 22}" x2="${CX - 42}" y2="${CY + 22}" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+      + `<line x1="${CX + 42}" y1="${CY - 22}" x2="${CX + 42}" y2="${CY + 22}" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+      + label(CX, CY - 30, 'two faces: 2A', col.shape)
+      + label(CX + 48, CY + 4, 'sides: E ∥ → 0', col.shapeNeutral, 'start'),
+  },
+  ampere: {
+    circle: () => `<circle cx="${CX}" cy="${CY}" r="52" fill="none" stroke="${col.shape}" stroke-width="3" />`
+      + label(CX, CY + 70, 'whole loop: B ∥ dl, |B| constant → 2πρ', col.shape),
+    rectangle: (field) => {
+      const top = field === 'solenoid' ? 14 : CY - 34, h = field === 'solenoid' ? 62 : 68, bot = top + h;
+      const x0 = CX - 56, x1 = CX + 56;
+      let s = `<line x1="${x0}" y1="${top}" x2="${x0}" y2="${bot}" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+        + `<line x1="${x1}" y1="${top}" x2="${x1}" y2="${bot}" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+        + label(x1 + 4, (top + bot) / 2 + 3, 'B ⊥ dl → 0', col.shapeNeutral, 'start');
+      if (field === 'solenoid') {
+        s += `<line x1="${x0}" y1="${top}" x2="${x1}" y2="${top}" stroke="${col.shapeNeutral}" stroke-width="1.6" stroke-dasharray="4 3" />`
+          + `<line x1="${x0}" y1="${bot}" x2="${x1}" y2="${bot}" stroke="${col.shape}" stroke-width="3" />`
+          + label(CX, top - 4, 'outside: B = 0', col.shapeNeutral)
+          + label(CX, bot + 12, 'inside: |B|ℓ', col.shape);
+      } else {
+        s += `<line x1="${x0}" y1="${top}" x2="${x1}" y2="${top}" stroke="${col.shape}" stroke-width="3" />`
+          + `<line x1="${x0}" y1="${bot}" x2="${x1}" y2="${bot}" stroke="${col.shape}" stroke-width="3" />`
+          + label(CX, top - 4, '|B|ℓ', col.shape) + label(CX, bot + 12, '|B|ℓ (B and dl both reversed)', col.shape);
+      }
+      return s;
+    },
+  },
+};
+function label(x, y, text, color, anchor = 'middle') {
+  return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-size="8.5" fill="${color}" stroke="#fff" stroke-width="3" paint-order="stroke" font-weight="600">${text}</text>`;
+}
+
+/** The correct shape, with contributing parts solid green and non-contributing parts dashed grey. */
+export function collapseSketch(field, law, shape) {
+  const f = FIELDS[field], p = PARTS[law] && PARTS[law][shape];
+  if (!f || !p) return '';
+  // field drawn faint so the surface reads first
+  const inner = `<g opacity="0.45">${f(law)}</g>` + p(field);
+  return `<svg class="sketch" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" xmlns="${NS}" aria-hidden="true">${inner}</svg>`;
+}
+
+// ------------------------------------------------------------------ regions step: |field| vs distance
+const KINDS = {
+  zero: () => 0,
+  const: (x, s) => s.amp,
+  linear: (x, s) => s.amp * x / s.to,
+  inv: (x, s) => s.amp * s.from / x,
+  inv2: (x, s) => s.amp * (s.from * s.from) / (x * x),
+  'coax-shell': (x, s) => s.amp * (1 / x) * (s.c * s.c - x * x) / (s.c * s.c - s.b * s.b),   // equals amp/b at ρ = b, matching inv
+};
+
+/**
+ * Piecewise |field| vs distance from data: { var, breaks: [labels], segments: [{from,to,kind,amp,...}] }.
+ * `active` is the index of the region to highlight. Values are normalized; axes are unlabelled on purpose.
+ */
+export function plotSketch(plot, fieldLetter, active = -1) {
+  const PW = 260, PH = 150, L = 34, R = 10, T = 12, B = 28;
+  const xmax = Math.max(...plot.segments.map(s => s.to));
+  const pts = [];
+  let ymax = 0;
+  plot.segments.forEach((s, i) => {
+    const seg = [];
+    const n = 40;
+    for (let k = 0; k <= n; k++) {
+      let x = s.from + (s.to - s.from) * k / n;
+      if (s.kind === 'inv' || s.kind === 'inv2') x = Math.max(x, s.from || 0.05);
+      const y = KINDS[s.kind](x, s);
+      seg.push([x, y]);
+      if (isFinite(y)) ymax = Math.max(ymax, y);
+    }
+    pts.push(seg);
+  });
+  ymax = Math.max(ymax, 0.1) * 1.15;
+  const X = x => L + (x / xmax) * (PW - L - R);
+  const Y = y => T + (PH - T - B) * (1 - Math.min(y, ymax) / ymax);
+
+  let s = `<rect x="0" y="0" width="${PW}" height="${PH}" fill="#fff" />`;
+  // highlighted region band
+  const regionOf = (sg, i) => (sg.region == null ? i : sg.region);
+  plot.segments.forEach((a, i) => {
+    if (active >= 0 && regionOf(a, i) === active)
+      s += `<rect x="${X(a.from)}" y="${T}" width="${X(a.to) - X(a.from)}" height="${PH - T - B}" fill="#def7ec" />`;
+  });
+  // axes
+  s += `<line x1="${L}" y1="${T}" x2="${L}" y2="${PH - B}" stroke="#9ca3af" />`
+    + `<line x1="${L}" y1="${PH - B}" x2="${PW - R}" y2="${PH - B}" stroke="#9ca3af" />`
+    + `<text x="${L - 6}" y="${T + 10}" text-anchor="end" font-size="10" fill="#6b7280">|${fieldLetter}|</text>`
+    + `<text x="${PW - R}" y="${PH - B + 14}" text-anchor="end" font-size="10" fill="#6b7280">${plot.var}</text>`;
+  // break lines with labels
+  const breaksX = plot.segments.slice(1).map(sg => sg.from);
+  breaksX.forEach((bx, i) => {
+    s += `<line x1="${X(bx)}" y1="${T}" x2="${X(bx)}" y2="${PH - B}" stroke="#d9d6cf" stroke-dasharray="3 3" />`
+      + `<text x="${X(bx)}" y="${PH - B + 14}" text-anchor="middle" font-size="10" fill="#6b7280">${plot.breaks[i] || ''}</text>`;
+  });
+  // curve
+  pts.forEach((seg, i) => {
+    const d = seg.map(([x, y], k) => `${k ? 'L' : 'M'}${X(x).toFixed(1)},${Y(y).toFixed(1)}`).join(' ');
+    const on = regionOf(plot.segments[i], i) === active;
+    s += `<path d="${d}" fill="none" stroke="${on ? '#0e9f6e' : '#1f2328'}" stroke-width="${on ? 2.6 : 1.8}" />`;
+  });
+  return `<svg class="plot" viewBox="0 0 ${PW} ${PH}" width="${PW}" height="${PH}" xmlns="${NS}" role="img" aria-label="Field magnitude versus distance">${s}</svg>`;
+}

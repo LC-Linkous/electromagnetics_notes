@@ -1,7 +1,7 @@
 // Equation builder: a guided walk from "what is the source?" to the collapsed form of
 // Gauss's or Ampère's law. Everything it says lives in data/builder.json.
 
-import { sketch } from './sketch.js';
+import { sketch, collapseSketch, plotSketch } from './sketch.js';
 
 const $ = sel => document.querySelector(sel);
 const tex = (s, display = false) => {
@@ -194,10 +194,13 @@ function stepCollapse() {
         if (ok) {
           const rhs = L.law.split('=').slice(1).join('=').trim();
           mark(li, btn, true, `<strong>That's the collapsed form.</strong>`);
-          li.querySelector('.extra').innerHTML = `<div class="b-chain">
-              ${tex(L.law, true)}
-              <p class="why">Field is parallel to the element where it contributes, and constant there — pull it out:</p>
-              ${tex(`${opt.latex} = ${rhs}`, true)}
+          li.querySelector('.extra').innerHTML = `<div class="b-chain chain-row">
+              ${collapseSketch(c.sketch, state.law, c.shape)}
+              <div>
+                ${tex(L.law, true)}
+                <p class="why">Field is parallel to the element where it contributes, and constant there — pull it out. Green parts contribute; grey parts give zero:</p>
+                ${tex(`${opt.latex} = ${rhs}`, true)}
+              </div>
             </div>`;
           stepEnclosed();
         } else {
@@ -219,12 +222,15 @@ function stepEnclosed() {
   li.innerHTML = `<h2>${L.stepWords.enclosed}</h2>
     <p class="lead">Only ${L.sourceWord} ${state.law === 'gauss' ? 'inside the surface' : 'threading the loop'} counts. ${c.regions.length > 1 ? 'Pick the region — the enclosed amount changes, the left side does not.' : ''}</p>
     <div class="b-regions"></div>
-    <div class="b-result"></div>`;
+    <div class="result-row"><div class="b-result"></div><div class="b-plot"></div></div>`;
   const regions = li.querySelector('.b-regions');
   const result = li.querySelector('.b-result');
+  const plotBox = li.querySelector('.b-plot');
+  const letter = state.law === 'gauss' ? 'E' : 'B';
   const show = i => {
     const r = c.regions[i];
     regions.querySelectorAll('.b-region').forEach((b, j) => b.classList.toggle('on', i === j));
+    plotBox.innerHTML = c.plot ? plotSketch(c.plot, letter, i) + `<p class="note">|${letter}| against distance — the shape of the curve, not to scale. Check: does it match the formula in each region? Is it continuous where you expect?</p>` : '';
     const rhs = L.law.split('=').slice(1).join('=').trim();
     result.innerHTML = `
       <div class="row"><span class="k">Enclosed</span><span>${tex(r.enclosed, true)}</span></div>

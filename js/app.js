@@ -1,4 +1,4 @@
-import { LAYOUTS, NODE_W, NODE_H } from './layout.js';
+import { LAYOUTS, NODE_W, NODE_H, computeDepth } from './layout.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const $ = sel => document.querySelector(sel);
@@ -101,6 +101,8 @@ async function loadCourse(courseId) {
   buildLegend();
   buildNodes();
   buildEdgeElements();
+  // Views a course does not define are hidden.
+  document.querySelector('.views a[data-view="maxwell"]').hidden = !data.maxwell;
 
   const { view, node } = parseHash();
   setView(view, { instant: true });
@@ -190,10 +192,22 @@ function gapsSet() {
   shaky.forEach(id => s.add(id));
   return s;
 }
+/** Ids a view restricts itself to (the Maxwell grid), or null. */
+function viewSet() {
+  if (state.view !== 'maxwell' || !state.data.maxwell) return null;
+  const m = state.data.maxwell;
+  const ids = new Set();
+  m.columns.forEach(c => c.header.forEach(id => ids.add(id)));
+  m.rows.forEach(r => { ids.add(r.node); r.cells.flat().forEach(id => ids.add(id)); r.below.flat().forEach(id => ids.add(id)); });
+  if (m.bridge) ids.add(m.bridge);
+  if (m.future) ids.add(m.future);
+  return new Set([...ids].filter(id => state.byId.has(id)));
+}
+
 /** The set of node ids currently visible, or null when everything is. */
 function visibleSet() {
-  let v = null;
-  if (state.focusSet) v = new Set(state.focusSet);
+  let v = viewSet();
+  if (state.focusSet) v = v ? new Set([...v].filter(id => state.focusSet.has(id))) : new Set(state.focusSet);
   if (state.gapsMode) {
     const g = gapsSet();
     v = v ? new Set([...v].filter(id => g.has(id))) : g;
@@ -299,7 +313,8 @@ function buildEdgeElements() {
 // ------------------------------------------------------------------ hash  (#view or #view/topic-id)
 function parseHash() {
   const [view, node] = location.hash.replace(/^#/, '').split('/');
-  return { view: LAYOUTS[view] ? view : 'flow', node: node || null };
+  const ok = LAYOUTS[view] && (view !== 'maxwell' || state.data?.maxwell);
+  return { view: ok ? view : 'flow', node: node || null };
 }
 function writeHash() {
   const h = '#' + state.view + (state.selected ? '/' + state.selected : '');
@@ -316,8 +331,10 @@ function setView(view, { instant = false } = {}) {
     flow: 'Left → right: what you need first. Click a topic to light up its whole path.',
     duality: 'Electrostatics ↔ magnetostatics, twin by twin. Hover a topic to see its own prerequisites.',
     units: 'Topics grouped the way the course is organized. Hover a topic to see what it connects to.',
+    maxwell: state.data.maxwell?.caption || '',
   };
   $('#view-hint').textContent = hints[view] || '';
+  $('#view-hint').classList.toggle('long', view === 'maxwell');
 
   relayout(instant ? 0 : 480);
 }
@@ -354,7 +371,7 @@ function drawClusters(clusters) {
   for (const c of clusters) {
     const g = el('g', { class: 'cluster' });
     g.appendChild(el('rect', { x: c.x, y: c.y, width: c.w, height: c.h, ...(c.color ? { stroke: c.color } : {}) }));
-    const t = el('text', { x: c.x + 16, y: c.y + 22, ...(c.color ? { fill: c.color } : {}) });
+    const t = el('text', { x: c.x + 16, y: c.y + 22, ...(c.color ? { fill: c.color } : {}), ...(c.labelSize ? { 'font-size': c.labelSize } : {}) });
     t.textContent = c.label;
     g.appendChild(t);
     layer.appendChild(g);
@@ -672,6 +689,57 @@ function setLevel(id, level) {
   }
 }
 
+// ------------------------------------------------------------------ printable study sheet
+/** Every topic as a compact card, in prerequisite order, answers at the end. */
+function buildSheet() {
+  const sheet = $('#sheet');
+  const depth = computeDepth(state.data.nodes, state.byId);
+  const gi = new Map(state.data.groups.map((g, i) => [g.id, i]));
+  const nodes = state.data.nodes.slice().sort((a, b) =>
+    gi.get(a.group) - gi.get(b.group) || depth.get(a.id) - depth.get(b.id) || a.name.localeCompare(b.name));
+  const esc = str => String(str).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]));
+  const inline = str => (window.marked ? marked.parseInline(str) : esc(str));
+  const text = state.data.meta.text ? state.data.meta.text.split(',')[0] : '';
+
+  let html = `<h1>${esc(state.course.name)} — study sheet</h1>
+    <p class="sub">${esc(state.catalog.title)} · ${esc(state.data.meta.subtitle || '')}${text ? ' · reading: ' + esc(state.data.meta.text) : ''}</p>`;
+  const answers = [];
+  let currentGroup = null;
+  for (const n of nodes) {
+    if (n.group !== currentGroup) {
+      currentGroup = n.group;
+      html += `<h2>${esc(state.groupById.get(n.group).name)}</h2>`;
+    }
+    const builds = n.requires.map(id => state.byId.get(id).name).join(', ');
+    html += `<article class="card">
+      <h3>${esc(n.name)}</h3>
+      <p class="meta">${esc(state.data.kinds[n.kind] || n.kind)}${n.sadiku ? ` · ${esc(text)} §${esc(n.sadiku)}` : ''}${builds ? ` · builds on: ${esc(builds)}` : ''}</p>
+      <p>${esc(n.summary)}</p>
+      ${n.equation ? `<div class="eq" data-eq="${esc(n.equation).replace(/"/g, '&quot;')}"></div>` : ''}
+      ${n.pitfalls && n.pitfalls.length ? `<ul>${n.pitfalls.map(x => `<li>${inline(x)}</li>`).join('')}</ul>` : ''}
+      ${n.check && n.check.q ? `<p class="q">Check yourself (${answers.length + 1}): ${inline(n.check.q)}</p>` : ''}
+    </article>`;
+    if (n.check && n.check.q) answers.push({ n: answers.length + 1, name: n.name, a: n.check.a || '' });
+  }
+  if (answers.length) {
+    html += `<section class="answers"><h2>Answers</h2><ol>${answers.map(a => `<li><strong>${esc(a.name)}.</strong> ${inline(a.a)}</li>`).join('')}</ol></section>`;
+  }
+  sheet.innerHTML = html;
+  if (window.katex && state.data.meta.equationFormat === 'latex') {
+    sheet.querySelectorAll('.eq[data-eq]').forEach(e => {
+      try { katex.render(e.dataset.eq, e, { displayMode: true, throwOnError: false }); } catch { e.textContent = e.dataset.eq; }
+    });
+  } else {
+    sheet.querySelectorAll('.eq[data-eq]').forEach(e => { e.textContent = e.dataset.eq; });
+  }
+}
+
+function printSheet() {
+  buildSheet();
+  try { window.print(); }
+  catch { $('#view-hint').textContent = 'Printing is not available in this viewer. Open the page on its own site and use the browser\u2019s Print.'; }
+}
+
 // ------------------------------------------------------------------ keyboard navigation
 function siblingsOf(id) {
   const p = state.layout.pos.get(id);
@@ -800,6 +868,7 @@ function wireUI() {
 
   $('#search').addEventListener('input', e => { state.query = e.target.value.trim(); applyEmphasis(); });
   $('#fit').addEventListener('click', () => fit());
+  $('#print').addEventListener('click', printSheet);
   $('#gaps').addEventListener('click', toggleGaps);
   $('#focus-exit').addEventListener('click', exitFocus);
   $('#p-focus').addEventListener('click', () => { if (state.selected) enterFocus(state.selected); });

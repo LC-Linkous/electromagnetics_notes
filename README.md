@@ -11,10 +11,13 @@ The map has three views of the same topics:
 | **Flow** | Left → right prerequisite order. An arrow from A to B means B builds on A. |
 | **Duality** | Electrostatics on the left, magnetostatics on the right, each topic lined up against its twin. The vector-calculus tools and the Lorentz force (the one law that uses both fields) sit in the middle. |
 | **Units** | Topics grouped the way the course is organized. |
+| **Maxwell** | Just the four laws of static fields as a 2×2 grid (which field × spreads out / circulates), with the theorems that convert integral and differential forms and what hangs off each law. Shown only when the course defines a `maxwell` grid. |
 
 Click a topic to open its card and light up its whole path — everything it builds on and everything that builds on it. The card holds a short summary, the key equation, suggested reading in Sadiku (6th ed.), common sticking points, a check-yourself question, links to free simulators and references, connections to other topics, and longer notes where they exist. **Focus on this path** hides everything else and re-lays out just that path. Hover to see direct connections. Dashed boxes are *exits* — where the material leads after this course.
 
 Students can mark each topic **shaky / okay / solid**; the marks are stored in their own browser only (nothing is sent anywhere). **My gaps** then shows just the shaky topics and everything that depends on them, and each card reports which of its prerequisites are marked shaky.
+
+**Print** builds a study sheet of every topic in prerequisite order — summary, equation, sticking points, check question — with the answers on the last page, and opens the browser's print dialog (save as PDF from there).
 
 Every view and topic is linkable: `#flow/gauss-int`, `#duality/lorentz`, `#units`. Arrow keys walk the map from the selected topic (← prerequisite, → next, ↑↓ neighbors).
 
@@ -31,6 +34,7 @@ data/courses.json     the catalog: site title and the list of courses
 data/intro-emf.json   ← the content for Introduction to EMF. This is the file that normally changes.
 notes/<topic-id>.md   optional longer notes per topic, in Markdown with $…$ / $$…$$ math
 vendor/               KaTeX (equations) and marked (Markdown), vendored so the site has no runtime dependencies
+scripts/validate.py   checks the data files; run it after editing (also runs on push via GitHub Actions)
 ```
 
 No build step. Plain ES modules, so it needs to be served over HTTP (not opened as a `file://`). Locally:
@@ -85,7 +89,17 @@ Everything students see for a course lives in its topic file, e.g. `data/intro-e
 - `translates` — integral ↔ differential form of the same law, with the theorem that converts them: `{ "a": "gauss-int", "b": "gauss-diff", "via": "div-thm" }`
 - `mirrors` — electrostatic / magnetostatic twins: `{ "e": "V", "b": "A" }`
 
+**The Maxwell grid** (optional, top-level `maxwell`): two `rows` (each with its field `node`, two `cells` of `[integral, differential]` ids and the ids hanging `below` each cell), two `columns` (each with a `header` stack of ids), a `bridge` node and a `future` node. Any node referenced must exist; the validator checks this.
+
 Adding a node is: add the object to `nodes`, list what it `requires`, optionally add `mirrors`/`translates` entries. Layouts recompute on load.
+
+### Validating
+
+```
+python3 scripts/validate.py
+```
+
+Reports duplicate or malformed ids, references to unknown nodes, cycles in `requires`, exits with outgoing edges, missing notes files, bad resource URLs and broken grid references. The same script runs as a GitHub Action on every push that touches `data/` or `notes/`, so a typo shows up as a red X on the commit rather than as a silently broken map.
 
 ## Deliberately not in here
 

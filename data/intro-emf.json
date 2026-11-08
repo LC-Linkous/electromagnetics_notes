@@ -59,6 +59,76 @@
     "technique": "Technique",
     "exit": "Where this leads"
   },
+  "maxwell": {
+    "title": "Maxwell's equations for static fields",
+    "caption": "Four laws, one grid. Rows: which field. Columns: what question you ask of it. Each cell has an integral form and a differential form; the theorem at the top of the column converts between them. In statics the two rows never talk to each other except through the Lorentz force — the two cells that equal zero are where time variation will later couple them.",
+    "columns": [
+      {
+        "label": "How does the field spread out?  (divergence · flux)",
+        "header": [
+          "flux",
+          "divergence",
+          "div-thm"
+        ]
+      },
+      {
+        "label": "How does the field circulate?  (curl · circulation)",
+        "header": [
+          "circulation",
+          "curl",
+          "stokes"
+        ]
+      }
+    ],
+    "rows": [
+      {
+        "node": "E",
+        "cells": [
+          [
+            "gauss-int",
+            "gauss-diff"
+          ],
+          [
+            "conservative-int",
+            "conservative-diff"
+          ]
+        ],
+        "below": [
+          [
+            "charge",
+            "coulomb"
+          ],
+          [
+            "V"
+          ]
+        ]
+      },
+      {
+        "node": "B",
+        "cells": [
+          [
+            "no-monopoles-int",
+            "no-monopoles-diff"
+          ],
+          [
+            "ampere-int",
+            "ampere-diff"
+          ]
+        ],
+        "below": [
+          [
+            "A"
+          ],
+          [
+            "current",
+            "biot-savart"
+          ]
+        ]
+      }
+    ],
+    "bridge": "lorentz",
+    "future": "x-time-varying"
+  },
   "nodes": [
     {
       "id": "vectors",

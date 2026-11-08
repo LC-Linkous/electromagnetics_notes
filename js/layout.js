@@ -198,4 +198,85 @@ export function layoutUnits(data, byId) {
   return { pos, clusters, edgeVisibility: { requires: false, translates: true, mirrors: false, labels: false } };
 }
 
-export const LAYOUTS = { flow: layoutFlow, duality: layoutDuality, units: layoutUnits };
+// -------------------------------------------------------------- Maxwell view
+/**
+ * The 2×2 grid described by data.maxwell:
+ *   rows    – one per field; the row's own node (E, B) is the row header
+ *   columns – divergence / curl; each has a stack of header nodes (concept, operator, theorem)
+ *   cells   – [integralForm, differentialForm] pairs
+ *   below   – nodes hanging under each cell (sources and explicit solutions, potentials)
+ *   bridge  – the one law that touches both rows (Lorentz), placed between them
+ *   future  – the exit that fills the empty-looking cells once fields vary in time
+ * Ids missing from the data (hidden by focus or gaps mode) are skipped.
+ */
+export function layoutMaxwell(data, byId) {
+  const spec = data.maxwell;
+  const pos = new Map();
+  const clusters = [];
+  if (!spec) return { pos, clusters, edgeVisibility: { requires: true, translates: true, mirrors: false } };
+
+  const has = id => data.nodes.some(n => n.id === id);
+  const PAIR_GAP = 70;                 // between integral and differential form
+  const CELL_W = 2 * NODE_W + PAIR_GAP;
+  const COL_GAPX = 120;
+  const ROW_GAP = 16;
+  const rowH = NODE_H + ROW_GAP;
+  const xRowHeader = 0;
+  const xCol = c => NODE_W + 110 + c * (CELL_W + COL_GAPX);
+  const pad = 22;
+
+  // Column headers: stacked at the top, centered on the cell.
+  const headerCount = Math.max(...spec.columns.map(c => c.header.length));
+  let y = 0;
+  spec.columns.forEach((col, c) => {
+    const cx = xCol(c) + CELL_W / 2 - NODE_W / 2;
+    col.header.forEach((id, i) => { if (has(id)) pos.set(id, { x: cx, y: i * rowH }); });
+  });
+  y = headerCount * rowH + 30;
+
+  // Rows
+  const rowTops = [];
+  spec.rows.forEach((row, r) => {
+    const top = y;
+    const belowDepth = Math.max(...row.below.map(b => b.filter(has).length), 0);
+    const blockH = rowH + belowDepth * rowH;
+    if (has(row.node)) pos.set(row.node, { x: xRowHeader, y: top + (blockH - ROW_GAP) / 2 - NODE_H / 2 });
+    row.cells.forEach((pair, c) => {
+      const [intId, diffId] = pair;
+      if (has(intId)) pos.set(intId, { x: xCol(c), y: top });
+      if (has(diffId)) pos.set(diffId, { x: xCol(c) + NODE_W + PAIR_GAP, y: top });
+      const below = (row.below[c] || []).filter(has);
+      below.forEach((id, i) => pos.set(id, { x: xCol(c) + CELL_W / 2 - NODE_W / 2, y: top + (i + 1) * rowH }));
+    });
+    rowTops.push({ top, h: blockH });
+    y = top + blockH + (r < spec.rows.length - 1 ? 110 : 0);   // room for the bridge between rows
+  });
+
+  // Bridge: between the two rows, under the row headers.
+  if (spec.bridge && has(spec.bridge) && rowTops.length >= 2) {
+    const a = rowTops[0], b = rowTops[1];
+    const mid = (a.top + a.h + b.top) / 2;
+    pos.set(spec.bridge, { x: xRowHeader, y: mid - NODE_H / 2 });
+  }
+  // Future: to the right of the curl column, between the two rows.
+  if (spec.future && has(spec.future) && rowTops.length >= 2) {
+    const a = rowTops[0], b = rowTops[1];
+    const mid = (a.top + a.h + b.top) / 2;
+    pos.set(spec.future, { x: xCol(spec.columns.length - 1) + CELL_W + 90, y: mid - NODE_H / 2 });
+  }
+
+  // Column frames
+  const totalBottom = y;
+  spec.columns.forEach((col, c) => {
+    clusters.push({ label: col.label, x: xCol(c) - pad, y: -pad - 14, w: CELL_W + 2 * pad, h: totalBottom + 2 * pad + 14, labelSize: 12 });
+  });
+
+  // Center on y = 0 like the other views
+  const shift = totalBottom / 2;
+  for (const p of pos.values()) p.y -= shift;
+  for (const c of clusters) c.y -= shift;
+
+  return { pos, clusters, edgeVisibility: { requires: true, translates: true, mirrors: false, labels: false } };
+}
+
+export const LAYOUTS = { flow: layoutFlow, duality: layoutDuality, units: layoutUnits, maxwell: layoutMaxwell };

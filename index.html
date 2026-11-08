@@ -22,11 +22,13 @@
       <a href="#flow"    data-view="flow"    role="tab">Flow</a>
       <a href="#duality" data-view="duality" role="tab">Duality</a>
       <a href="#units"   data-view="units"   role="tab">Units</a>
+      <a href="#maxwell" data-view="maxwell" role="tab">Maxwell</a>
     </nav>
 
     <div class="tools">
       <input id="search" type="search" placeholder="Find a topic…" aria-label="Find a topic" autocomplete="off">
       <button id="gaps" class="btn toggle" title="Show only topics you marked shaky, and everything that builds on them" aria-pressed="false">My gaps</button>
+      <button id="print" class="btn" title="Print a study sheet of every topic (or save it as PDF)">Print</button>
       <button id="fit" class="btn" title="Fit map to window">Fit</button>
       <button id="help-btn" class="btn" title="How to read this map">?</button>
     </div>
@@ -142,6 +144,8 @@
           <dd>Electrostatics on the left, magnetostatics on the right, with each topic lined up against its twin. The vector-calculus tools and the one law that uses both fields sit in the middle.</dd>
           <dt>Units</dt>
           <dd>The same topics grouped the way the course is organized.</dd>
+          <dt>Maxwell</dt>
+          <dd>Just the four laws of static fields as a 2×2 grid — which field, and whether you ask how it spreads out or how it circulates — with the theorems that convert integral and differential forms, and what hangs off each law.</dd>
         </dl>
         <p><strong>Focus on this path</strong> hides everything not connected to the open topic. <strong>I know this</strong> lets you mark topics shaky / okay / solid; <strong>My gaps</strong> then shows only your shaky topics and what depends on them. Marks are saved in this browser only — nobody else sees them.</p>
         <p><strong>Keyboard:</strong> ← prerequisite · → next topic · ↑↓ neighbors in the same column · Esc closes.</p>
@@ -149,6 +153,8 @@
       </div>
     </div>
   </main>
+
+  <section id="sheet" class="sheet" aria-hidden="true"></section>
 
   <script src="vendor/katex/katex.min.js"></script>
   <script src="vendor/katex/contrib/auto-render.min.js"></script>

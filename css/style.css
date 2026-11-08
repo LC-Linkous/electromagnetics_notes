@@ -287,3 +287,30 @@ a { color: inherit; }
 .node.lvl-okay  .mark { display: block; fill: #d97706; }
 .node.lvl-solid .mark { display: block; fill: #0e9f6e; }
 .node.path rect.box { filter: drop-shadow(0 1px 4px rgba(0,0,0,.14)); }
+
+/* ---------- patch 0003: Maxwell view caption, print sheet ---------- */
+.views a[hidden] { display: none; }
+.view-hint.long { max-width: 720px; line-height: 1.45; white-space: normal; }
+
+.sheet { display: none; }
+@media print {
+  @page { margin: 16mm; }
+  body { display: block; overflow: visible; background: #fff; color: #000; }
+  body > *:not(#sheet) { display: none !important; }
+  .sheet { display: block; font: 10.5pt/1.4 Georgia, "Times New Roman", serif; color: #000; }
+  .sheet h1 { font-size: 20pt; margin: 0 0 2pt; }
+  .sheet .sub { color: #444; margin: 0 0 14pt; font-size: 10pt; }
+  .sheet h2 { font-size: 13pt; margin: 18pt 0 6pt; padding-bottom: 2pt; border-bottom: 1px solid #000; break-after: avoid; }
+  .sheet .card { break-inside: avoid; margin: 0 0 10pt; padding: 0 0 8pt; border-bottom: 1px dotted #999; }
+  .sheet .card h3 { font-size: 11.5pt; margin: 0 0 2pt; }
+  .sheet .card .meta { font-size: 8.5pt; color: #555; margin: 0 0 3pt; }
+  .sheet .card p { margin: 0 0 3pt; }
+  .sheet .card .eq { margin: 4pt 0 4pt 12pt; font-size: 11pt; }
+  .sheet .card ul { margin: 2pt 0 3pt; padding-left: 16pt; }
+  .sheet .card .q { font-style: italic; }
+  .sheet .answers { break-before: page; }
+  .sheet .answers li { margin-bottom: 5pt; }
+  .sheet a { color: #000; text-decoration: none; }
+  .sheet .katex-display { margin: 0; text-align: left; }
+  .sheet .katex-display > .katex { text-align: left; }
+}

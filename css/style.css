@@ -35,8 +35,21 @@ a { color: inherit; }
   background: var(--paper);
   flex-wrap: wrap;
 }
+.brand { display: grid; grid-template-columns: auto auto; column-gap: 12px; align-items: center; }
 .brand h1 { font-size: 17px; margin: 0; letter-spacing: 0.01em; }
-.brand p { margin: 2px 0 0; font-size: 12px; }
+.brand p { grid-column: 1 / -1; margin: 2px 0 0; font-size: 12px; }
+.course select {
+  font: inherit; font-size: 13px; font-weight: 600;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--ink);
+  cursor: pointer;
+  max-width: 260px;
+}
+.course select:disabled { cursor: default; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .views { display: flex; gap: 4px; background: var(--bg); padding: 4px; border-radius: 10px; }
 .views a {
@@ -185,7 +198,7 @@ a { color: inherit; }
 .panel ul { margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.6; }
 .rel { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
 .rel .lbl { color: var(--muted); }
-.rel a { cursor: pointer; text-decoration: underline dotted; }
+.rel a, #p-leads a { cursor: pointer; text-decoration: underline dotted; }
 .rel:empty { display: none; }
 
 /* ---------- help ---------- */

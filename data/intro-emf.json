@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Electromagnetics Notes",
+    "course": "Introduction to EMF",
     "subtitle": "A topic-and-flow map of introductory electromagnetic field theory",
     "text": "Sadiku, Elements of Electromagnetics, 6th ed. (section numbers are suggested reading, not required)",
     "edgeKinds": {
@@ -479,7 +479,7 @@
     },
 
     {
-      "id": "x-time-varying", "group": "exit", "kind": "exit", "side": "center",
+      "id": "x-time-varying", "group": "exit", "kind": "exit", "side": "center", "leadsTo": "emf-2",
       "name": "Time-varying fields",
       "summary": "The two 'empty' cells of the static Maxwell equations are where the action is once things move. A changing B puts a term into ∇×E = 0 (Faraday's law); a changing E puts a term into ∇×B = μ₀J (displacement current). That coupling is what makes waves, and it is the next course.",
       "equation": "∇×E = −∂B/∂t,  ∇×B = μ₀J + μ₀ε₀ ∂E/∂t",

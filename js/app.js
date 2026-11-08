@@ -10,7 +10,9 @@ const el = (tag, attrs = {}, ns = SVG_NS) => {
 
 // ------------------------------------------------------------------ state
 const state = {
-  data: null,
+  catalog: null,          // data/courses.json
+  course: null,           // the active entry from catalog.courses
+  data: null,             // the active course's topic file
   byId: new Map(),
   groupById: new Map(),
   edges: [],              // { kind, source, target, via? }
@@ -31,26 +33,85 @@ const state = {
 
 // ------------------------------------------------------------------ boot
 async function main() {
-  const res = await fetch('data/topics.json');
-  const data = await res.json();
+  const catalog = await (await fetch('data/courses.json')).json();
+  state.catalog = catalog;
+  $('#title').textContent = catalog.title || 'Notes';
+  document.title = catalog.title || document.title;
+
+  buildCourseSwitcher();
+  wireUI();
+
+  const remembered = readRemembered('course');
+  const first = catalog.courses.find(c => c.id === remembered && c.file)
+    || catalog.courses.find(c => c.file)
+    || catalog.courses[0];
+  await loadCourse(first.id);
+}
+
+/** Load a course's topic file and (re)build the whole map from it. */
+async function loadCourse(courseId) {
+  const course = state.catalog.courses.find(c => c.id === courseId);
+  if (!course || !course.file) return;
+  const data = await (await fetch(course.file)).json();
+
+  // Tear down anything from a previously loaded course.
+  clearSelection();
+  state.hovered = null;
+  state.query = '';
+  $('#search').value = '';
+  state.offGroups.clear();
+  state.byId = new Map();
+  state.groupById = new Map();
+  state.edges = [];
+  state.adjacency = new Map();
+  state.cur = new Map();
+  state.nodeEls = new Map();
+  state.edgeEls = [];
+  state.labelEls = [];
+  $('#nodes').innerHTML = '';
+  $('#edges').innerHTML = '';
+  $('#edge-labels').innerHTML = '';
+  $('#clusters').innerHTML = '';
+  $('#legend').innerHTML = '';
+
+  state.course = course;
   state.data = data;
   data.nodes.forEach(n => state.byId.set(n.id, n));
   data.groups.forEach(g => state.groupById.set(g.id, g));
   validate(data);
   buildEdges(data);
 
-  $('#title').textContent = data.meta.title || 'Notes';
-  $('#subtitle').textContent = data.meta.subtitle || '';
-  document.title = data.meta.title || document.title;
+  $('#course').value = course.id;
+  $('#subtitle').textContent = data.meta.subtitle || course.description || '';
+  document.title = `${course.name} · ${state.catalog.title}`;
+  writeRemembered('course', course.id);
 
   buildLegend();
   buildNodes();
   buildEdgeElements();
-  wireUI();
 
   const initial = (location.hash || '#flow').slice(1);
   setView(LAYOUTS[initial] ? initial : 'flow', { instant: true });
 }
+
+function buildCourseSwitcher() {
+  const sel = $('#course');
+  sel.innerHTML = '';
+  for (const c of state.catalog.courses) {
+    const o = document.createElement('option');
+    o.value = c.id;
+    o.textContent = c.file ? c.name : `${c.name} (coming)`;
+    o.disabled = !c.file;
+    sel.appendChild(o);
+  }
+  // With a single available course the switcher is just a label.
+  sel.disabled = state.catalog.courses.filter(c => c.file).length < 2;
+  sel.addEventListener('change', () => loadCourse(sel.value));
+}
+
+// localStorage is a convenience only; it may be missing or throw.
+function readRemembered(key) { try { return localStorage.getItem('emnotes:' + key); } catch { return null; } }
+function writeRemembered(key, val) { try { localStorage.setItem('emnotes:' + key, val); } catch { /* ignore */ } }
 
 function validate(data) {
   const ids = new Set(data.nodes.map(n => n.id));
@@ -263,6 +324,7 @@ function matchesQuery(n) {
 }
 
 function applyEmphasis() {
+  if (!state.data) return;
   const focusId = state.hovered || state.selected;
   const near = focusId ? state.adjacency.get(focusId) || new Set() : null;
   const vis = state.layout?.edgeVisibility || { requires: true, translates: true, mirrors: true };
@@ -290,7 +352,7 @@ function applyEmphasis() {
     p.classList.toggle('dim', !touches && (!!focusId || srcOff || tgtOff));
     const lab = state.labelEls[i];
     if (lab) {
-      lab.el.classList.toggle('hidden', hidden);
+      lab.el.classList.toggle('hidden', hidden || (vis.labels === false && !touches));
       lab.el.classList.toggle('dim', !touches && (!!focusId || srcOff || tgtOff));
     }
   });
@@ -356,6 +418,16 @@ function showPanel(n) {
   $('#p-trans').innerHTML = trans.length
     ? trans.map(t => `<span class="lbl">Same law as</span> ${linkList([t.a === n.id ? t.b : t.a])} <span class="lbl">via</span> ${linkList([t.via])}`).join('<br>')
     : '';
+
+  // Exit nodes may point at another course in the catalog.
+  const leadsWrap = $('#p-leads-wrap');
+  const target = n.leadsTo ? state.catalog.courses.find(c => c.id === n.leadsTo) : null;
+  if (target) {
+    leadsWrap.hidden = false;
+    $('#p-leads').innerHTML = target.file
+      ? `<a data-course="${target.id}">${target.name}</a>`
+      : `${target.name} <span class="muted">(coming)</span>`;
+  } else leadsWrap.hidden = true;
 
   const notesWrap = $('#p-notes-wrap');
   if (n.notes) { notesWrap.hidden = false; $('#p-notes').textContent = n.notes; } else notesWrap.hidden = true;
@@ -463,7 +535,9 @@ function wireUI() {
   $('#panel-close').addEventListener('click', clearSelection);
   $('#panel').addEventListener('click', e => {
     const a = e.target.closest('a[data-goto]');
-    if (a) { e.preventDefault(); select(a.dataset.goto); }
+    if (a) { e.preventDefault(); select(a.dataset.goto); return; }
+    const c = e.target.closest('a[data-course]');
+    if (c) { e.preventDefault(); loadCourse(c.dataset.course); }
   });
   $('#help-btn').addEventListener('click', () => { $('#help').hidden = false; });
   $('#help-close').addEventListener('click', () => { $('#help').hidden = true; });

@@ -152,14 +152,14 @@ export function layoutUnits(data, byId) {
   const depth = computeDepth(data.nodes, byId);
   const byDepth = (a, b) => depth.get(a.id) - depth.get(b.id) || a.name.localeCompare(b.name);
 
-  // Grid of clusters: column 0 = u1 over exits; column 1 = u2 over u4; column 2 = u3 over u5.
-  // Any other group ids fall into extra columns.
-  const order = data.groups.map(g => g.id);
+  // Two rows of clusters, filled row by row in the order groups are listed, with any
+  // group that holds only exit nodes moved to the end. For the intro course that gives
+  // Units 1–3 over Units 4–5 + Beyond, so the electric half sits above the magnetic half.
+  const isExitGroup = g => data.nodes.filter(n => n.group === g.id).every(n => n.kind === 'exit');
+  const order = [...data.groups.filter(g => !isExitGroup(g)), ...data.groups.filter(isExitGroup)].map(g => g.id);
+  const cols = Math.ceil(order.length / 2);
   const slots = {};
-  const known = ['u1', 'exit', 'u2', 'u4', 'u3', 'u5'];
-  known.forEach((id, i) => { if (order.includes(id)) slots[id] = { col: Math.floor(i / 2), row: i % 2 }; });
-  let extraCol = 3;
-  order.forEach(id => { if (!slots[id]) slots[id] = { col: extraCol++, row: 0 }; });
+  order.forEach((id, i) => { slots[id] = { col: i % cols, row: Math.floor(i / cols) }; });
 
   const pos = new Map();
   const clusters = [];
@@ -195,7 +195,7 @@ export function layoutUnits(data, byId) {
     });
   }
   // Edges only appear on hover here; drawn all at once they hide the grouping.
-  return { pos, clusters, edgeVisibility: { requires: false, translates: true, mirrors: false } };
+  return { pos, clusters, edgeVisibility: { requires: false, translates: true, mirrors: false, labels: false } };
 }
 
 export const LAYOUTS = { flow: layoutFlow, duality: layoutDuality, units: layoutUnits };

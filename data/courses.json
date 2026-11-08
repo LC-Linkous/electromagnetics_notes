@@ -1,0 +1,21 @@
+{
+  "title": "Electromagnetics Notes",
+  "courses": [
+    {
+      "id": "intro-emf",
+      "name": "Introduction to EMF",
+      "short": "Intro EMF",
+      "description": "Vector calculus, electrostatics, magnetostatics, and fields in materials.",
+      "file": "data/intro-emf.json",
+      "status": "active"
+    },
+    {
+      "id": "emf-2",
+      "name": "Electromagnetic Fields II",
+      "short": "EMF II",
+      "description": "Time-varying fields, Maxwell's equations in full, waves, transmission lines.",
+      "file": null,
+      "status": "planned"
+    }
+  ]
+}

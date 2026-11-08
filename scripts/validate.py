@@ -93,6 +93,14 @@ def check_course(path, course_ids, course_files):
                 err(f"{tag}: node '{nid}' has a resource without label/url")
             elif not res["url"].startswith(("http://", "https://")):
                 err(f"{tag}: node '{nid}' resource '{res['label']}' has a non-http url")
+        tries = n.get("tryIt")
+        if tries is not None:
+            items = tries if isinstance(tries, list) else [tries]
+            for t in items:
+                if not isinstance(t, dict) or "url" not in t:
+                    err(f"{tag}: node '{nid}' tryIt entries need a 'url'")
+                elif not t["url"].startswith(("http://", "https://")) and not os.path.exists(os.path.join(ROOT, t["url"].split("#")[0])):
+                    err(f"{tag}: node '{nid}' tryIt points at a missing local file: {t['url']}")
         notes = n.get("notes")
         if isinstance(notes, str) and notes.endswith(".md") and not os.path.exists(os.path.join(ROOT, notes)):
             err(f"{tag}: node '{nid}' notes file not found: {notes}")

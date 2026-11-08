@@ -590,7 +590,8 @@ function edgePath(s, t) {
 function matchesQuery(n) {
   if (!state.query) return true;
   const q = state.query.toLowerCase();
-  return n.name.toLowerCase().includes(q) || n.summary.toLowerCase().includes(q) || (n.equation || '').toLowerCase().includes(q);
+  const hay = [n.name, n.summary, n.equation || '', ...(n.pitfalls || []), n.check?.q || '', n.check?.a || ''].join(' \n ').toLowerCase();
+  return hay.includes(q);
 }
 
 function applyEmphasis() {
@@ -666,12 +667,36 @@ function linkList(ids) {
 function renderEquation(target, eq) {
   target.innerHTML = '';
   target.classList.remove('plain');
+  target.style.fontSize = '';
   if (!eq) return;
   if (state.data.meta.equationFormat === 'latex' && window.katex) {
-    try { katex.render(eq, target, { displayMode: true, throwOnError: false }); return; } catch { /* fall through */ }
+    try {
+      katex.render(eq, target, { displayMode: true, throwOnError: false });
+      fitEquation(target);
+      return;
+    } catch { /* fall through */ }
   }
   target.classList.add('plain');
   target.textContent = eq;
+}
+
+/** Shrink a rendered equation until it fits its box (down to a floor), instead of letting it scroll off. */
+function fitEquation(target) {
+  const inner = target.querySelector('.katex-display') || target.querySelector('.katex');
+  if (!inner) return;
+  const floor = 10;
+  const shrink = () => {
+    let size = 15;                       // px, matches .panel .eq
+    target.style.fontSize = size + 'px';
+    const avail = target.clientWidth - 20;   // padding
+    while (size > floor && inner.scrollWidth > avail) {
+      size -= 1;
+      target.style.fontSize = size + 'px';
+    }
+  };
+  // Measure after layout and after the math fonts have loaded (widths change when they do).
+  requestAnimationFrame(shrink);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => requestAnimationFrame(shrink));
 }
 
 /**
@@ -765,10 +790,13 @@ function showPanel(n) {
   $('#p-read').textContent = n.sadiku ? `${state.data.meta.text ? state.data.meta.text.split(',')[0] : ''} §${n.sadiku}`.trim() : '';
 
   const tryWrap = $('#p-try-wrap');
-  if (n.tryIt && n.tryIt.url) {
+  const tries = Array.isArray(n.tryIt) ? n.tryIt : (n.tryIt && n.tryIt.url ? [n.tryIt] : []);
+  if (tries.length) {
     tryWrap.hidden = false;
-    const ext = /^https?:/.test(n.tryIt.url);
-    $('#p-try').innerHTML = `<a href="${n.tryIt.url}"${ext ? ' target="_blank" rel="noopener"' : ''}>${n.tryIt.label || 'Open'}</a>`;
+    $('#p-try').innerHTML = tries.map(t => {
+      const ext = /^https?:/.test(t.url);
+      return `<a href="${t.url}"${ext ? ' target="_blank" rel="noopener"' : ''}>${t.label || 'Open'}</a>`;
+    }).join('<br>');
   } else tryWrap.hidden = true;
 
   const pit = $('#p-pitfalls');

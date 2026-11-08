@@ -526,10 +526,12 @@
         "Treating Gauss's law as a formula for E. It is a statement about total flux; it only yields E when symmetry lets you pull |E| out of the integral.",
         "Counting charge outside the surface in Q_enc. Outside charge shapes E on the surface but contributes zero *net* flux."
       ],
-      "tryIt": {
-        "label": "Equation builder: choose the symmetry, surface and collapsed form step by step",
-        "url": "builder.html#gauss"
-      }
+      "tryIt": [
+        {
+          "label": "Equation builder: choose the symmetry, surface and collapsed form step by step",
+          "url": "builder.html#gauss"
+        }
+      ]
     },
     {
       "id": "gauss-diff",
@@ -576,10 +578,12 @@
         "q": "Why can't you use Gauss's law alone to find E from an electric dipole?",
         "a": "There is no surface on which |E| is constant and E is everywhere parallel or perpendicular to the surface. Gauss's law still holds — it just doesn't let you pull E out of the integral."
       },
-      "tryIt": {
-        "label": "Equation builder: choose the symmetry, surface and collapsed form step by step",
-        "url": "builder.html#gauss"
-      }
+      "tryIt": [
+        {
+          "label": "Equation builder: choose the symmetry, surface and collapsed form step by step",
+          "url": "builder.html#gauss"
+        }
+      ]
     },
     {
       "id": "conservative-int",
@@ -999,10 +1003,12 @@
         "Forgetting the sign convention: the direction you traverse the loop and the direction that counts as positive current are linked by the right-hand rule."
       ],
       "notes": "notes/ampere-int.md",
-      "tryIt": {
-        "label": "Equation builder: choose the symmetry, loop and collapsed form step by step",
-        "url": "builder.html#ampere"
-      }
+      "tryIt": [
+        {
+          "label": "Equation builder: choose the symmetry, loop and collapsed form step by step",
+          "url": "builder.html#ampere"
+        }
+      ]
     },
     {
       "id": "ampere-diff",
@@ -1049,10 +1055,12 @@
         "q": "For a long solenoid with n turns per meter carrying I, what is B inside and outside?",
         "a": "Inside: B = μ₀nI along the axis. Outside (ideal, infinitely long): zero. A rectangular Amperian loop straddling the winding gives both."
       },
-      "tryIt": {
-        "label": "Equation builder: choose the symmetry, loop and collapsed form step by step",
-        "url": "builder.html#ampere"
-      }
+      "tryIt": [
+        {
+          "label": "Equation builder: choose the symmetry, loop and collapsed form step by step",
+          "url": "builder.html#ampere"
+        }
+      ]
     },
     {
       "id": "no-monopoles-int",

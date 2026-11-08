@@ -79,7 +79,7 @@ Everything students see for a course lives in its topic file, e.g. `data/intro-e
   "sadiku": "4.5",
   "requires": ["E", "flux"],
   "resources": [ { "label": "PhET · Charges and Fields", "url": "https://…" } ],
-  "tryIt": { "label": "Open in the field simulator", "url": "https://…" },
+  "tryIt": [ { "label": "Equation builder", "url": "builder.html#gauss" }, { "label": "Field simulator", "url": "https://…" } ],
   "pitfalls": [ "One sentence per common mistake. *Inline Markdown* is fine." ],
   "check": { "q": "A short concept question.", "a": "Its answer, revealed on click." },
   "notes": "notes/gauss-int.md"
@@ -92,7 +92,7 @@ Everything students see for a course lives in its topic file, e.g. `data/intro-e
 - `kind` — `tool`, `concept`, `source`, `law`, `quantity`, `property`, `device`, `technique`, or `exit`. Controls the box style and the small label.
 - `side` — `E`, `B`, or `center`. Only used by the Duality view.
 - `requires` — ids of topics a student needs first. These are the arrows in the Flow view. The graph must stay acyclic; the page logs a warning in the console if an id is unknown.
-- `pitfalls`, `check`, `tryIt`, `notes` and `leadsTo` are optional; the card hides any section that is empty.
+- `pitfalls`, `check`, `tryIt`, `notes` and `leadsTo` are optional; the card hides any section that is empty. `tryIt` is a list of links (a single object is also accepted); relative URLs open in the same tab, `http(s)` URLs in a new one.
 - `notes` is either a path to a Markdown file (`notes/<id>.md`, fetched when the card opens) or a plain string.
 
 **Edges** other than `requires`:
@@ -127,4 +127,4 @@ GitHub Pages, serving from the `main` branch root (Settings → Pages → Deploy
 
 ## License
 
-_To be chosen._ (A common split for material like this is a permissive code license such as MIT for `js/` and `css/`, and CC BY 4.0 for the content in `data/`.)
+GPL-2.0 — see `LICENSE`. Vendored libraries keep their own licenses: KaTeX (MIT, `vendor/katex/LICENSE`) and marked (MIT, `vendor/MARKED-LICENSE.md`).
